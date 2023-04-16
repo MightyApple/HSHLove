@@ -9,7 +9,6 @@ const httpServer = createServer(app);
 httpServer.listen(port); //app.listen(3000) geht nicht! erstellt neuen http server
 
 app.get('/', (req, res) => {
-  //res.sendFile(__dirname + '/index.html');
   res.send('Hello World!')
 })
 

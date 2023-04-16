@@ -34,6 +34,7 @@ export default function Chat() {
       setInputValue(''); //leert das Textfeld wieder
     };
   
+    console.log("rerender");
     return (
       <>
         <ul id="messages">
