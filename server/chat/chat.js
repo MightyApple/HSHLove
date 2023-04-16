@@ -17,10 +17,14 @@ function chatInitialisieren(io) {
         console.log(socket.id); //printet die zufällig vergebenen IDs der Verbindungsteilnehmer
 
         socket.on('disconnect', () => {
+            console.log("User disconnected");
             socket.broadcast.emit("User disconnected");
         })
         socket.on('message', (message) => {
-            io.emit('message', message);
+            io.emit('message', {
+                sender: socket.id,
+                text: message
+            });
         });
     });
 

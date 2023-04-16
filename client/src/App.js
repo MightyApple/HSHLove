@@ -4,7 +4,8 @@ import Chat from './Chat';
 
 function App() {
   return <Chat />;
-  return (
+  // react kann nur ein Return Statement zurückgeben
+  return ( 
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

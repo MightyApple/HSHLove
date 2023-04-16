@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef} from 'react';
 import io from 'socket.io-client';
 import "./chat.css";
+import ChatMessage from './ChatMessage';
 
 export default function Chat() {
     const [messages, setMessages] = useState([]);
@@ -40,7 +41,10 @@ export default function Chat() {
       <>
         <ul id="messages">
           {messages.map((message, index) => (
-           <li key={index}>{message}</li> //react kann durch keys feststellen was neu gerendert werden muss
+          //  <li key={index}>{message}</li> //react kann durch keys feststellen was neu gerendert werden muss
+          <li>
+            <ChatMessage absender={message.sender} text={message.text} />
+          </li>
           ))}
         </ul>
         <form id="form" onSubmit={handleSubmit}>
