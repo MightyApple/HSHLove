@@ -12,7 +12,7 @@ export default function Chat() {
       socketRef.current = io("http://localhost:3001");
   
       socketRef.current.on('message', (message) => { //ändert den Status
-        setMessages([...messages, message]); //... entpackt den Wert aus einem Array Besipiel: a[1,2,3,...[4]] => a[1,2,3,4]
+        setMessages((prevMessages) => [...prevMessages, message]); //... entpackt den Wert aus einem Array Besipiel: a[1,2,3,...[4]] => a[1,2,3,4]
       });
 
      // socketRef.current.on("connect", () => {
@@ -35,6 +35,7 @@ export default function Chat() {
     };
   
     console.log("rerender");
+    console.log(messages);
     return (
       <>
         <ul id="messages">

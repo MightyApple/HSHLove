@@ -3,6 +3,7 @@ import './App.css';
 import Chat from './Chat';
 
 function App() {
+  return <Chat />;
   return (
     <div className="App">
       <header className="App-header">
@@ -19,7 +20,6 @@ function App() {
           Learn React
         </a>
       </header>
-      <Chat />
     </div>
   );
 }
