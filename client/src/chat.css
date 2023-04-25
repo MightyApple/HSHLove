@@ -7,5 +7,5 @@ body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSyst
 
 #messages { list-style-type: none; margin: 0; padding: 0; }
 #messages > li { padding: 0.5rem 1rem; }
-#messages > li:nth-child(odd) { border: 1px solid #b32929; border-radius: 20%;  } /*die ungeraden Anzahl der Nachrichten wird rot umrandet*/ 
+#messages > li:nth-child(odd) { border: 1px solid #b32929; border-radius: 20%;  } /*die ungerade Anzahl der Nachrichten wird rot umrandet*/ 
 #messages > li:nth-child(even) { border: 1px solid rgb(22, 199, 22);  border-radius: 20%; }  /*gerade Anzahl TODO: die Farbe an die IDs anpassen*/

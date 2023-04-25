@@ -2,8 +2,9 @@ const express = require('express')
 const { createServer } = require("http");
 
 const app = express()
-const port = 3001
+const port = process.env.PORT || 3001 //nimmt den Port aus der Umgebungsvariablen oder 3001
 var chat = require('./chat/chat.js');
+const { env } = require('process');
 
 const httpServer = createServer(app);
 httpServer.listen(port); //app.listen(3000) geht nicht! erstellt neuen http server

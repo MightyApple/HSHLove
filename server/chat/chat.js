@@ -14,7 +14,7 @@ function chatInitialisieren(io) {
 
     io.on("connection", (socket) => {
         socket.broadcast.emit("User connected");
-        console.log(socket.id); //printet die zufällig vergebenen IDs der Verbindungsteilnehmer
+        console.log(socket.id); //printet die zufällig vergebenen IDs der Verbindungsteilnehmer TODO: muss durch die eingeloggten ACC IDs ersetzt werden
 
         socket.on('disconnect', () => {
             console.log("User disconnected");
