@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef} from 'react';
 import io from 'socket.io-client';
 import "./chat.css";
-import ChatMessage from './ChatMessage';
+import ChatMessage from '../components/ChatMessage';
 
 export default function Chat() {
     const [messages, setMessages] = useState([]);
