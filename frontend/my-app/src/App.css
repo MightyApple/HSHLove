@@ -1,0 +1,92 @@
+body {
+  background: linear-gradient(168.3deg, #FFFFFF 46.5%, rgba(230, 150, 145, 0.81) 83.37%, rgba(255, 214, 0, 0.58) 107.3%);
+  margin: 0;
+  padding: 0;
+}
+
+#logo {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+   width: 9vw; 
+  height: 10vw;
+}
+
+h1 {
+  text-align: center;
+  color: #571212;
+  font-size: 38px;
+  margin-top: 0;
+}
+
+p {
+  text-align: center;
+  color: #571212;
+  font-size: 16px;
+}
+
+input[type="email"],
+input[type="password"] {
+  display: block;
+  margin: 20px auto;
+  padding: 10px;
+  border-color: black;
+  border-radius: 5px;
+  width: 90vw; 
+  max-width: 400px;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+}
+
+input[type="checkbox"] {
+  display: block;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+label[for="remember"] {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  color: #571212;
+}
+
+#login-button {
+  display: block;
+  margin: 20px auto;
+   padding: 10px;
+   border: none;
+    border-radius: 5px;
+ width: 90vw; 
+  max-width: 400px;
+  font-size: 16px;
+  background-color: #FFCB02;
+  color: #571212;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#forgot-password {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+#register-link {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+#register-link a {
+  color: #FFCB02;
+  text-decoration: none;
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrierung</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #FFFFFF, #FF7F50);
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      color: #571212;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    }
+    .logo {
+      max-width: 100px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #FFCB02;
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      font-size: 1.1em;
+    }
+    input[type="password"] {
+      position: relative;
+    }
+    input[type="password"] ~ .toggle-password {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+    }
+    input[type="submit"] {
+      background-color: #FFCB02;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      color: #571212;
+      font-size: 1.1em;
+      cursor: pointer;
+    }
+    .form-group {
+      text-align: left;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .link {
+      color: #571212;
+      text-decoration: none;
+      font-size: 1.1em;
+    }
+    .link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="logo" src="logo.png" alt="Logo">
+    <h1>Registrierung</h1>
+    <p>Melde dich mit deinen Daten für die Registrierung an</p>
+    <form action="" method="POST">
+      <div class="form-group">
+        <label for="email">E-Mail</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Passwort</label>
+        <input type="password" id="password" name="password" required>
+        <span class="toggle-password" onclick="togglePasswordVisibility('password')">
+          <svg width="20" height="20" viewBox="0 0 24 24"></svg>
+            </div>
+             <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
+            <p class="mt-3 mb-3 text-muted">&copy; 2022 HSHLove</p>
+          </form>
+        </body>
+        </html>

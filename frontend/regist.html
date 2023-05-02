@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Registrierung</title>
+    <style>
+      body {
+        background: linear-gradient(to bottom, #fff, #f7bfbf, #f7a8a8);
+        font-family: Arial, sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      #header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 70px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      #logo {
+        width: 50px;
+        height: 50px;
+        margin: 10px;
+        background-image: url('logo.png');
+        background-size: cover;
+        background-position: center center;
+        border-radius: 50%;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        float: left;
+      }
+      #title {
+        font-size: 36px;
+        margin: 40px auto 20px;
+        text-align: center;
+      }
+      form {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      label {
+        display: block;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+      input[type="email"], input[type="password"] {
+        border: none;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 16px;
+        width: 100%;
+        margin-top: 5px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        outline: none;
+      }
+      #register-button {
+        background-color: #FFA500;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 10px 20px;
+        font-size: 16px;
+        margin-top: 20px;
+        cursor: pointer;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+      }
+      #note {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 10px;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <div id="logo"></div>
+    </div>
+    <h1 id="title">Registrierung</h1>
+    <form>
+      <label for="email">E-Mail-Adresse</label>
+      <input type="email" id="email" name="email" placeholder="name@example.com" required>
+
+
+      <label for="password">Passwort</label>
+      <input type="password" id="password" name="password" placeholder="min. 8 Zeichen" minlength="8" required>
+      <input type="checkbox" onclick="showPassword()">Passwort anzeigen
+      
+      <script>
+      function showPassword() {
+        var passwordInput = document.getElementById("password");
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+        } else {
+          passwordInput.type = "password";
+        }
+      }
+      </script>
+      
+
+      <label for="confirm-password">Passwort bestätigen</label>
+      <input type="password" id="password" name="password" placeholder="min. 8 Zeichen" minlength="8" required>
+<input type="checkbox" onclick="showPassword()">Passwort anzeigen
+
+<script>
+function showPassword() {
+  var passwordInput = document.getElementById("password");
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+  } else {
+    passwordInput.type = "password";
+  }
+}
+</script>
+
+      <button id="register-button">Registrieren</button>
+
+        <div id="note">
+            Indem Sie auf "Registrieren" klicken, bestätigen Sie, dass Sie unsere <a href="#">Nutzungsbedingungen</a> und unsere <a href="#">Datenschutzerklärung</a> gelesen haben und damit einverstanden sind.
+          </div>
+        </form>
+      </body>
+    </html>
+    

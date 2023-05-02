@@ -1,0 +1,157 @@
+.top-bar {
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+  }
+  
+  .top-bar-nav-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .top-bar-nav-list li {
+    margin-right: 1rem;
+  }
+  
+  .top-bar-nav-list li:last-child {
+    margin-right: 0;
+  }
+  
+  .top-bar-nav-list li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2rem;
+  }
+  
+  .top-bar-nav-list li a:hover {
+    color: #ddd;
+  }
+  
+  .logo{
+    width: 7vw;
+    height: 6vw;
+  }
+  
+
+  .navb-link {
+    color: #571212;
+    font-size: 16px;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+  
+  .container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+  }
+  
+  .placeholder {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  
+  
+  .description {
+    margin-bottom: 20px;
+  }
+  
+  .description {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .description {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 16px;
+    background-color: #f5f5f5;
+    color: #333;
+    width: 90vw;
+    max-width: 600px;
+    height: 200px;
+  }
+  
+  .tags {
+    width: 100%;
+    margin: 4rem;
+    margin-bottom: 10rem;
+ }
+.search{
+    width: 100%;
+    margin: 4rem;
+    margin-bottom: 10rem;
+}  
+  .tags-container {
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 33px;
+    color: #571212;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+  }
+  
+  .dropdown-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .dropdown {
+    position: relative;
+    background: rgba(245, 227, 62, 0.21);
+    border: 3px solid #771818;
+    border-radius: 8px;
+   
+  }
+
+  .dropname1{
+    position: absolute;
+    width: 380px;
+    height: 22px;
+    left: 250px;
+    top: 700px;
+  }
+
+
+.select{
+    background: rgba(245, 227, 62, 0.21);
+    border: 3px solid #771818;
+border-radius: 8px;
+width: 20vw;
+
+}
+
+
+
+
+  .submit-button {
+    padding: 20px;
+    height: 67px;
+    margin: 3rem;
+    box-sizing: border-box;
+    width: 30vw;
+    border: 1px solid rgba(0, 0, 0, 0.26);
+    border-radius: 8px;
+    font-size: 16px;
+    background: #FFCB02;
+    color: #571212;
+    cursor: pointer;
+  }
+  
