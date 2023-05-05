@@ -5,7 +5,9 @@ import {
     RouterProvider,
 } from "react-router-dom";
 
-import './index.css';
+import './index.css'; //TODO kann raus geworfen werden, wenn niemand das braucht
+import './reset.css'
+import './global.css'
 
 import App from './pages/App';
 import Chat from './pages/Chat';

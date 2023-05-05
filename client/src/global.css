@@ -1,0 +1,33 @@
+:root {
+    /*
+        Color
+     */
+    --primaryColor: #FF0000FF;
+    --secoundaryColor: #FFFF00FF;
+    --white: #FFFFFFFF;
+
+    /*
+        Fonts
+     */
+
+
+    /*
+        container
+     */
+    --mobileContainerPrimary: 15px;
+    --mobileContainerSecondary: 20px;
+
+    --desktopContainerPrimary: 70px;
+    --desktopContainerSecondary: 225px;
+}
+
+@font-face {
+    font-family: 'Nunito';
+    src:  url('./assets/Nunito/Nunito-Italic-VariableFont_wght.woff2') format('woff2'),
+          url('./assets/Nunito/Nunito-Italic-VariableFont_wght.woff') format('woff'),
+          url('./assets/Nunito/Nunito-Italic-VariableFont_wght.ttf') format('truetype');
+}
+
+.container {
+    margin: 0 auto;
+}
