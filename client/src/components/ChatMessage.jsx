@@ -1,10 +1,10 @@
 import React from 'react'
 
-export default function ChatMessage({ absender, text }) {
+export default function ChatMessage({ sender, text }) {
   return (
     <div>
       <div>
-        Absender {absender}
+        Absender {sender}
         <img src="" alt="" />
       </div>
       <div>

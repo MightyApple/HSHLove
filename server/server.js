@@ -1,5 +1,6 @@
 const express = require('express')
 const { createServer } = require("http");
+const database = require('./database.js');
 
 const app = express()
 const port = process.env.PORT || 3001 //nimmt den Port aus der Umgebungsvariablen oder 3001

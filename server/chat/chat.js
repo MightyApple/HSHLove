@@ -13,23 +13,23 @@ function serverInitialisieren(httpServer) {
 function chatInitialisieren(io) {
 
     io.on("connection", (socket) => {
-        socket.broadcast.emit("User connected");
+        io.emit("User connected");
         console.log(socket.id); //printet die zufällig vergebenen IDs der Verbindungsteilnehmer TODO: muss durch die eingeloggten ACC IDs ersetzt werden
 
         socket.on('disconnect', () => {
             console.log("User disconnected");
-            socket.broadcast.emit("User disconnected");
+            socket.broadcast.emit('User disconnected');
         })
         socket.on('message', (message) => {
+            console.log("message received: " + message + " from " + socket.id);
             io.emit('message', {
                 sender: socket.id,
                 text: message
             });
         });
     });
-
 }
 
-module.exports = { //exportiert Sachen vgl. in Java machts "public"
+module.exports = { //exportiert Sachen vgl. in Java wirds "public"
     serverInitialisieren,
 }
