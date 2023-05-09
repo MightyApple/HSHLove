@@ -49,22 +49,24 @@ export default function Chat() {
 
   return (
     <>
-      <ul id="messages">
-        {messages.map((message) => (
-          <li key={message.id}>
-            <ChatMessage sender={message.sender} text={message.text} />
-          </li>
-        ))}
-      </ul>
-      <form id="form" onSubmit={handleSubmit}>
-        <input
-          id="input"
-          autoComplete="off"
-          value={inputValue}
-          onChange={(event) => setInputValue(event.target.value)}
-        />
-        <button type="submit">Send</button>
-      </form>
+      <div className="chatBox">
+        <div id="messages">
+          {messages.map((message) => (
+              <div key={message.id}>
+                <ChatMessage sender={message.sender} text={message.text} />
+              </div>
+          ))}
+        </div>
+        <form id="form" onSubmit={handleSubmit}>
+          <input
+              id="input"
+              autoComplete="off"
+              value={inputValue}
+              onChange={(event) => setInputValue(event.target.value)}
+          />
+          <button type="submit">Send</button>
+        </form>
+      </div>
     </>
   );
 }
