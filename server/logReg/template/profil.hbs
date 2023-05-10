@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Hier muss dein Profil erscheinen <br>
+    
+    <form action="/personalSpace" method="post">
+        <input type="text" id="DBEmail" name="email" placeholder="Email"><br>
+        <input type="password" name="password" placeholder="Passwort"><br>
+        <input type="password" name="passwordwdh" placeholder="Passwort wiederholen"><br>
+
+        <input type="submit" value="Änderungen aktzeptieren">
+    </form>
+    
+    
+    <script>
+        document.getElementById("DBEmail").setAttribute('value',"{{{email}}}");
+       //document.getElementById("DBEmail").innerHTML="{{{email}}}" ;   
+        document.getElementById("DBPassword").innerHTML="Password:" + "{{{password}}}";   
+
+    </script>
+    
+</body>
+</html>
