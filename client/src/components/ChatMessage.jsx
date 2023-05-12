@@ -12,7 +12,7 @@ export default function ChatMessage({ sender, text }) {
         <img src="" alt="" className="profileImg" width="" height="" />
       </div>
       <div className="message">
-          {text}
+        {text}
       </div>
       <div>
         {time}
