@@ -1,17 +1,21 @@
 import React from 'react'
 
-export default function ChatMessage({ absender, text }) {
+const today = new Date(); //TODO Test Zeiten entfernen (die sind nur da, damit ich stylen kann)
+const time = today.toLocaleTimeString();
+const date = today.toLocaleDateString();
+
+export default function ChatMessage({ sender, text }) {
   return (
     <div>
       <div>
-        Absender {absender}
-        <img src="" alt="" />
+        Absender {sender}
+        <img src="" alt="" className="profileImg" width="" height="" />
+      </div>
+      <div className="message">
+        {text}
       </div>
       <div>
-        message {text}
-      </div>
-      <div>
-        Timestamp
+        {time}
       </div>
     </div>
   )
