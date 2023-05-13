@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const { Server } = require("socket.io");
+const {saveSession, findSession} = require('./sessionStorage.js') ;
 
 function serverInitialisieren(httpServer) {
 
@@ -15,8 +16,9 @@ function chatInitialisieren(io) {
 
     io.use((socket, next) => {  //middleware, die vor jedem connection event ausgeführt werden sollte
         const sessionId = socket.handshake.auth.sessionId;
+        
         if (sessionId) { //wenn session id vorhanden
-            const session = null; //TODO: Session öffnen und in session speichern
+            const session = findSession(sessionId); //suche nach session
             if (session) {
                 socket.session = session;
                 socket.userId = session.userId;
@@ -41,6 +43,7 @@ function chatInitialisieren(io) {
         socket.username = username;
         socket.userId = uuidv4();
         socket.sessionId = uuidv4();
+        next();
     });
 
     // socket.emit("session", { //sendet an den client
@@ -49,7 +52,15 @@ function chatInitialisieren(io) {
     //     username: socket.username,
     // });
 
-    io.on("connection", (socket) => { //wird ausgeführt, wenn ein client connected
+    io.on("connection", async (socket) => { //wird ausgeführt, wenn ein client connected
+        saveSession(socket.sessionId, {
+            userId: socket.userId,
+            username: socket.username,
+            connected: true,
+        });
+
+        socket.join(socket.userId); //fügt den socket zu einem room hinzu
+
         io.emit("User connected", socket.userId);
         console.log(socket.id); //gibt id des sockets aus
 
@@ -61,7 +72,8 @@ function chatInitialisieren(io) {
             console.log("message received: " + message + " from " + socket.id);
             io.emit('message', {
                 sender: socket.id,
-                text: message
+                text: message,
+                userId: socket.userId,
             });
         });
     });
