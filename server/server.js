@@ -23,8 +23,8 @@ const port = process.env.PORT || 3001 //nimmt den Port aus der Umgebungsvariable
 var chat = require('./chat/chat.js');
 const { env } = require('process');
 
-//const httpServer = createServer(app);
-//httpServer.listen(port); //app.listen(3000) geht nicht! erstellt neuen http server
+const httpServer = createServer(app);
+httpServer.listen(port); //app.listen(3000) geht nicht! erstellt neuen http server
 
 app.use(function (req, res, next) { //middleware, die vor jedem request ausgeführt wird
   if (!req.headers.authorization) { //wenn kein token vorhanden, dann error
@@ -294,10 +294,4 @@ app.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
     console.log(e)
 
   }
-})
-
-
-var portNr = 3000;
-app.listen(portNr, () => {
-  console.log("server at www.localhost:" + portNr);
 })
