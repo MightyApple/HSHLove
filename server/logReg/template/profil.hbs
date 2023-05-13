@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Profil</h1>
+    Profilbild: <input type="file" name="imgfile" accept="image/jpeg" id="imgfile">
+    <br>
+    
+    Name: <input type="text" id="name" name="name" placeholder="Name"><br>
+    Geburtsdatum: <input type="date" id="birthday" name="birthday"><br>
+    Beschreibung: <textarea id="description" name="description" cols="30" rows="10"></textarea><br>
+    
+    Passwort zum bestätigen: <input type="password" id="password" name="password" placeholder="Passwort"><br>   
+
+
+    <button id="submitBtn">Submit</button>
+       
+            
+    
+    
+    <script>
+        document.getElementById("submitBtn").addEventListener("click", () => {  
+            let name = document.getElementById("name");
+            let birthday = document.getElementById("birthday");
+            let description = document.getElementById("description");
+            let password = document.getElementById("password");
+
+            let inputElem = document.getElementById("imgfile");
+            if (typeof inputElem !== "undefined" && inputElem.value == '') {
+                
+            }
+            let file = inputElem.files[0];
+            // Create new file so we can rename the file
+            let blob = file.slice(0, file.size, "image/jpeg");
+            newFile = new File([blob], `Profilbild_post.jpeg`, { type: "image/jpeg" });
+            // Build the form data - You can add other input values to this i.e descriptions, make sure img is appended last
+            let formData = new FormData();
+            
+            formData.append("name", name.value);
+            formData.append("birthday", birthday.value);
+            formData.append("description", description.value);
+            formData.append("password", password.value);
+            formData.append("imgfile", newFile);
+            
+            fetch("/personalSpace", {
+                method: "POST",
+                body: formData,
+            }) 
+        });
+    </script>
+    
+    
+    <script>
+        
+        document.getElementById("name").setAttribute('value',"{{{name}}}");
+        document.getElementById("description").value="{{{description}}}"
+        
+
+    </script>
+    
+</body>
+</html>
