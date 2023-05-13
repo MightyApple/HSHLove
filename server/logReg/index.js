@@ -3,7 +3,7 @@ const app =express()
 const path=require("path")
 const bcrypt = require("bcrypt")
 const tempaltePath=path.join(__dirname,'./template')
-const mongoCollection=require("./mongodb")
+const mongoCollection=require("../mongodb")
 const session =require('express-session');
 const { Storage } = require("@google-cloud/storage");
 const Multer = require("multer");
@@ -21,9 +21,7 @@ app.use(session({
     saveUninitialized: true,
     cookie:{
         sameSite: 'strict',
-
     }
-
 }));
 
 app.get("/",(req,res)=>{
@@ -31,11 +29,7 @@ app.get("/",(req,res)=>{
         res.render('home',{email: req.session.user.email})
     }else{
         res.render("login")  
-    }
-    
-})
-app.get("/uploadFile",(req,res)=>{    
-    res.render("picUpload")     
+    }    
 })
 
 app.get("/signup",(req,res)=>{
@@ -72,10 +66,12 @@ app.post("/signup",async (req,res)=>{
                 email: email,
                 password: hash
             }
-            console.log(data)
+            
             await mongoCollection.insertMany([data]);
+            req.session.user = user;
+            req.session.authorized = true;
             //alles nach der eingabe in die datenbank wird hiernach ausgeführt
-            res.render("home")
+            res.json({status: "Success", redirect: '/home'});
         }else{
             //Fehler wenn nutzerbereits existiert und passwörter nicht stimmen
             res.status(500).send("ERROR");
@@ -85,14 +81,6 @@ app.post("/signup",async (req,res)=>{
         res.status(500).send("something broke in the registration")
     }   
 })
-async function emailexists(email){
-    const user=await mongoCollection.findOne({
-        email:email,           
-    })
-    if(user){
-        return true;
-    }
-}
 //TODO personalspace daten ändern und abfragen
 
 
@@ -100,8 +88,6 @@ async function emailexists(email){
 
 app.post("/login",async (req,res)=>{
     try{
-        
-
         const {email,password}=req.body;
         
         const user=await mongoCollection.findOne({
@@ -129,8 +115,6 @@ app.post("/login",async (req,res)=>{
 })
 
 
-//-------------------------------------------------------------------------------------------------------------------
-//bilderupload
 const gc=new Storage({
     keyFilename:path.join(__dirname,"./config/hshloveKey.json"),
     projectId:'hshlove'
@@ -142,16 +126,7 @@ const multer = Multer({
     limits: {
       fileSize: 5 * 1024 * 1024, // No larger than 5mb, change as you need
     },
-  });
-
-  app.get("/test",  async(req, res) => {
-
-    var imageData = []
-    
-    await mongoCollection.findOneAndUpdate({"_id":"645b9cf07915d6714c342664"},  {$push:{images:"bilder"},$set:{name:"gay"}})
-    
-    
-  });
+});
 
 app.get("/upload", async (req, res) => {
     try {
@@ -162,34 +137,14 @@ app.get("/upload", async (req, res) => {
       res.send("Error:" + error);
     }
   });
-  // Streams file upload to Google Storage
-  app.post("/upload", multer.single("imgfile"), (req, res) => {
-    console.log("Made it /upload");
-    try {
-      if (req.file) {
-        console.log("File found, trying to upload...");
-        const blob = profilbilder.file(req.file.originalname);
-        const blobStream = blob.createWriteStream();
-  
-        blobStream.on("finish", () => {
-          res.status(200).send("Success");
-          console.log("Success");
-        });
-        blobStream.end(req.file.buffer);
-      } else throw "error with img";
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  });
-  
-//----------------------------------------------------------
-app.post("/personalSpace",multer.single("imgfile"),async (req,res)=>{
+app.post("/personalSpace",multer.any("imgfile"),async (req,res)=>{
     try{
         let newFile
         let imgNr;
         const uId = req.session.user._id
         const {name,birthday,description,password}=req.body;
-        
+        console.log(req.file)
+        console.log(req.body)
         const user=await mongoCollection.findOne({
             _id:uId,           
         })       
@@ -200,18 +155,12 @@ app.post("/personalSpace",multer.single("imgfile"),async (req,res)=>{
                 
                 //Datenbankeintrag 'images' letzte nummer rausfinden und um 1 erhöhen
                 if(user.toJSON().images.length === 0){
-                    
-                    imgNr=1 
-                    
-                }else{
-                    
-                    imgNr = (parseInt(user.toJSON().images[user.toJSON().images.length -1].split("_").pop().split(".")[0]) +1) 
-                                    
+                    imgNr=1                     
+                }else{           
+                    imgNr = (parseInt(user.toJSON().images[user.toJSON().images.length -1].split("_").pop().split(".")[0]) +1)                                     
                 }
-
                 
-                if (req.file) {
-                    
+                if (req.file) {                    
                     newFile={
                         fieldname : req.file.fieldname,
                         originalname : uId+"_"+imgNr.toString()+".jpeg",
@@ -239,8 +188,7 @@ app.post("/personalSpace",multer.single("imgfile"),async (req,res)=>{
                     name: name,
                     birthday: birthday,
                     description: description,
-                }
- 
+                } 
                 await mongoCollection.findOneAndUpdate({"_id":uId}, {$set:data, $push:{images:newFile.originalname}})
                 
                 const danach=await mongoCollection.findOne({
