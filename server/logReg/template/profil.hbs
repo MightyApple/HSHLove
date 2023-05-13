@@ -7,21 +7,59 @@
     <title>Document</title>
 </head>
 <body>
-    Hier muss dein Profil erscheinen <br>
+    <h1>Profil</h1>
+    Profilbild: <input type="file" name="imgfile" accept="image/jpeg" id="imgfile">
+    <br>
     
-    <form action="/personalSpace" method="post">
-        <input type="text" id="DBEmail" name="email" placeholder="Email"><br>
-        <input type="password" name="password" placeholder="Passwort"><br>
-        <input type="password" name="passwordwdh" placeholder="Passwort wiederholen"><br>
+    Name: <input type="text" id="name" name="name" placeholder="Name"><br>
+    Geburtsdatum: <input type="date" id="birthday" name="birthday"><br>
+    Beschreibung: <textarea id="description" name="description" cols="30" rows="10"></textarea><br>
+    
+    Passwort zum bestätigen: <input type="password" id="password" name="password" placeholder="Passwort"><br>   
 
-        <input type="submit" value="Änderungen aktzeptieren">
-    </form>
+
+    <button id="submitBtn">Submit</button>
+       
+            
     
     
     <script>
-        document.getElementById("DBEmail").setAttribute('value',"{{{email}}}");
-       //document.getElementById("DBEmail").innerHTML="{{{email}}}" ;   
-        document.getElementById("DBPassword").innerHTML="Password:" + "{{{password}}}";   
+        document.getElementById("submitBtn").addEventListener("click", () => {  
+            let name = document.getElementById("name");
+            let birthday = document.getElementById("birthday");
+            let description = document.getElementById("description");
+            let password = document.getElementById("password");
+
+            let inputElem = document.getElementById("imgfile");
+            if (typeof inputElem !== "undefined" && inputElem.value == '') {
+                
+            }
+            let file = inputElem.files[0];
+            // Create new file so we can rename the file
+            let blob = file.slice(0, file.size, "image/jpeg");
+            newFile = new File([blob], `Profilbild_post.jpeg`, { type: "image/jpeg" });
+            // Build the form data - You can add other input values to this i.e descriptions, make sure img is appended last
+            let formData = new FormData();
+            
+            formData.append("name", name.value);
+            formData.append("birthday", birthday.value);
+            formData.append("description", description.value);
+            formData.append("password", password.value);
+            formData.append("imgfile", newFile);
+            
+            fetch("/personalSpace", {
+                method: "POST",
+                body: formData,
+            }) 
+        });
+    </script>
+    
+    
+    <script>
+        
+        document.getElementById("name").setAttribute('value',"{{{name}}}");
+        document.getElementById("description").value="{{{description}}}"
+        
 
     </script>
     

@@ -13,6 +13,18 @@ const LogInSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    images:{
+        type:Array
+    },
+    birthday:{
+        type:Date
+    },
+    description:{
+        type: String
+    },
+    name:{
+        type: String
+    },
     password:{
         type:String,
         required:true
