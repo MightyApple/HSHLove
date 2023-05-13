@@ -1,6 +1,6 @@
 const express = require('express')
 const { createServer } = require("http");
-//const database = require('./database.js');
+const database = require('./database.js');
 const cors = require('cors');
 const app = express()
 const path = require("path")
@@ -44,11 +44,6 @@ app.use(function (req, res, next) { //middleware, die vor jedem request ausgefü
 //   next();
 // });
 
-app.get('/', (req, res) => {
-  // console.log(req.username);
-  res.send('Hello World!')
-})
-
 app.get('/getUsername', (req, res) => {
   database.findUserByToken(req.token).then((user) => { //nachdem der Eintrag gefunden wurde, senden wir den Usernamen zurück an den Client
     console.log(user.name);
@@ -57,22 +52,7 @@ app.get('/getUsername', (req, res) => {
   }
   );
 })
-//app.get('/', (req, res) => {
-//  res.send('Hello World!')
-//})
 
-
-//app.get('/getUsername', (req, res) => {
-// database.findUserByToken("token123").then((user) => { //nachdem der Eintrag gefunden wurde, senden wir den Usernamen zurück an den Client
-//   console.log(user.name);
-//  userNameObj = {name: user.name};
-//  res.send(userNameObj); //sendet den usernamen an den client
-// }
-//  );
-//})
-
-//chat.serverInitialisieren(httpServer);
-//-------------------------------------------------
 app.use(session({
   secret: 'secret;*',
   resave: true,
@@ -90,8 +70,8 @@ app.get("/", (req, res) => {
   }
 })
 
-
 chat.serverInitialisieren(httpServer);
+
 app.get("/signup", (req, res) => {
   res.render("signup")
 })
@@ -103,7 +83,6 @@ app.get("/personalSpace", async (req, res) => {
     res.render("login")
   } else {
     console.log(req.session.user)
-
 
     try {
       const [files] = await profilbilder.getFiles({ prefix: req.session.user._id })
@@ -123,7 +102,6 @@ app.get("/personalSpace", async (req, res) => {
     }
   }
 })
-
 
 app.post("/signup", async (req, res) => {
   try {
