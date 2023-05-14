@@ -107,7 +107,9 @@ app.post("/login",async (req,res)=>{
         const user=await mongoCollection.findOne({
             email:email,           
         })
-        if (user){
+        console.log(user)
+        if (user!==null){
+            console.log(1)
             const validPass = await bcrypt.compare(password,user.password)
             if(validPass){
                 //falls die daten stimmen wird der codeblock ausgeführt
@@ -115,10 +117,14 @@ app.post("/login",async (req,res)=>{
                 req.session.user = user;
                 req.session.authorized = true;
                 res.render("home")
+                console.log(1)
             }else{
+                console.log(2)
                 //und falls nicht dieser
                 res.send("wrong password")
             }
+        }else{
+            res.render("signup")
         }
     }
     catch{
