@@ -1,4 +1,4 @@
-import eye from '../assets/eye-svgrepo-com.svg'
+import eye from '../../assets/eye-svgrepo-com.svg'
 import {useState} from "react";
 
 import './formText.css'

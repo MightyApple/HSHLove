@@ -1,8 +1,8 @@
 import './login.css'
 import logo from '../assets/logo.svg'
 
-import FormText from '../components/formText'
-import FormButton from '../components/formButton'
+import FormText from '../components/form/formText'
+import FormButton from '../components/form/formButton'
 import LoginHead from '../components/loginHead'
 import {Link} from "react-router-dom";
 export default function Root() {

@@ -2,13 +2,13 @@
     /*
         Color
      */
-    --primaryColor: rgba(255, 214, 0, 1);
-    --secondaryColor: rgba(229, 150, 145, 1);
+    --primaryColor: rgba(255, 203, 2, 1);
+    --secondaryColor: rgba(238, 23, 30, 1);
 
-    --bgPrimaryColor: rgba(255, 214, 0, 0.58);
-    --bgSecondaryColor: rgba(229, 150, 145, 0.81);
+    --bgPrimaryColor: rgba(255, 203, 2, 0.58);
+    --bgSecondaryColor: rgba(238, 23, 30, 0.4);
 
-    --primaryColorHover: rgba(211, 175, 0, 1);
+    --primaryColorHover: rgb(232, 185, 0, 1);
     --white: rgba(255, 255, 255, 1);
     --black: rgba(0, 0, 0, 1);
     --fontColor: rgba(87, 18, 18, 1);

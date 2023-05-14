@@ -15,6 +15,9 @@ export default function Root() {
                 <li>
                     <Link to={'registrieren'}>Registrieren</Link>
                 </li>
+                <li>
+                    <Link to={'start'}>StartingPage (Später nur "/")</Link>
+                </li>
             </ul>
         </>
     )};

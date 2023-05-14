@@ -10,6 +10,7 @@ import './reset.css';
 import './global.css';
 
 import App from './pages/App';
+import StartingPage from './pages/startingPage'
 import Login from './pages/login';
 import Register from './pages/register';
 import Chat from './pages/Chat';
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
     {
         path: "registrieren",
         element: <Register />,
+    },
+    {
+        path: "start",
+        element: <StartingPage />,
     },
 ]);
 
