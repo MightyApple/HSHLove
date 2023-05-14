@@ -1,7 +1,7 @@
 .checkboxForm {
     display: flex;
     flex-direction: row-reverse;
-    justify-content: start;
+    justify-content: flex-start;
     padding-bottom: 24px;
 }
 .checkboxForm input {
