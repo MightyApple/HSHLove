@@ -5,14 +5,8 @@ import {Link, Navigate } from "react-router-dom";
 import React from "react";
 
 export default function Root() {
-    const[succes, setSucces]= React.useState(false)
-   
     
-    React.useEffect(()=>{
-        if(succes){
-            return <Navigate to="/login"/>
-        }
-    },[succes])
+    
 
 
     
@@ -35,9 +29,7 @@ export default function Root() {
             body: JSON.stringify(data)
         })
         const resData= await result.json()
-        if(resData.noError){
-            setSucces(true)
-        }
+        
     }
     
     
