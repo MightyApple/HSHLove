@@ -1,0 +1,25 @@
+.formLogin {
+    padding-top: 20px;
+}
+.formLogin .normalFontSize {
+    padding: 29px 0 80px 0;
+}
+.checkboxForm {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    padding-bottom: 24px;
+}
+.checkboxForm input {
+    cursor: pointer;
+}
+.formEnd {
+    padding-top: 25px;
+    font-weight: var(--normalBold);
+    font-size: var(--normalSize);
+    text-align: center;
+}
+.formEnd button {
+    cursor: pointer;
+    padding-bottom: 24px;
+}

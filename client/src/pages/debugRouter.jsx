@@ -9,6 +9,9 @@ export default function Root() {
                 <li>
                     <Link to={'homepage'}>Homepage</Link>
                 </li>
+                <li>
+                    <Link to={'login'}>Login</Link>
+                </li>
             </ul>
         </>
     )};

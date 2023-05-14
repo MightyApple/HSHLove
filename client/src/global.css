@@ -2,23 +2,35 @@
     /*
         Color
      */
-    --primaryColor: #FFCB02;
-    --secoundaryColor: #EE171E;
-    --white: #FFFFFFFF;
+    --primaryColor: rgba(255, 214, 0, 1);
+    --secondaryColor: rgba(229, 150, 145, 1);
+
+    --bgPrimaryColor: rgba(255, 214, 0, 0.58);
+    --bgSecondaryColor: rgba(229, 150, 145, 0.81);
+
+    --primaryColorHover: rgba(211, 175, 0, 1);
+    --white: rgba(255, 255, 255, 1);
+    --black: rgba(0, 0, 0, 1);
+    --fontColor: rgba(87, 18, 18, 1);
 
     /*
         Fonts
      */
+    --bigHeadline: 60px;
+    --boldWeight: 700;
+    --bigLineHeight: 82px;
 
+    --normalBold: 600;
+
+    --normalSize: 14px;
+    --normalWeight: 400;
+    --normalLineHeight: 19px;
 
     /*
         container
      */
-    --mobileContainerPrimary: 15px;
-    --mobileContainerSecondary: 20px;
-
-    --desktopContainerPrimary: 70px;
-    --desktopContainerSecondary: 225px;
+    --containerPrimary: 15px;
+    --containerSecondary: 20px;
 }
 
 @font-face {
@@ -28,6 +40,44 @@
           url('./assets/Nunito/Nunito-Italic-VariableFont_wght.ttf') format('truetype');
 }
 
-.container {
-    margin: 0 auto;
+body {
+    background: linear-gradient(168.3deg, var(--white) 46.5%, var(--bgSecondaryColor) 83.37%, var(--bgPrimaryColor) 107.3%);
+    min-height: 100vh;
+    height: 100%;
+}
+
+.primaryContainer {
+    padding: 0 var(--containerPrimary);
+}
+
+.secondaryContainer {
+    padding: 0 var(--containerSecondary);
+}
+
+.bigHeadline {
+    font-size: var(--bigHeadline);
+    font-weight: var(--boldWeight);
+    line-height: var(--bigLineHeight);
+    color: var(--fontColor);
+}
+
+.normalFontSize {
+    font-size: var(--normalSize);
+    font-weight: var(--normalWeight);
+    line-height: var(--normalLineHeight);
+    color: var(--fontColor);
+}
+
+@media (min-width: 768px) {
+    :root {
+        --containerPrimary: 30px;
+        --containerSecondary: 40px;
+    }
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --containerPrimary: 110px;
+        --containerSecondary: 225px;
+    }
 }

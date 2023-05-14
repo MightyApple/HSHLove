@@ -53,7 +53,7 @@
     align-self: end;
 } /*die ungerade Anzahl der Nachrichten wird rot umrandet*/
 #messages > div:nth-child(even) {
-    border: 1px solid var(--secoundaryColor);
+    border: 1px solid var(--secondaryColor);
 }  /*gerade Anzahl TODO: die Farbe an die IDs anpassen*/
 
 .profileImg {

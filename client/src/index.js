@@ -6,10 +6,11 @@ import {
 } from "react-router-dom";
 
 import './index.css'; //TODO kann raus geworfen werden, wenn niemand das braucht
-import './reset.css'
-import './global.css'
+import './reset.css';
+import './global.css';
 
 import App from './pages/App';
+import Login from './pages/login'
 import Chat from './pages/Chat';
 import reportWebVitals from './reportWebVitals';
 import DebugRouter from './pages/debugRouter';
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
     {
         path: "homepage",
         element: <App />,
+    },
+    {
+        path: "login",
+        element: <Login />,
     },
 ]);
 
