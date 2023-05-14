@@ -8,10 +8,10 @@
 .startPage .startinLogo p {
     color: var(--secondaryColor);
     text-shadow:
-            1px 1px 0 #000, /* Unten rechts */
-            -1px 1px 0 #000, /* Unten links */
-            1px -1px 0 #000, /* Oben rechts */
-            -1px -1px 0 #000; /* Oben links */
+            1px 1px 0 #000,
+            -1px 1px 0 #000,
+            1px -1px 0 #000,
+            -1px -1px 0 #000;
 }
 .startPage .startinLogo p span {
     color: var(--primaryColor);

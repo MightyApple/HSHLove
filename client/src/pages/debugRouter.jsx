@@ -18,6 +18,9 @@ export default function Root() {
                 <li>
                     <Link to={'start'}>StartingPage (Später nur "/")</Link>
                 </li>
+                <li>
+                    <Link to={'edit'}>Profil bearbeiten</Link>
+                </li>
             </ul>
         </>
     )};

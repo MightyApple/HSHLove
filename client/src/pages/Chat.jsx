@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
 import "./chat.css";
 import ChatMessage from '../components/ChatMessage';
+import Navbar from '../components/navbar'
 
 export default function Chat() {
   const [messages, setMessages] = useState([]);
@@ -117,6 +118,7 @@ export default function Chat() {
 
   return (
     <>
+      <Navbar></Navbar>
       <div className="chatBox">
         <div id="messages">
           {messages.map((message, index) => ( //geht über alle messages und rendert

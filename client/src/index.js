@@ -13,6 +13,7 @@ import App from './pages/App';
 import StartingPage from './pages/startingPage'
 import Login from './pages/login';
 import Register from './pages/register';
+import EditProfile from './pages/editProfile'
 import Chat from './pages/Chat';
 import reportWebVitals from './reportWebVitals';
 import DebugRouter from './pages/debugRouter';
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
     {
         path: "start",
         element: <StartingPage />,
+    },
+    {
+        path: "edit",
+        element: <EditProfile />,
     },
 ]);
 

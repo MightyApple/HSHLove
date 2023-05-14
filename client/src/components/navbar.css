@@ -1,0 +1,27 @@
+nav {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin: 14px 0 36px 0;
+}
+nav a {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+nav a p {
+    display: none;
+}
+
+
+@media (min-width: 856px) {
+    nav a p {
+        display: block;
+        font-size: var(--smallerHeadline);
+        font-weight: var(--boldWeight);
+        line-height: var(--lineHeight);
+    }
+    nav a img {
+        width: 63px;
+    }
+}
