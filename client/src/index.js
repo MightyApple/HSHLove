@@ -10,7 +10,8 @@ import './reset.css';
 import './global.css';
 
 import App from './pages/App';
-import Login from './pages/login'
+import Login from './pages/login';
+import Register from './pages/register';
 import Chat from './pages/Chat';
 import reportWebVitals from './reportWebVitals';
 import DebugRouter from './pages/debugRouter';
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
     {
         path: "login",
         element: <Login />,
+    },
+    {
+        path: "registrieren",
+        element: <Register />,
     },
 ]);
 

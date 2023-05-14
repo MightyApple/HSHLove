@@ -27,7 +27,7 @@
     --normalLineHeight: 19px;
 
     /*
-        container
+        Container
      */
     --containerPrimary: 15px;
     --containerSecondary: 20px;
@@ -70,14 +70,30 @@ body {
 
 @media (min-width: 768px) {
     :root {
+        /*
+            Container
+         */
         --containerPrimary: 30px;
         --containerSecondary: 40px;
+
+        /*
+            Fonts
+         */
+        --normalSize: 18px;
     }
 }
 
 @media (min-width: 1024px) {
     :root {
+        /*
+            Container
+         */
         --containerPrimary: 110px;
         --containerSecondary: 225px;
+
+        /*
+            Fonts
+         */
+        --normalSize: 20px;
     }
 }

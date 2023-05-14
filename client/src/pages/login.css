@@ -1,9 +1,3 @@
-.formLogin {
-    padding-top: 20px;
-}
-.formLogin .normalFontSize {
-    padding: 29px 0 80px 0;
-}
 .checkboxForm {
     display: flex;
     flex-direction: row-reverse;

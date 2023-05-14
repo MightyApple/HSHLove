@@ -20,6 +20,7 @@
     align-items: center;
     border: solid 1px var(--black);
     padding: 5px 12px;
+    background-color: var(--white);
 }
 .formText input::placeholder {
     color: #BCA0A0;
