@@ -2,10 +2,10 @@ const mongoose=require("mongoose")
 
 mongoose.connect("mongodb://127.0.0.1:27017/HSHLove")
 .then(()=>{
-    console.log("mongoDB connected");
+    console.log("mongoDB connected :D");
 })
 .catch(()=>{
-    console.log("failed to conenct to mongodb");
+    console.log("failed to connect to mongodb");
 })
 
 const LogInSchema=new mongoose.Schema({

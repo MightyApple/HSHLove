@@ -20,7 +20,7 @@ export default function Root(props) {
     return (
         <div className={'normalFontSize formText'}>
             <label>{props.lable}</label>
-            <input id={props.textID} type={inputType} placeholder={props.placeholder} name={props.name} required />
+            <input id={props.textID} type={inputType} placeholder={props.placeholder} name={props.name} value={props.value} required />
 
             {/*
                 Wenn props.password true ist, wird dieses span angezeigt

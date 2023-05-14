@@ -109,5 +109,4 @@ dist
 # TernJS port file
 .tern-port
 server/logReg/config/hshloveKey.json
-server/package.json
-server/package-lock.json
+

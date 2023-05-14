@@ -9,7 +9,7 @@ import './index.css'; //TODO kann raus geworfen werden, wenn niemand das braucht
 import './reset.css';
 import './global.css';
 
-import App from './pages/App';
+
 import StartingPage from './pages/startingPage'
 import Login from './pages/login';
 import Register from './pages/register';
@@ -19,20 +19,19 @@ import reportWebVitals from './reportWebVitals';
 import DebugRouter from './pages/debugRouter';
 import ErrorPage from "./error-page";
 
+
+
 const router = createBrowserRouter([
     {
         path: "/",
         element: <DebugRouter />,
+        
         errorElement: <ErrorPage />,
     },
     // Ganz neue Seite
     {
         path: "chat",
         element: <Chat />,
-    },
-    {
-        path: "homepage",
-        element: <App />,
     },
     {
         path: "login",
@@ -50,6 +49,7 @@ const router = createBrowserRouter([
         path: "edit",
         element: <EditProfile />,
     },
+    
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

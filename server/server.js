@@ -19,14 +19,14 @@ app.set("views", tempaltePath)
 app.use(express.urlencoded({ extended: false }))
 app.use(cors()); //damit der Client auf den Server zugreifen kann
 
-const port = process.env.PORT || 3001 //nimmt den Port aus der Umgebungsvariablen oder 3001
+const port = process.env.PORT || 5000 //nimmt den Port aus der Umgebungsvariablen oder 3001
 var chat = require('./chat/chat.js');
 const { env } = require('process');
 
 const httpServer = createServer(app);
-httpServer.listen(port); //app.listen(3000) geht nicht! erstellt neuen http server
-
-app.use(function (req, res, next) { //middleware, die vor jedem request ausgeführt wird
+httpServer.listen(port,()=>{console.log("server on localhost:"+port)}); //app.listen(3000) geht nicht! erstellt neuen http server
+//app.listen(port,()=>{console.log("server on localhost:"+port)})
+/*app.use(function (req, res, next) { //middleware, die vor jedem request ausgeführt wird
   if (!req.headers.authorization) { //wenn kein token vorhanden, dann error
     return res.status(403).json({ error: 'No credentials sent!' }); //sendet error an den client
   }
@@ -37,12 +37,32 @@ app.use(function (req, res, next) { //middleware, die vor jedem request ausgefü
   // req.username = database.getUsernameByToken(token); //speichert den usernamen im request
 
   next();
-});
+});*/
 
-// app.use(function (req, res, next) { //middleware, die vor jedem request ausgeführt wird
-//   req.username = getUsernameByToken(req.token);
-//   next();
-// });
+app.use(session({
+  secret: "lol",
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    sameSite: 'strict',
+  }
+}));
+
+const requireAuth = (req,res,next)=>{
+  const {user} =req.session;
+  if(!user){
+    return res.status(401).json({ message: "unauthorized"})
+  }
+  next();
+}
+app.get('/getEmail', (req, res) => {
+  if(req.session.authorized){
+    res.json({email:req.session.user.email})
+  }else{
+    res.status(401).json({ email: "Meld dich an um deinen Namen hier zu lesen"})
+  }
+})
+
 
 app.get('/getUsername', (req, res) => {
   database.findUserByToken(req.token).then((user) => { //nachdem der Eintrag gefunden wurde, senden wir den Usernamen zurück an den Client
@@ -53,31 +73,30 @@ app.get('/getUsername', (req, res) => {
   );
 })
 
-app.use(session({
-  secret: 'secret;*',
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    sameSite: 'strict',
-  }
-}));
+
+
+app.post('/t1',(req,res)=>{
+  if(req.session.authorized){
+    console.log("KAMARAD")
+  }else{console.log("KOMMUNISTEN SCHWEIN")}
+  
+  
+})
+app.get('/authenticate',(req,res)=>{
+  res.json({authentication:req.session.authorized}) 
+})
 
 app.get("/", (req, res) => {
-  if (req.session.authorized) {
+  /*if (req.session.authorized) {
     res.render('home', { email: req.session.user.email })
   } else {
     res.render("login")
-  }
+  }*/
 })
 
 chat.serverInitialisieren(httpServer);
 
-app.get("/signup", (req, res) => {
-  res.render("signup")
-})
-app.get("/login", (req, res) => {
-  res.render("login")
-})
+
 app.get("/personalSpace", async (req, res) => {
   if (!req.session.authorized) {
     res.render("login")
@@ -121,12 +140,12 @@ app.post("/signup", async (req, res) => {
 
       await mongoCollection.insertMany([data]);
 
-
+      res.send({noError:true})
       //alles nach der eingabe in die datenbank wird hiernach ausgeführt
-      res.render("home")
+      console.log("schau in die DB")
     } else {
       //Fehler wenn nutzerbereits existiert und passwörter nicht stimmen
-      res.status(500).send("ERROR");
+      res.send({noError:false});
     }
   } catch (e) {
     console.log(e)
@@ -150,12 +169,15 @@ app.post("/login", async (req, res) => {
       if (validPass) {
         //falls die daten stimmen wird der codeblock ausgeführt
         // session wird angelegt
+        
         req.session.user = user;
+        
         req.session.authorized = true;
-        res.render("home")
+        
+        res.send({noError:true})
       } else {
         //und falls nicht dieser
-        res.send("wrong password")
+        res.send({noError:false})
       }
     }
   }
