@@ -28,15 +28,15 @@ export default function Chat() {
 
   useEffect(() => {
 
-    socketRef.current = io("http://localhost:3001", { autoConnect: false });
+    socketRef.current = io("http://localhost:5000", { autoConnect: false });
 
-    getUsername().then((username) => { //wenn der Username gesetzt wurde, wird der Socket verbunden
-      console.log(username);
-      socketRef.current.auth = {
-        username,
-        token: token
-      };
-      socketRef.current.connect(); //triggert connection beim server
+    getUser().then((user) => {
+      if (!user) {
+        console.log("no user");
+        return;
+      }
+      socketRef.current.auth = user;
+      socketRef.current.connect();
     });
 
     console.log(socketRef.current);
@@ -110,18 +110,12 @@ export default function Chat() {
   console.log("rerender");
   console.log(messages);
 
-  async function getUsername() {
-      return fetch('http://localhost:3001/getUsername',  { //get Anfrage an den Server um den Usernamen zu bekommen
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}` //token wird von client zu server mitgeschickt
-        }
-      }).then(response => response.json()).then(data => { //data ist das was der Server zurückgibt, also den Beispielnamen Max
-        console.log(data);
-        setUser({ userId: data.userId, username: data.name }); //setzt den Usernamen in den State
-        return data.name; //returned von der fetch Funktion den Usernamen
-      }
-      );
+  async function getUser() {
+    return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server zurückgibt, also den Beispielnamen Max
+      console.log(data);
+      return data; //returned von der fetch Funktion den Usernamen
+    }
+    );
   }
 
   return (

@@ -11,9 +11,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors()); //damit der Client auf den Server zugreifen kann
 
-const port = process.env.PORT || 3001 //nimmt den Port aus der Umgebungsvariablen oder 3001
+const port = process.env.PORT || 5000 //nimmt den Port aus der Umgebungsvariablen oder 3001
 var chat = require('./chat/chat.js');
-var routes = require('./logReg/logReg.js');
+var { router:routes, requireAuth } = require('./logReg/logReg.js');
 app.use('/', routes);
 const { env } = require('process');
 
@@ -25,8 +25,7 @@ httpServer.listen(port,()=>{
 //alle routen, die nicht authentifiziert werden müssen
 const public_routes = [
   '/login',
-  '/signup',
-  '/getUsername'
+  '/signup'
 ]; 
 
 app.use(function (req, res, next) { //middleware, die vor jedem request ausgeführt wird
@@ -34,14 +33,7 @@ app.use(function (req, res, next) { //middleware, die vor jedem request ausgefü
     return next();
   }
 
-  if (!req.headers.authorization) { //wenn kein token vorhanden, dann error
-    return res.status(403).json({ error: 'No credentials sent!' }); //sendet error an den client
-  }
-
-  var token = req.headers.authorization.split(" ")[1]; //nimmt den token aus dem header
-  req.token = token; //speichert den token im request
-
-  // req.username = database.getUsernameByToken(token); //speichert den usernamen im request
+  // requireAuth(req, res, next); //wenn die route nicht in der liste der public routes ist, dann wird die authentifizierung ausgeführt
 
   next();
 });
@@ -59,5 +51,10 @@ app.get('/getUsername', (req, res) => {
   }
   );
 })
+
+app.get('/getUser', (req, res) => {
+  console.log(req.session.user);
+  res.send(req.session.user);
+});
 
 chat.serverInitialisieren(httpServer);

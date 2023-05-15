@@ -40,11 +40,11 @@ const userDataSchema=new mongoose.Schema({
     },
     userID:{
         type:String,
-        required:true
+        required:false
     },
     token:{
         type:String,
-        required:true
+        required:false
     }
 })
 
