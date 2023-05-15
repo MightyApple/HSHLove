@@ -45,9 +45,40 @@ const userDataSchema=new mongoose.Schema({
     token:{
         type:String,
         required:false
+    },
+    intention:{
+        type: String,
+        enum: ["One-Night-Stand","Beziehung","Offenes"],
     }
+
 })
 
+//Noch nicht fertig
+const messageSchema=new mongoose.Schema({
+    user1ID:{
+        type:String,
+        required:true
+    },
+    user2ID:{
+        type:String,
+        required:true
+    },
+    messageHistory:{
+        type:Array,
+        message:{
+            type:Object,
+            messageContent:{
+                type:String
+            },
+            timeStamp:{
+                type:Date,
+            },
+            review:{
+                type:String
+            }
+        }
+    }
+})
 
 const tempSchema=new mongoose.Schema({
     email:{
@@ -61,6 +92,6 @@ const tempSchema=new mongoose.Schema({
 })
 const userDataCollection=new mongoose.model("Nutzerdaten",userDataSchema);
 const tempCollection=new mongoose.model("temp",tempSchema);
-
+const chatCollection=
 
 module.exports={userDataCollection, tempCollection}
