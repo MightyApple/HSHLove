@@ -13,7 +13,7 @@ app.use(cors()); //damit der Client auf den Server zugreifen kann
 
 const port = process.env.PORT || 3001 //nimmt den Port aus der Umgebungsvariablen oder 3001
 var chat = require('./chat/chat.js');
-var routes = require('./logReg/index.js');
+var routes = require('./logReg/logReg.js');
 app.use('/', routes);
 const { env } = require('process');
 
