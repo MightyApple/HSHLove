@@ -1,28 +1,19 @@
 const express = require('express')
-const { createServer } = require("http");
 //const database = require('./database.js'); mongoHSHLove sollte ausreichen
 const cors = require('cors');
 const app = express()
 const path = require("path")
 const bcrypt = require("bcrypt")
 const mongoHSHLove = require("../mongodb")
-const tempaltePath = path.join(__dirname, './template')
 const session = require('express-session');
 const { Storage } = require("@google-cloud/storage");
 const Multer = require("multer");
-const src = path.join(__dirname, "template")
 
-
-const router = express.Router();
-router.use(express.static(src));
+const router = express.Router();;
 router.use(express.json())
 router.use(express.urlencoded({ extended: false }))
 
-
-app.use(express.static(src));
 app.use(express.json())
-app.set("view engine", "hbs")
-app.set("views", tempaltePath)
 app.use(express.urlencoded({ extended: false }))
 app.use(cors()); //damit der Client auf den Server zugreifen kann
 
@@ -35,8 +26,6 @@ router.use(session({
     sameSite: 'strict',
   }
 }));
-
-const port = process.env.PORT || 5000 //nimmt den Port aus der Umgebungsvariablen oder 3001
 
 //google bucket storage für die Bilder
 const gc = new Storage({
@@ -158,7 +147,6 @@ router.post("/login", async (req, res) => {
         try{
           
           req.session.user = user;
-         
           req.session.authorized = true;
           
           
