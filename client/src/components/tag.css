@@ -1,0 +1,15 @@
+.tag {
+    padding: 3px 14px;
+    border: solid 3px var(--fontColor);
+    border-radius: 15px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    background: rgb(233, 201, 168);
+    width: min-content;
+
+    font-weight: 800;
+    font-size: var(--normalSize);
+    line-height: var(--normalLineHeight);
+}
+.tag:hover {
+    background: rgb(233, 168, 205);
+}

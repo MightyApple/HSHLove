@@ -1,0 +1,10 @@
+label {
+    color: var(--fontColor);
+}
+.tags {
+    padding-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+}
