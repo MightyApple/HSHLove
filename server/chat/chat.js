@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const { Server } = require("socket.io");
 const {saveSession, findSession} = require('./sessionStorage.js');
-const mongoCollection = require("../mongodb");
+const database = require('../database.js');
 
 function serverInitialisieren(httpServer) {
 
@@ -48,13 +48,14 @@ function chatInitialisieren(io) {
         console.log(socket.handshake.auth);
         const username = socket.handshake.auth.username; //username aus dem handshake holen (wird vom client gesendet)
         if (!username) { //wenn kein username vorhanden, dann error und nächste middleware wird geskippt
+            console.log("invalid username");
             return next(new Error("invalid username"));
         }
         socket.username = username;
         // socket.userId = uuidv4(); //wir erstellen die ID bei der Registrierung. TODO: DB Abfrage für den aktuell eingeloggten User machen
         //get UserID from DB by Token
 
-        mongoCollection.findOne({ token: socket.handshake.auth.token }).lean().then((user) => {
+        database.findUserByToken(socket.handshake.auth.token).then((user) => {
             socket.userId = user.userID;
             console.log("UserID: " + socket.userId);
         });
@@ -69,6 +70,9 @@ function chatInitialisieren(io) {
     // });
 
     io.on("connection", async (socket) => { //wird ausgeführt, wenn ein client connected
+        io.emit("User connected", socket.userId);
+        console.log(socket.id); //gibt id des sockets aus
+
         saveSession(socket.sessionID, {
             userId: socket.userId,
             username: socket.username,
@@ -90,9 +94,6 @@ function chatInitialisieren(io) {
             userID: socket.userID,
           });
 
-
-        io.emit("User connected", socket.userId);
-        console.log(socket.id); //gibt id des sockets aus
 
         socket.on('disconnect', () => { //wird ausgeführt, wenn ein client disconnected
             console.log("User disconnected");

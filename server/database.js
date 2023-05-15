@@ -1,33 +1,8 @@
-const MongoClient = require('mongodb').MongoClient;
+const { userDataCollection, tempCollection } = require("./mongodb");
 
-const uri = "mongodb+srv://Aylin:Aylin@hshlove.5qisl3o.mongodb.net/test";
-// const uri = "mongodb://127.0.0.1:27017/HSHLove";
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-async function main() {
-    try {
-        await client.connect();
-
-        const db = client.db("HSHLove");
-        const collection = db.collection("nutzerkonto");
-        // const newUser = { name: "Max", profilBeschreibung: "Hello World" };
-
-        //     collection.insertOne(newUser, (err, res) => {
-        //     if (err) throw err;
-        //     console.log("1 Eintrag hinzugefügt");
-        //    });
-        // collection.deleteMany({ name: "Max" }, function(err, obj) {});
-        const foundUser = await findUser("Beispielname Max", "Gehashtes Passwort");
-        console.log(foundUser);
-    } catch (e) {
-        console.error(e);
-    } finally {
-        // await client.close();
-    }
-}
 async function findUser(username, password) {
     try {
-        const user = await client.db("HSHLove").collection("nutzerkonto").findOne({ name: username, passwort: password });
+        const user = await userDataCollection.findOne({ name: username, passwort: password }).lean();
         if (!user) {
             throw new Error('Invalid username or password');
         }
@@ -42,7 +17,7 @@ async function findUser(username, password) {
 
 async function findUsernameByToken(token) {
     try {
-        const user = await client.db("HSHLove").collection("nutzerkonto").findOne({ token });
+        const user = await userDataCollection.findOne({ token }).lean();
         if (!user) {
             throw new Error('Invalid token');
         }
@@ -57,7 +32,7 @@ async function findUsernameByToken(token) {
 
 async function findUserByToken(token) {
     try {
-        const user = await client.db("HSHLove").collection("nutzerkonto").findOne({ token });
+        const user = await userDataCollection.findOne({ token }).lean();
         if (!user) {
             throw new Error('Invalid token');
         }
@@ -70,6 +45,4 @@ async function findUserByToken(token) {
     }
 }
 
-main().catch(console.error);
-
-module.exports = { findUser, findUserByToken: findUsernameByToken, findUserByToken };
+module.exports = { findUser, findUsernameByToken, findUserByToken };

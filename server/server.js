@@ -1,6 +1,6 @@
 const express = require('express')
 const { createServer } = require("http");
-//const database = require('./database.js'); mongoHSHLove sollte ausreichen
+const database = require('./database.js');
 const cors = require('cors');
 const app = express();
 const path = require("path");
@@ -39,13 +39,12 @@ app.use(function (req, res, next) { //middleware, die vor jedem request ausgefü
 // });
 
 app.get('/getUsername', (req, res) => {
-  database.findUserByToken(req.token).then((user) => { //nachdem der Eintrag gefunden wurde, senden wir den Usernamen zurück an den Client
+  database.findUsernameByToken(req.token).then((user) => { //nachdem der Eintrag gefunden wurde, senden wir den Usernamen zurück an den Client
     console.log(user.name);
     userNameObj = { name: user.name };
     res.send(userNameObj); //sendet den usernamen an den client
   }
   );
 })
-
 
 chat.serverInitialisieren(httpServer);
