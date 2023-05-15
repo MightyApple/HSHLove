@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cors()); //damit der Client auf den Server zugreifen kann
 
 //Session mit cookies
-app.use(session({
+router.use(session({
   secret: "lol",
   resave: true,
   saveUninitialized: true,
@@ -151,17 +151,22 @@ router.post("/login", async (req, res) => {
     
     if (user) {
       const validPass = await bcrypt.compare(password, user.password)
-      console.log(validPass)
+      
       if (validPass) {
         //falls die daten stimmen wird der codeblock ausgeführt
         // session wird angelegt
-        console.log("we r here1")
-        req.session.user = user;
-        console.log("we r here2")
-        req.session.authorized = true;
-        console.log("we r here3")
+        try{
+          
+          req.session.user = user;
+         
+          req.session.authorized = true;
+          
+          
+          res.send({noError:true})
+        }catch(e){
+          throw e
+        }
         
-        res.send({noError:true})
       } else {
         //und falls nicht dieser
         res.send({noError:false})
