@@ -23,7 +23,7 @@ export default function Root() {
             password: password.value
         }
 
-        const result = await fetch("/api/login",{
+        const result = await fetch("/login",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
