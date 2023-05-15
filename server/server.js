@@ -20,7 +20,18 @@ const { env } = require('process');
 const httpServer = createServer(app);
 httpServer.listen(port); //app.listen(3000) geht nicht! erstellt neuen http server
 
+//alle routen, die nicht authentifiziert werden müssen
+const public_routes = [
+  '/login',
+  '/signup',
+  '/getUsername'
+]; 
+
 app.use(function (req, res, next) { //middleware, die vor jedem request ausgeführt wird
+  if (public_routes.includes(req.path)) { //wenn die route in der liste der public routes ist, dann wird die nächste middleware ausgeführt
+    return next();
+  }
+
   if (!req.headers.authorization) { //wenn kein token vorhanden, dann error
     return res.status(403).json({ error: 'No credentials sent!' }); //sendet error an den client
   }
