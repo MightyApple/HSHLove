@@ -1,14 +1,23 @@
 const mongoose=require("mongoose")
-
-mongoose.connect("mongodb://127.0.0.1:27017/HSHLove")
+const mongoUrl = "mongodb+srv://admin:admin@hshlove.5qisl3o.mongodb.net/HSHLove"
+mongoose.connect(mongoUrl)
 .then(()=>{
-    console.log("mongoDB connected");
+    console.log("mongoDB connected :D : " +mongoUrl);
 })
 .catch(()=>{
-    console.log("failed to conenct to mongodb");
+    console.log("failed to connect to mongodb");
 })
 
-const LogInSchema=new mongoose.Schema({
+/**
+ * Chris: Ihr wollte eine neue Collection anlegen? Dann legt zuerst ein Schema an. Dies sichert ab, dass falsche
+ * einträge gesendet werden, heißt am bsp email:{type:String} => der name der property muss email heißen und nicht email2 o.ä. und es kann nur Strings aktzeptiert werden.
+ * 
+ * ist ein Schema angelegt fehlt noch ein model zum exportieren => schreibt diesen code : const deinNeueCollection=new mongoose.model("nameDerDatenbankCollection",deinSchema)
+ * 
+ * und finally in module.exports einlegen
+ */
+
+const userDataSchema=new mongoose.Schema({
     email:{
         type:String,
         required:true
@@ -38,5 +47,20 @@ const LogInSchema=new mongoose.Schema({
         required:true
     }
 })
-const nutzerdatenCollection=new mongoose.model("Nutzerdaten",LogInSchema);
-module.exports=nutzerdatenCollection
+
+
+const tempSchema=new mongoose.Schema({
+    email:{
+        type:String,
+        required:true
+    },
+    password:{
+        type:String,
+        required:true
+    }
+})
+const userDataCollection=new mongoose.model("Nutzerdaten",userDataSchema);
+const tempCollection=new mongoose.model("temp",tempSchema);
+
+
+module.exports={userDataCollection, tempCollection}

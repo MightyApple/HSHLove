@@ -1,6 +1,6 @@
 const express = require('express')
 const { createServer } = require("http");
-const database = require('./database.js');
+//const database = require('./database.js'); mongoHSHLove sollte ausreichen
 const cors = require('cors');
 const app = express();
 const path = require("path");

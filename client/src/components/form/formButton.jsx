@@ -31,7 +31,7 @@ export default function Root(props) {
         return (
             <>
                 <div>
-                    <button className={'formButton'} id={props.buttonID}>{props.name}</button>
+                    <button onClick={props.onClick} className={'formButton'} id={props.buttonID}>{props.name}</button>
                 </div>
             </>
         )
