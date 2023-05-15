@@ -1,16 +1,18 @@
 const express = require('express')
 const { createServer } = require("http");
-const database = require('./database.js');
+//const database = require('./database.js'); mongoHSHLove sollte ausreichen
 const cors = require('cors');
 const app = express()
 const path = require("path")
 const bcrypt = require("bcrypt")
-const mongoCollection = require("./mongodb")
+const mongoHSHLove = require("./mongodb")
 const tempaltePath = path.join(__dirname, './template')
 const session = require('express-session');
 const { Storage } = require("@google-cloud/storage");
 const Multer = require("multer");
 const src = path.join(__dirname, "template")
+const chat = require('./chat/chat.js');
+const { env } = require('process');
 
 app.use(express.static(src));
 app.use(express.json())
@@ -19,9 +21,31 @@ app.set("views", tempaltePath)
 app.use(express.urlencoded({ extended: false }))
 app.use(cors()); //damit der Client auf den Server zugreifen kann
 
+//Session mit cookies
+app.use(session({
+  secret: "lol",
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    sameSite: 'strict',
+  }
+}));
+
 const port = process.env.PORT || 5000 //nimmt den Port aus der Umgebungsvariablen oder 3001
-var chat = require('./chat/chat.js');
-const { env } = require('process');
+
+//google bucket storage für die Bilder
+const gc = new Storage({
+  keyFilename: path.join(__dirname, "./config/hshloveKey.json"),
+  projectId: 'hshlove'
+})
+const profilbilder = gc.bucket('profilbilder')
+//multer für Bilderverarbeitung
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // No larger than 5mb, change as you need
+  },
+});
 
 const httpServer = createServer(app);
 httpServer.listen(port,()=>{console.log("server on localhost:"+port)}); //app.listen(3000) geht nicht! erstellt neuen http server
@@ -34,19 +58,15 @@ httpServer.listen(port,()=>{console.log("server on localhost:"+port)}); //app.li
   var token = req.headers.authorization.split(" ")[1]; //nimmt den token aus dem header
   req.token = token; //speichert den token im request
 
-  // req.username = database.getUsernameByToken(token); //speichert den usernamen im request
+  // req.username = database.getUsernameByToken(token); //speichert den usernamen im request --> 
+
+  Chris : req.session habe ich benutzt. bei post signup wird req.session.user gesetzt. mein user Bsp hat nh email und würde ich wie du den nutzernamen benötigen
+          würde ich einfach req.session.user.email schreiben um den inhalt zu erhalten. das noch in einem if(req.session.authorized) checken ob der nutzer angemeldet ist 
 
   next();
 });*/
 
-app.use(session({
-  secret: "lol",
-  resave: true,
-  saveUninitialized: true,
-  cookie: {
-    sameSite: 'strict',
-  }
-}));
+
 
 const requireAuth = (req,res,next)=>{
   const {user} =req.session;
@@ -64,14 +84,14 @@ app.get('/getEmail', (req, res) => {
 })
 
 
-app.get('/getUsername', (req, res) => {
+/*app.get('/getUsername', (req, res) => {
   database.findUserByToken(req.token).then((user) => { //nachdem der Eintrag gefunden wurde, senden wir den Usernamen zurück an den Client
     console.log(user.name);
     userNameObj = { name: user.name };
     res.send(userNameObj); //sendet den usernamen an den client
   }
   );
-})
+})*/
 
 
 
@@ -126,7 +146,7 @@ app.post("/signup", async (req, res) => {
   try {
 
     const { email, password, passwordwdh } = req.body;
-    const user = await mongoCollection.findOne({
+    const user = await mongoHSHLove.userDataCollection.findOne({
       email: email,
     })
     console.log(user)
@@ -138,8 +158,8 @@ app.post("/signup", async (req, res) => {
         password: hash
       }
 
-      await mongoCollection.insertMany([data]);
-
+      const t = await mongoHSHLove.userDataCollection.insertMany([data]);
+      console.log(t)
       res.send({noError:true})
       //alles nach der eingabe in die datenbank wird hiernach ausgeführt
       console.log("schau in die DB")
@@ -161,7 +181,7 @@ app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await mongoCollection.findOne({
+    const user = await mongoHSHLove.userDataCollection.findOne({
       email: email,
     })
     if (user) {
@@ -189,18 +209,7 @@ app.post("/login", async (req, res) => {
 })
 
 
-const gc = new Storage({
-  keyFilename: path.join(__dirname, "./config/hshloveKey.json"),
-  projectId: 'hshlove'
-})
-const profilbilder = gc.bucket('profilbilder')
 
-const multer = Multer({
-  storage: Multer.memoryStorage(),
-  limits: {
-    fileSize: 5 * 1024 * 1024, // No larger than 5mb, change as you need
-  },
-});
 
 app.get("/upload", async (req, res) => {
   try {
@@ -223,7 +232,7 @@ app.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
 
 
 
-    const user = await mongoCollection.findOne({
+    const user = await mongoHSHLove.userDataCollection.findOne({
       _id: uId,
     })
     const validPass = await bcrypt.compare(password, user.password)
@@ -275,9 +284,9 @@ app.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
 
 
         if (req.file) {
-          await mongoCollection.findOneAndUpdate({ "_id": uId }, { $set: data, $push: { images: newFile.originalname } })
+          await mongoHSHLove.userDataCollection.findOneAndUpdate({ "_id": uId }, { $set: data, $push: { images: newFile.originalname } })
         } else {
-          await mongoCollection.findOneAndUpdate({ "_id": uId }, { $set: data })
+          await mongoHSHLove.userDataCollection.findOneAndUpdate({ "_id": uId }, { $set: data })
         }
 
         //res.status(200).send("Success");
