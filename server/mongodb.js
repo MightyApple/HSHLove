@@ -1,5 +1,5 @@
 const mongoose=require("mongoose")
-const mongoUrl = "mongodb://127.0.0.1:27017/HSHLove"
+const mongoUrl = "mongodb+srv://admin:admin@hshlove.5qisl3o.mongodb.net/HSHLove"
 mongoose.connect(mongoUrl)
 .then(()=>{
     console.log("mongoDB connected: " +mongoUrl);
