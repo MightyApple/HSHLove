@@ -1,8 +1,8 @@
 const mongoose=require("mongoose")
-
-mongoose.connect("mongodb+srv://admin:admin@hshlove.5qisl3o.mongodb.net/")
+const mongoUrl = "mongodb+srv://admin:admin@hshlove.5qisl3o.mongodb.net/HSHLove"
+mongoose.connect(mongoUrl)
 .then(()=>{
-    console.log("mongoDB connected :D");
+    console.log("mongoDB connected :D : " +mongoUrl);
 })
 .catch(()=>{
     console.log("failed to connect to mongodb");

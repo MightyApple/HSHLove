@@ -6,7 +6,7 @@ import React from "react";
 
 export default function Root() {
     
-    
+    const[succes, setSucces]= React.useState(false)
 
 
     
@@ -30,9 +30,13 @@ export default function Root() {
         })
         const resData= await result.json()
         
+        setSucces(resData.noError)
+        
+        
+        
     }
     
-    
+    if(succes){return <Navigate to="/login"/> }
     
     
     
