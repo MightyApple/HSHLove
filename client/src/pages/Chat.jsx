@@ -17,7 +17,7 @@ export default function Chat() {
   const checkIfUserExists = useCallback(() => {
     const sessionId = localStorage.getItem('sessionId');
     if (sessionId) {
-      socketRef.current.auth = { sessionId: sessionId };
+      socketRef.current.auth.sessionID = sessionId;
       socketRef.current.connect();
     }
   }, [socketRef]);
@@ -28,7 +28,10 @@ export default function Chat() {
 
     getUsername().then((username) => { //wenn der Username gesetzt wurde, wird der Socket verbunden
       console.log(username);
-      socketRef.current.auth = { username };
+      socketRef.current.auth = {
+        username,
+        token: token
+      };
       socketRef.current.connect(); //triggert connection beim server
     });
 
@@ -47,11 +50,12 @@ export default function Chat() {
 
     checkIfUserExists();
 
-    socketRef.current.on('session', ({ sessionId, userId, username }) => {
-      socketRef.current.auth = { sessionId: sessionId };
+    socketRef.current.on('session', ({ sessionId, userId: userID, username }) => {
+      socketRef.current.auth.sessionId = sessionId;
       localStorage.setItem('sessionId', sessionId);
       console.log("sessionId: " + sessionId);
-      setUser({ userId: userId, username });
+      // setUser({ userId: userID, username });
+      socketRef.current.userID = userID;
     });
 
     socketRef.current.on('User disconnected', () => {

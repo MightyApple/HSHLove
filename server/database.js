@@ -1,6 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 
 const uri = "mongodb+srv://Aylin:Aylin@hshlove.5qisl3o.mongodb.net/test";
+// const uri = "mongodb://127.0.0.1:27017/HSHLove";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function main() {
@@ -39,7 +40,7 @@ async function findUser(username, password) {
     }
 }
 
-async function findUserByToken(token) {
+async function findUsernameByToken(token) {
     try {
         const user = await client.db("HSHLove").collection("nutzerkonto").findOne({ token });
         if (!user) {
@@ -53,7 +54,22 @@ async function findUserByToken(token) {
         console.log(error);
     }
 }
-// }
+
+async function findUserByToken(token) {
+    try {
+        const user = await client.db("HSHLove").collection("nutzerkonto").findOne({ token });
+        if (!user) {
+            throw new Error('Invalid token');
+        }
+
+        const userObj = user;
+
+        return userObj;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 main().catch(console.error);
 
-module.exports = { findUser, findUserByToken };
+module.exports = { findUser, findUserByToken: findUsernameByToken, findUserByToken };

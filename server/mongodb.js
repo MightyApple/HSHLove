@@ -28,6 +28,14 @@ const LogInSchema=new mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    userID:{
+        type:String,
+        required:true
+    },
+    token:{
+        type:String,
+        required:true
     }
 })
 const nutzerdatenCollection=new mongoose.model("Nutzerdaten",LogInSchema);
