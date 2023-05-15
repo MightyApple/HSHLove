@@ -28,7 +28,7 @@ export default function Chat() {
 
   useEffect(() => {
 
-    socketRef.current = io("http://localhost:5000", { autoConnect: false });
+    socketRef.current = io("http://localhost:3001", { autoConnect: false });
 
     getUser().then((user) => {
       if (!user) {
