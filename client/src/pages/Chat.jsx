@@ -17,7 +17,11 @@ export default function Chat() {
   const checkIfUserExists = useCallback(() => {
     const sessionId = localStorage.getItem('sessionId');
     if (sessionId) {
-      socketRef.current.auth.sessionID = sessionId;
+      if (socketRef.current.auth) {
+        socketRef.current.auth.sessionId = sessionId
+      } else {
+        socketRef.current.auth = { sessionId };
+      }
       socketRef.current.connect();
     }
   }, [socketRef]);
