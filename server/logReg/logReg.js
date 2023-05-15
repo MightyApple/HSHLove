@@ -261,4 +261,7 @@ router.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
 
   }
 })
-module.exports = router
+module.exports = {
+  router,
+  requireAuth
+}
