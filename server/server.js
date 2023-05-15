@@ -18,7 +18,9 @@ app.use('/', routes);
 const { env } = require('process');
 
 const httpServer = createServer(app);
-httpServer.listen(port); //app.listen(3000) geht nicht! erstellt neuen http server
+httpServer.listen(port,()=>{
+  console.log("Server succesfully startet at Port : "+port)
+}); //app.listen(3000) geht nicht! erstellt neuen http server
 
 app.use(function (req, res, next) { //middleware, die vor jedem request ausgeführt wird
   if (!req.headers.authorization) { //wenn kein token vorhanden, dann error
