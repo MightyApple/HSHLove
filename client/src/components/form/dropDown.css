@@ -1,0 +1,24 @@
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+select {
+    text-align: center;
+    padding-right: 40px;
+    width: 100%;
+    height: 39px;
+    border-radius: 8px;
+    border: solid 3px var(--fontColor);
+    background: rgb(233, 201, 168);
+    appearance: none;
+}
+.dropdownArrow {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
