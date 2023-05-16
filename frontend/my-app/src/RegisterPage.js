@@ -8,6 +8,9 @@ function RegisterPage() {
     setPasswordVisible(!passwordVisible);
   };
 
+
+
+
   return (
     <div>
       <img id="logo" src={require("./images/Herz.png")} alt="Logo" />
@@ -48,8 +51,9 @@ function RegisterPage() {
         Passwort vergessen?
       </a>
       <p id="register-link">
-        Bereits ein Account? <a href="#">Login</a>
+        Bereits ein Account?  
       </p>
+  
     </div>
   );
 }

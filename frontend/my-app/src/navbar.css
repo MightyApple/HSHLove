@@ -1,0 +1,40 @@
+nav {
+    background-color: #f9f9f9;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .navbarleft,
+  .navbarcenter,
+  .navbarright {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbarleft i,
+  .navbarright i {
+    font-size: 24px;
+    color: #777;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .navbarcenter img {
+    height: 50px;
+    cursor: pointer;
+  }
+  
+  .navbarleft i:hover,
+  .navbarcenter img:hover,
+  .navbarright i:hover {
+    color: #333;
+  }
+  

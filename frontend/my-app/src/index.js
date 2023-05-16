@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
+import Desktopp from './Desktopp'
 import FirstProfil from './FirstProfil';
+
+
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

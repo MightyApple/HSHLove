@@ -1,45 +1,30 @@
+
+/* Top bar */
 .top-bar {
-    background-color: #333;
-    color: #fff;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 0.5rem;
+    justify-content: space-between;
+    height: 80px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo {
+    width: 10vw;
+    height: 8vw;
+  
   }
   
   .top-bar-nav-list {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
     list-style: none;
     margin: 0;
     padding: 0;
+    flex-grow: 1;
   }
   
-  .top-bar-nav-list li {
-    margin-right: 1rem;
-  }
-  
-  .top-bar-nav-list li:last-child {
-    margin-right: 0;
-  }
-  
-  .top-bar-nav-list li a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.2rem;
-  }
-  
-  .top-bar-nav-list li a:hover {
-    color: #ddd;
-  }
-  
-  .logo{
-    width: 7vw;
-    height: 6vw;
-  }
-  
-
   .navb-link {
     color: #571212;
     font-size: 16px;
@@ -47,103 +32,219 @@
     margin: 0 10px;
   }
   
-  .container{
+  /* Input fields */
+  .input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  
+  }
+  
+  .input-container input[type="text"],
+  .input-container select {
+    width: 55%;
+    border: 1px solid #ccc;
+    padding: 15px;
+    font-size: 14px;
+  
+  }
+  .input-label{
+    color: #571212;
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 100;
+    font-size: 40px;
+    margin-right: 30px;
+    margin-left: 40px;
+    
+  }
+  .input-text {
+    width: 20vw;
+    width: 250px;
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    box-shadow: 0px 0px 5px #ddd;
+  } 
+  input[type="text"]:hover {
+    border-color: #999;
+  }
+  
+  input[type="tex"]:focus {
+    border-color: #555;
+    box-shadow: 0px 0px 5px #aaa;
+    outline: none;
+  }
+
+  .input-date{
+    width: 20vw;
+    width: 250px;
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    box-shadow: 0px 0px 5px #ddd;
+  }
+  input[type="date"]:hover {
+    border-color: #999;
+  }
+  
+  input[type="date"]:focus {
+    border-color: #555;
+    box-shadow: 0px 0px 5px #aaa;
+    outline: none;
+  }
+  /* Container */
+  .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 40px;
   }
   
+  /* Placeholder */
   .placeholder {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 30px 0;
+  }
+  
+  /*bild---------------------fertigggg*/
+  .container_bild {
+    background-color: #f5f5f5; /* hellgrauer Hintergrund */
+    padding: 3vw; 
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10vw;
+    margin-bottom: 10vw;
+  }
+  
+  .uploaded-image {
+    max-width: 20vw; 
+    margin-bottom: 10vw; 
+  }
+  
+  .placeholder_bild {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #6f4343; 
+    padding: 20px;
+    cursor: pointer; 
+  }
+  
+  .custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer; 
+  }
+  
+  .custom-file-upload:hover {
+    background-color: #8f5959;
+  }
+  
+  .image-upload {
+    display: none; 
+  }
+  .uploaded-image-container {
+    position: relative;
   }
   
   
-  
-  .description {
-    margin-bottom: 20px;
+  .remove-image-button {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
   }
   
+  .remove-image-button:hover {
+    opacity: 0.8;
+  }
+  
+  
+  /* Description----------------------fertig */
   .description {
-    font-size: 24px;
+    margin: 40px 0;
+    font-size: 32px;
     font-weight: bold;
     color: #333;
+    width: 90vw;
+    max-width: 800px;
+    text-align: center;
   }
   
-  .description {
+  .description-input {
     padding: 10px;
     border: none;
     border-radius: 5px;
-    margin-top: 10px;
-    font-size: 16px;
-    background-color: #f5f5f5;
-    color: #333;
-    width: 90vw;
-    max-width: 600px;
-    height: 200px;
-  }
-  
-  .tags {
-    width: 100%;
-    margin: 4rem;
-    margin-bottom: 10rem;
- }
-.search{
-    width: 100%;
-    margin: 4rem;
-    margin-bottom: 10rem;
-}  
-  .tags-container {
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 33px;
+    margin: 20px 0;
+    font-size: xx-large;
     color: #571212;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    font-family: 'Nunito';
+    font-weight: 500;
 
-  }
-  
-  .dropdown-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .dropdown {
-    position: relative;
-    background: rgba(245, 227, 62, 0.21);
-    border: 3px solid #771818;
-    border-radius: 8px;
-   
-  }
+    
+    }
+    .description-textarea{
+      border: none;
+      border-radius: 5px;
+      margin: 20px 0;
+      font-size: 24px;
+      background-color: #f5f5f5;
+      width: 30vw;
+    }
 
+  /*dropdown-----------------fertig*/
+  .dropdown-container{
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10vw;
+      margin-bottom: 10vw;
+    }
+
+    .dropdown-select{
+      background-color: rgba(245, 227, 62, 0.21);
+      border: 3px solid #771818;
+      border-radius: 8px;
+      width: 16vw;
+      height: 4vw;
+      font-size: 20px;
+    }
+
+    .dropdown1{
+      margin-right: 40px;
+      margin-left: 40px;
+    }
   .dropname1{
-    position: absolute;
-    width: 380px;
-    height: 22px;
-    left: 250px;
-    top: 700px;
-  }
+      color: #571212;
+      font-family: 'Nunito';
+      font-style: normal;
+      font-weight: 100;
+      font-size: 40px;
 
-
-.select{
-    background: rgba(245, 227, 62, 0.21);
-    border: 3px solid #771818;
-border-radius: 8px;
-width: 20vw;
-
-}
-
-
-
-
+    }
+  
+  /*button----------------------fertig */
   .submit-button {
     padding: 20px;
-    height: 67px;
+    height: 56px;
     margin: 3rem;
     box-sizing: border-box;
     width: 30vw;

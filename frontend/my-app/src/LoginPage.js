@@ -1,6 +1,8 @@
 import React from "react";
 import './login.css';
 
+
+
 class LoginPage extends React.Component {
   render() {
     return (
@@ -36,7 +38,7 @@ class LoginPage extends React.Component {
           Passwort vergessen?
         </a>
         <p id="register-link">
-          Noch kein Account? <a href="#">Registrieren</a>
+        
         </p>
       </div>
     );
