@@ -42,6 +42,18 @@ const multer = Multer({
 });
 
 
+router.post('/tester123',(req,res)=>{
+  const dataSent=req.body;
+  try{
+    mongoHSHLove.chatCollection.insertMany([dataSent])
+    console.log("schau in die DB")
+  }catch(e){
+    console.log(e)
+  }
+  
+  res.send(dataSent)
+})
+
 
 //template funktion wie es mir gefällt
 const requireAuth = (req,res,next)=>{
@@ -67,6 +79,8 @@ router.get('/authenticate',(req,res)=>{
 
 router.get("/", (req, res) => {
   
+
+
 })
 
 router.get("/personalSpace", async (req, res) => {
