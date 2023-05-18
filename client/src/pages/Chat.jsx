@@ -9,26 +9,28 @@ export default function Chat({ receiver }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [user, setUser] = useState({ userId: null, username: null });
-  const [users, setUsers] = useState([]);
+
 
   const socketRef = useRef();
   const token = "token123";
 
-  const checkIfUserExists = useCallback(() => {
-    const sessionId = localStorage.getItem('sessionId');
-    if (sessionId) {
-      if (socketRef.current.auth) {
-        socketRef.current.auth.sessionId = sessionId
-      } else {
-        socketRef.current.auth = { sessionId };
-      }
-      socketRef.current.connect();
-    }
-  }, [socketRef]);
+  // const checkIfUserExists = useCallback(() => {
+  //   const sessionId = localStorage.getItem('sessionId');
+  //   if (sessionId) {
+  //     if (socketRef.current.auth) {
+  //       socketRef.current.auth.sessionId = sessionId
+  //     } else {
+  //       socketRef.current.auth = { sessionId };
+  //     }
+  //     socketRef.current.connect();
+  //   }
+  // }, [socketRef]);
 
   useEffect(() => {
 
     socketRef.current = io("http://localhost:3001", { autoConnect: false });
+
+
 
     getUser().then((user) => {
       if (!user) {
@@ -36,24 +38,39 @@ export default function Chat({ receiver }) {
         return;
       }
       console.log(user);
-      socketRef.current.auth = user;
+      socketRef.current.auth = {
+        ...user,
+        receiver: receiver.userId,
+      };
       socketRef.current.connect();
     });
 
     console.log(socketRef.current);
 
-    socketRef.current.on('message', ({ userId, username, text}) => {
-      const newMessage = { 
+    socketRef.current.on('message', ({ userId, username, text }) => {
+      const newMessage = {
         type: "message",
         userId,
-        sender: userId, 
+        sender: userId,
         text
       };
 
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
-    checkIfUserExists();
+    socketRef.current.on("private message", ({ content, from, to }) => {
+      console.log("private message received from " + from + " to " + to);
+      const newMessage = {
+        type: "message",
+        userId: to,
+        sender: from,
+        text: content
+      };
+
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
+    // checkIfUserExists();
 
     socketRef.current.on('session', ({ sessionId, userId: userID, username }) => {
       socketRef.current.auth.sessionId = sessionId;
@@ -72,12 +89,11 @@ export default function Chat({ receiver }) {
 
     socketRef.current.on("users", (users) => {
       const messagesArr = [];
-      for (const {userId, username} of users) {
+      for (const { userId, username } of users) {
         const newMessage = { type: "userStatus", userId, username };
         messagesArr.push(newMessage);
       }
       setMessages([...messages, ...messagesArr]);
-      setUsers(users);
     });
 
     socketRef.current.on('User connected', () => {
@@ -86,21 +102,6 @@ export default function Chat({ receiver }) {
         { sender: "Server", text: "User connected" }
       ]);
     });
-
-    socketRef.current.on("users", (users) => {
-      users.forEach((user) => { //geht über alle user
-          user.self = user.userID === socketRef.current.auth._id; //wenn der user der aktuelle user ist, dann self = true
-      });
-      // put the current user first, and then sort by username: muss noch in aktuell zu alt geändert werden
-      users = users.sort((a, b) => {
-          if (a.self) return -1;
-          if (b.self) return 1;
-          if (a.username < b.username) return -1;
-          return a.username > b.username ? 1 : 0;
-      });
-
-      setUsers(users);
-  });
 
     socketRef.current.on("connect_error", (err) => {
       console.log(err instanceof Error);
@@ -123,7 +124,16 @@ export default function Chat({ receiver }) {
       return;
     }
 
-    socketRef.current.emit('message', inputValue);
+    // socketRef.current.emit('message', inputValue);
+    socketRef.current.emit("private message", {
+      content: inputValue,
+      to: receiver.userId,
+    });
+    // this.selectedUser.messages.push({
+    //   content,
+    //   fromSelf: true,
+    // });
+
     setInputValue('');
   };
 
@@ -142,11 +152,11 @@ export default function Chat({ receiver }) {
 
   return (
     <>
-      
+
       <div className="chatBox">
         <div id="messages">
           {messages.map((message, index) => ( //geht über alle messages und rendert
-            <div key={index}> 
+            <div key={index}>
               <ChatMessage sender={message.sender} text={message.text} />
 
             </div>

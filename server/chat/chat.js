@@ -38,9 +38,9 @@ function chatInitialisieren(io) {
         next();
     });
 
-    function listingAllUsers(socket) { 
+    function listingAllUsers(socket) {
         const users = []; //array mit allen usern
-        for (let [id, socket] of io.of("/").sockets) { 
+        for (let [id, socket] of io.of("/").sockets) {
             users.push({ //fügt den usernamen und die id dem array hinzu
                 userID: socket._id,
                 username: socket.username,
@@ -49,11 +49,13 @@ function chatInitialisieren(io) {
         socket.emit("users", users); //sendet das array an den client
     }
 
-    io.on("connection", async (socket) => { //wird ausgeführt, wenn ein client connected
+    io.on("connection", (socket) => { //wird ausgeführt, wenn ein client connected
         io.emit("User connected", socket._id);
         console.log(socket.id); //gibt id des sockets aus
 
-    listingAllUsers(socket);
+        // get chatRoomId from db where socket.receiverId == user1ID
+
+        listingAllUsers(socket);
 
         saveSession(socket.sessionID, {
             userId: socket._id,
@@ -71,10 +73,12 @@ function chatInitialisieren(io) {
         //     username: socket.username,
         // });
 
+        console.log("Joining room: " + socket._id);
         socket.join(socket._id); //fügt den socket zu einem room hinzu
 
         socket.on("private message", ({ content, to }) => { //wird ausgeführt, wenn ein client eine private message/bilder sendet
-            socket.to(to).to(socket._id).emit("private message", {
+            console.log("private message received: " + content + " from " + socket._id + " to " + to);
+            io.to(to).to(socket._id).emit("private message", {
                 content,
                 from: socket._id,
                 to,
