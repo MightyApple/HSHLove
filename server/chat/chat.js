@@ -26,28 +26,44 @@ function chatInitialisieren(io) {
 
     io.use((socket, next) => {  //middleware, die vor jedem connection event ausgeführt werden sollte
         console.log('============= NEW CONNECTION =============');
-
         console.log(socket.handshake.auth);
+
+        for (const key in socket.handshake.auth) { //fügt die daten aus dem auth object dem socket hinzu
+            if (Object.hasOwnProperty.call(socket.handshake.auth, key)) { //wenn das object die Attribut hat
+                const value = socket.handshake.auth[key]; //dann wird das Attribut dem socket hinzugefügt
+                socket[key] = value;
+            }
+        }
 
         next();
     });
 
-
+    function listingAllUsers(socket) { 
+        const users = []; //array mit allen usern
+        for (let [id, socket] of io.of("/").sockets) { 
+            users.push({ //fügt den usernamen und die id dem array hinzu
+                userID: socket._id,
+                username: socket.username,
+            });
+        }
+        socket.emit("users", users); //sendet das array an den client
+    }
 
     io.on("connection", async (socket) => { //wird ausgeführt, wenn ein client connected
-        const userId = socket.handshake.auth._id;
-        io.emit("User connected", userId);
+        io.emit("User connected", socket._id);
         console.log(socket.id); //gibt id des sockets aus
 
+    listingAllUsers(socket);
+
         saveSession(socket.sessionID, {
-            userId: userId,
+            userId: socket._id,
             username: socket.username,
             connected: true,
         });
 
         socket.emit("session", {
             sessionID: socket.sessionID,
-            userID: userId,
+            userID: socket._id,
         });
         // socket.emit("session", { //sendet an den client
         //     sessionId: socket.sessionId,
@@ -55,12 +71,12 @@ function chatInitialisieren(io) {
         //     username: socket.username,
         // });
 
-        socket.join(userId); //fügt den socket zu einem room hinzu
+        socket.join(socket._id); //fügt den socket zu einem room hinzu
 
         socket.on("private message", ({ content, to }) => { //wird ausgeführt, wenn ein client eine private message/bilder sendet
-            socket.to(to).to(userId).emit("private message", {
+            socket.to(to).to(socket._id).emit("private message", {
                 content,
-                from: userId,
+                from: socket._id,
                 to,
             });
         });
@@ -70,7 +86,7 @@ function chatInitialisieren(io) {
             io.emit('message', {
                 sender: socket.id,
                 text: message,
-                userId
+                userId: socket._id
             });
         });
 

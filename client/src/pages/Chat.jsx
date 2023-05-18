@@ -2,14 +2,14 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
 import "./chat.css";
 import ChatMessage from '../components/ChatMessage';
-import Navbar from '../components/navbar'
+// import Navbar from '../components/navbar'
+import ChatUserList from './ChatUserList';
 
-export default function Chat() {
+export default function Chat({ receiver }) {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [user, setUser] = useState({ userId: null, username: null });
   const [users, setUsers] = useState([]);
-  const [receiver, setReceiver] = useState(null);
 
   const socketRef = useRef();
   const token = "token123";
@@ -35,6 +35,7 @@ export default function Chat() {
         console.log("no user");
         return;
       }
+      console.log(user);
       socketRef.current.auth = user;
       socketRef.current.connect();
     });
@@ -86,10 +87,29 @@ export default function Chat() {
       ]);
     });
 
+    socketRef.current.on("users", (users) => {
+      users.forEach((user) => { //geht über alle user
+          user.self = user.userID === socketRef.current.auth._id; //wenn der user der aktuelle user ist, dann self = true
+      });
+      // put the current user first, and then sort by username: muss noch in aktuell zu alt geändert werden
+      users = users.sort((a, b) => {
+          if (a.self) return -1;
+          if (b.self) return 1;
+          if (a.username < b.username) return -1;
+          return a.username > b.username ? 1 : 0;
+      });
+
+      setUsers(users);
+  });
+
     socketRef.current.on("connect_error", (err) => {
       console.log(err instanceof Error);
       console.log(err.message);
       console.log(err.data);
+    });
+
+    socketRef.current.onAny((event, ...args) => {
+      console.log(event, args);
     });
 
     return () => {
@@ -118,9 +138,11 @@ export default function Chat() {
     );
   }
 
+
+
   return (
     <>
-      <Navbar></Navbar>
+      
       <div className="chatBox">
         <div id="messages">
           {messages.map((message, index) => ( //geht über alle messages und rendert
