@@ -1,61 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {
-    createBrowserRouter,
-    RouterProvider,
-} from "react-router-dom";
 
-import './index.css'; //TODO kann raus geworfen werden, wenn niemand das braucht
-import './reset.css';
-import './global.css';
-
-
-import StartingPage from './pages/startingPage'
-import Login from './pages/login';
-import Register from './pages/register';
-import EditProfile from './pages/editProfile'
-import ChatUserList from './pages/ChatUserList';
-import Chat from './pages/Chat';
+import App from './App';
 import reportWebVitals from './reportWebVitals';
-import DebugRouter from './pages/debugRouter';
-import ErrorPage from "./error-page";
 
-
-
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <DebugRouter />,
-        
-        errorElement: <ErrorPage />,
-    },
-    // Ganz neue Seite
-    {
-        path: "chat",
-        element: <ChatUserList />,
-    },
-    {
-        path: "login",
-        element: <Login />,
-    },
-    {
-        path: "registrieren",
-        element: <Register />,
-    },
-    {
-        path: "start",
-        element: <StartingPage />,
-    },
-    {
-        path: "edit",
-        element: <EditProfile />,
-    },
-    
-]);
+// Code ausgelagert in App.js damit socket.io überall geht
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
-        <RouterProvider router={router} />
+        <App />
     </React.StrictMode>
 );
 
