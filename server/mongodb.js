@@ -53,7 +53,6 @@ const userDataSchema=new mongoose.Schema({
 
 })
 
-//Noch nicht fertig
 const messageSchema=new mongoose.Schema({
     user1ID:{
         type:String,
@@ -73,7 +72,7 @@ const messageSchema=new mongoose.Schema({
             timeStamp:{
                 type:Date,
             },
-            review:{
+            sentByUserID:{
                 type:String
             }
         }
@@ -92,6 +91,6 @@ const tempSchema=new mongoose.Schema({
 })
 const userDataCollection=new mongoose.model("Nutzerdaten",userDataSchema);
 const tempCollection=new mongoose.model("temp",tempSchema);
-const chatCollection=
+const chatCollection=new mongoose.model("chatroom",messageSchema);
 
-module.exports={userDataCollection, tempCollection}
+module.exports={userDataCollection, tempCollection, chatCollection}
