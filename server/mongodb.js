@@ -21,6 +21,7 @@ const userDataSchema=new mongoose.Schema({
     email:{
         type:String,
         required:true
+        
     },
     images:{
         type:Array
@@ -29,20 +30,18 @@ const userDataSchema=new mongoose.Schema({
         type:Date
     },
     description:{
-        type: String
+        type: String,
+        default:"Das ist eine default Beschreibung"
     },
     name:{
-        type: String
+        type: String,
+        default:"Das ist ein default Name"
     },
     password:{
         type:String,
         required:true
     },
     userID:{
-        type:String,
-        required:false
-    },
-    token:{
         type:String,
         required:false
     },
