@@ -26,16 +26,16 @@ function App() {
     const [chatMessages, setChatMessages] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState([]);
 
-    useEffect(() => {
-        if (loggedIn) {
-            getUser().then((user) => {
-                if (!user) {
-                    console.log("no user");
-                    return;
+    useEffect(() => { // wird einmal ausgeführt
+        if (loggedIn) { // wenn der user eingeloggt ist
+            getUser().then((user) => { // holt sich den ganzen user (also alle db Einträge)
+                if (!user) { 
+                    console.log("no user"); 
+                    return; 
                 }
-                console.log(user);
-                socket.auth = user;
-                socket.connect();
+                console.log(user); 
+                socket.auth = user; 
+                socket.connect(); 
             });
 
             return () => {
@@ -58,8 +58,8 @@ function App() {
         });
     
         socket.on("User disconnected", (user) => { //wird ausgeführt, wenn ein client disconnected
-            console.log("User disconnected: " + user);
-            setOnlineUsers((onlineUsers) => onlineUsers.filter((u) => u !== user)); // entfernt den user aus der liste
+            console.log("User disconnected: " + user); 
+            setOnlineUsers((onlineUsers) => onlineUsers.filter((u) => u !== user)); // entfernt den user aus der Liste von onlineUsers
         });
 
         return () => {
@@ -70,9 +70,9 @@ function App() {
     }, []);
 
     async function getUser() {
-        return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server zurückgibt, also den Beispielnamen Max
+        return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
             console.log(data);
-            return data; //returned von der fetch Funktion den Usernamen
+            return data; //returned von der fetch Funktion den ganzen User
         }
         );
     }
@@ -85,11 +85,13 @@ function App() {
             errorElement: <ErrorPage />,
         },
         // Ganz neue Seite
+        // ChatUserList bekommt die chatMessages und onlineUsers als props übergeben
         {
             path: "chat",
             element: <ChatUserList chatMessages={chatMessages} onlineUsers={onlineUsers} />,
         },
         {
+        // Brauche Info, ob User eingeloggt ist, damit wir connecten können
             path: "login",
             element: <Login setLoggedIn={setLoggedIn} />,
         },
