@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import {
     createBrowserRouter,
@@ -14,51 +14,106 @@ import Login from './pages/login';
 import Register from './pages/register';
 import EditProfile from './pages/editProfile'
 import ChatUserList from './pages/ChatUserList';
-import Chat from './pages/Chat';
-import reportWebVitals from './reportWebVitals';
 import DebugRouter from './pages/debugRouter';
 import ErrorPage from "./error-page";
 
 import { socket } from './components/socket';
 import { useState } from 'react';
 
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <DebugRouter />,
-        
-        errorElement: <ErrorPage />,
-    },
-    // Ganz neue Seite
-    {
-        path: "chat",
-        element: <ChatUserList />,
-    },
-    {
-        path: "login",
-        element: <Login />,
-    },
-    {
-        path: "registrieren",
-        element: <Register />,
-    },
-    {
-        path: "start",
-        element: <StartingPage />,
-    },
-    {
-        path: "edit",
-        element: <EditProfile />,
-    },
-    
-]);
-
 function App() {
-  return (
-    <>
-        <RouterProvider router={router} />
-    </>
-  );
+    const [loggedIn, setLoggedIn] = useState(false); //TODO: muss mit session/cookie synchronisiert werden
+
+    const [chatMessages, setChatMessages] = useState([]);
+    const [onlineUsers, setOnlineUsers] = useState([]);
+
+    useEffect(() => {
+        if (loggedIn) {
+            getUser().then((user) => {
+                if (!user) {
+                    console.log("no user");
+                    return;
+                }
+                console.log(user);
+                socket.auth = user;
+                socket.connect();
+            });
+
+            return () => {
+                socket.disconnect();
+            }
+        } else {
+            socket.disconnect();
+        }
+    }, [loggedIn]);
+
+    useEffect(() => { // wird einmal ausgeführt
+        socket.on("message", (message) => {
+            console.log("message received: " + message + " from " + socket.id);
+            setChatMessages((chatMessages) => [...chatMessages, message]);
+        });
+    
+        socket.on("User connected", (user) => {
+            console.log("User connected: " + user);
+            setOnlineUsers((onlineUsers) => [...onlineUsers, user]);
+        });
+    
+        socket.on("User disconnected", (user) => { //wird ausgeführt, wenn ein client disconnected
+            console.log("User disconnected: " + user);
+            setOnlineUsers((onlineUsers) => onlineUsers.filter((u) => u !== user)); // entfernt den user aus der liste
+        });
+
+        return () => {
+            socket.off("message");
+            socket.off("User connected");
+            socket.off("User disconnected");
+        }
+    }, []);
+
+    async function getUser() {
+        return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server zurückgibt, also den Beispielnamen Max
+            console.log(data);
+            return data; //returned von der fetch Funktion den Usernamen
+        }
+        );
+    }
+
+    const router = createBrowserRouter([
+        {
+            path: "/",
+            element: <DebugRouter />,
+
+            errorElement: <ErrorPage />,
+        },
+        // Ganz neue Seite
+        {
+            path: "chat",
+            element: <ChatUserList chatMessages={chatMessages} onlineUsers={onlineUsers} />,
+        },
+        {
+            path: "login",
+            element: <Login setLoggedIn={setLoggedIn} />,
+        },
+        {
+            path: "registrieren",
+            element: <Register />,
+        },
+        {
+            path: "start",
+            element: <StartingPage />,
+        },
+        {
+            path: "edit",
+            element: <EditProfile />,
+        },
+
+    ]);
+
+    console.log("loggedIn: " + loggedIn);
+    return (
+        <>
+            <RouterProvider router={router} />
+        </>
+    );
 }
 
 export default App;

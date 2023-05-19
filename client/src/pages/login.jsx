@@ -7,7 +7,7 @@ import FormButton from '../components/form/formButton'
 import LoginHead from '../components/loginHead'
 import {Link, Navigate} from "react-router-dom";
 import { useState } from 'react'
-export default function Root() {
+export default function Root({ setLoggedIn }) {
     const[succes, setSucces]= React.useState(false)
     
     if(succes){
@@ -32,6 +32,7 @@ export default function Root() {
         })
         const resData= await result.json()
         if(resData.noError){
+            setLoggedIn(true)
             setSucces(true)
         }
     }

@@ -63,36 +63,26 @@ function chatInitialisieren(io) {
             connected: true,
         });
 
-        socket.emit("session", {
-            sessionID: socket.sessionID,
-            userID: socket._id,
-        });
-        // socket.emit("session", { //sendet an den client
-        //     sessionId: socket.sessionId,
-        //     userId: socket.userId,
-        //     username: socket.username,
-        // });
-
         console.log("Joining room: " + socket._id);
         socket.join(socket._id); //fügt den socket zu einem room hinzu
 
-        socket.on("private message", ({ content, to }) => { //wird ausgeführt, wenn ein client eine private message/bilder sendet
+        socket.on("message", ({ content, to }) => { //wird ausgeführt, wenn ein client eine private message/bilder sendet
             console.log("private message received: " + content + " from " + socket._id + " to " + to);
-            io.to(to).to(socket._id).emit("private message", {
+            io.to(to).to(socket._id).emit("message", {
                 content,
                 from: socket._id,
                 to,
             });
         });
 
-        socket.on('message', (message) => { //wird ausgeführt, wenn ein client eine message sendet
-            console.log("message received: " + message + " from " + socket.id);
-            io.emit('message', {
-                sender: socket.id,
-                text: message,
-                userId: socket._id
-            });
-        });
+        // socket.on('message', (message) => { //wird ausgeführt, wenn ein client eine message sendet
+        //     console.log("message received: " + message + " from " + socket.id);
+        //     io.emit('message', {
+        //         sender: socket.id,
+        //         text: message,
+        //         userId: socket._id
+        //     });
+        // });
 
         socket.on('disconnect', () => { //wird ausgeführt, wenn ein client disconnected
             console.log("User disconnected");

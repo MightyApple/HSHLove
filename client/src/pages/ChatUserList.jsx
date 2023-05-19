@@ -3,14 +3,14 @@ import Chat from './Chat';
 import Navbar from '../components/navbar';
 
 
-export default function ChatUserList() {
+export default function ChatUserList({ chatMessages, onlineUsers }) {
     const [selectedUser, setSelectedUser] = useState(null);
     const [users, setUsers] = useState([ // TODO: DB Abfrage ob Match vorhanden ist, wenn ja dann wird der User in die Liste eingefügt
         { userId: 1, username: "Max" },
         { userId: 2, username: "Moritz" },
         { userId: 3, username: "Peter" },
         { userId: 4, username: "Hans" },
-    ]); 
+    ]);
     
     fetch ('/getUserMatches').then(response => response.json()).then(data => { //data ist das was der Server zurückgibt, also den Beispielnamen Max
         console.log(data);
@@ -23,7 +23,7 @@ export default function ChatUserList() {
             <>
                 <Navbar></Navbar>
                 <button onClick={() => setSelectedUser(null)}>Back</button>	
-                <Chat receiver={selectedUser}></Chat>
+                <Chat chatMessages={chatMessages} receiver={selectedUser}></Chat>
             </>
         )
     }
