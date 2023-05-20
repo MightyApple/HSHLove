@@ -1,0 +1,203 @@
+/* Top-Bar */
+.top-bar {
+    height: 130px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 8vw;
+    height: 8vw;
+  }
+  
+  .top-bar-nav-list {
+    font-size: 16px;
+    display: flex;
+  }
+  
+  .nav-link {
+    color: #571212;
+    
+    margin-right: 20px;
+  }
+  
+  .nav-link:last-child {
+    margin-right: 0;
+  }
+  
+  
+  /* Input-Felder */
+  .input-container input[type="text"],
+  .input-container select {
+    width: 80%;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .input-label {
+    color: #571212;
+    font-size: 27px;
+    margin-right: 30px;
+    margin-left: 40px;
+  }
+  
+  .input-text,
+  .input-date {
+    width: 80%;
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+    box-shadow: 0px 0px 5px #ddd;
+  }
+  
+  /* Container */
+  .container {
+    margin-top: 40px;
+  }
+  
+  /* Placeholder */
+  .placeholder {
+    margin: 30px 0;
+  }
+  
+  /* Bild-Container */
+  .container_bild {
+    background-color: #f5f5f5;
+    padding: 3vw;
+    align-items: center;
+    flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10vw;
+    margin-bottom: 10vw;
+  }
+  
+  .uploaded-image {
+    max-width: 20vw;
+    margin-bottom: 10vw;
+  }
+  
+  .placeholder_bild {
+    border: 2px dashed #6f4343;
+    padding: 20px;
+    cursor: pointer;
+  }
+  
+  .custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  
+  .custom-file-upload:hover {
+    background-color: #8f5959;
+  }
+  
+  .image-upload {
+    display: none;
+  }
+  
+  .uploaded-image-container {
+    position: relative;
+  }
+  
+  .remove-image-button {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+  }
+  
+  .remove-image-button:hover {
+    opacity: 0.8;
+  }
+  
+  /* Beschreibung */
+  .description {
+    margin: 40px 0;
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    width: 90vw;
+    max-width: 800px;
+    text-align: center;
+  }
+  
+  .description-input {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin: 20px 0;
+    font-size: xx-large;
+    color: #571212;
+    font-family: 'Nunito';
+    font-weight: 500;
+  }
+  
+      .description-textarea{
+        border: none;
+        border-radius: 5px;
+        margin: 20px 0;
+        font-size: 24px;
+        background-color: #f5f5f5;
+        width: 30vw;
+      }
+  
+    /*dropdown-----------------fertig*/
+    .dropdown-container{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10vw;
+        margin-bottom: 10vw;
+      }
+  
+      .dropdown-select{
+        background-color: rgba(245, 227, 62, 0.21);
+        border: 3px solid #771818;
+        border-radius: 8px;
+        width: 16vw;
+        height: 4vw;
+        font-size: 20px;
+      }
+  
+      .dropdown1{
+        margin-right: 40px;
+        margin-left: 40px;
+      }
+    .dropname1{
+        color: #571212;
+        font-family: 'Nunito';
+        font-style: normal;
+        font-weight: 100;
+        font-size: 40px;
+  
+      }
+    
+    /*button----------------------fertig */
+    .submit-button {
+      padding: 20px;
+      height: 56px;
+      margin: 3rem;
+      box-sizing: border-box;
+      width: 30vw;
+      border: 1px solid rgba(0, 0, 0, 0.26);
+      border-radius: 8px;
+      font-size: 16px;
+      background: #FFCB02;
+      color: #571212;
+      cursor: pointer;
+    }
+    

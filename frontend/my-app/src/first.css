@@ -1,258 +1,211 @@
-
-/* Top bar */
+/* Top-Bar */
 .top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 80px;
-    background-color: #ffffff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logo {
-    width: 10vw;
-    height: 8vw;
-  
-  }
-  
-  .top-bar-nav-list {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    flex-grow: 1;
-  }
-  
-  .navb-link {
-    color: #571212;
-    font-size: 16px;
-    text-decoration: none;
-    margin: 0 10px;
-  }
-  
-  /* Input fields */
-  .input-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+}
+
+.left-logo {
+  margin-right: auto;
+}
+
+.center-logo {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.right-logo {
+  margin-left: auto;
+}
+.top-bar-nav-list {
+  font-size: 16px;
+  display: flex;
+  margin-right: 20px;
+}
+
+.nav-link {
+  color: #571212;
+  margin-right: 20px;
+}
+
+.nav-link:last-child {
+  margin-right: 0;
+}
+
+
+/* Input-Felder */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
   }
   
   .input-container input[type="text"],
   .input-container select {
-    width: 55%;
-    border: 1px solid #ccc;
-    padding: 15px;
-    font-size: 14px;
-  
-  }
-  .input-label{
-    color: #571212;
-    font-family: 'Nunito';
-    font-style: normal;
-    font-weight: 100;
-    font-size: 40px;
-    margin-right: 30px;
-    margin-left: 40px;
-    
-  }
-  .input-text {
-    width: 20vw;
-    width: 250px;
-    height: 40px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 2px solid #ccc;
-    box-shadow: 0px 0px 5px #ddd;
-  } 
-  input[type="text"]:hover {
-    border-color: #999;
+  width: 80%;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
   }
   
-  input[type="tex"]:focus {
-    border-color: #555;
-    box-shadow: 0px 0px 5px #aaa;
-    outline: none;
-  }
+  
+/* Container */
+.container {
+  margin-top: 40px;
+}
 
-  .input-date{
-    width: 20vw;
-    width: 250px;
-    height: 40px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 2px solid #ccc;
-    box-shadow: 0px 0px 5px #ddd;
-  }
-  input[type="date"]:hover {
-    border-color: #999;
-  }
-  
-  input[type="date"]:focus {
-    border-color: #555;
-    box-shadow: 0px 0px 5px #aaa;
-    outline: none;
-  }
-  /* Container */
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 40px;
-  }
-  
-  /* Placeholder */
-  .placeholder {
-    display: flex;
-    align-items: center;
-    margin: 30px 0;
-  }
-  
-  /*bild---------------------fertigggg*/
-  .container_bild {
-    background-color: #f5f5f5; /* hellgrauer Hintergrund */
-    padding: 3vw; 
-    align-items: center;
-    flex-direction: row;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 10vw;
-    margin-bottom: 10vw;
-  }
-  
-  .uploaded-image {
-    max-width: 20vw; 
-    margin-bottom: 10vw; 
-  }
-  
-  .placeholder_bild {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 2px dashed #6f4343; 
-    padding: 20px;
-    cursor: pointer; 
-  }
-  
-  .custom-file-upload {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer; 
-  }
-  
-  .custom-file-upload:hover {
-    background-color: #8f5959;
-  }
-  
-  .image-upload {
-    display: none; 
-  }
-  .uploaded-image-container {
-    position: relative;
-  }
-  
-  
-  .remove-image-button {
-    position: absolute;
-    top: 0.25rem;
-    right: 0.25rem;
-    background-color: #ff0000;
-    color: #fff;
-    border: none;
-    border-radius: 0.25rem;
-    padding: 0.25rem 0.5rem;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: opacity 0.2s ease-in-out;
-  }
-  
-  .remove-image-button:hover {
-    opacity: 0.8;
-  }
-  
-  
-  /* Description----------------------fertig */
-  .description {
-    margin: 40px 0;
-    font-size: 32px;
-    font-weight: bold;
-    color: #333;
-    width: 90vw;
-    max-width: 800px;
-    text-align: center;
-  }
-  
-  .description-input {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    margin: 20px 0;
-    font-size: xx-large;
-    color: #571212;
-    font-family: 'Nunito';
-    font-weight: 500;
+/* Placeholder */
+.placeholder {
+  margin: 30px 0;
+}
 
-    
-    }
-    .description-textarea{
-      border: none;
-      border-radius: 5px;
-      margin: 20px 0;
-      font-size: 24px;
-      background-color: #f5f5f5;
-      width: 30vw;
-    }
+/* Bild-Container */
+.container_bild {
+  background-color: #f5f5f5;
+  padding: 20px;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
 
-  /*dropdown-----------------fertig*/
-  .dropdown-container{
-      display: flex;
-      justify-content: space-between;
-      margin-top: 10vw;
-      margin-bottom: 10vw;
-    }
+.uploaded-image {
+  max-width: 200px;
+  margin-bottom: 30px;
+}
 
-    .dropdown-select{
-      background-color: rgba(245, 227, 62, 0.21);
-      border: 3px solid #771818;
-      border-radius: 8px;
-      width: 16vw;
-      height: 4vw;
-      font-size: 20px;
-    }
+.placeholder_bild {
+  border: 2px dashed #6f4343;
+  padding: 20px;
+  cursor: pointer;
+}
 
-    .dropdown1{
-      margin-right: 40px;
-      margin-left: 40px;
-    }
-  .dropname1{
-      color: #571212;
-      font-family: 'Nunito';
-      font-style: normal;
-      font-weight: 100;
-      font-size: 40px;
+.custom-file-upload {
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+}
 
-    }
-  
-  /*button----------------------fertig */
-  .submit-button {
-    padding: 20px;
-    height: 56px;
-    margin: 3rem;
-    box-sizing: border-box;
-    width: 30vw;
-    border: 1px solid rgba(0, 0, 0, 0.26);
-    border-radius: 8px;
-    font-size: 16px;
-    background: #FFCB02;
-    color: #571212;
-    cursor: pointer;
-  }
-  
+.custom-file-upload:hover {
+  background-color: #8f5959;
+}
+
+.image-upload {
+  display: none;
+}
+
+.uploaded-image-container {
+  position: relative;
+}
+
+.remove-image-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.remove-image-button:hover {
+  opacity: 0.8;
+}
+
+/* Beschreibung */
+.description {
+  margin: 40px 0;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  max-width: 800px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.description-input {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin: 20px 0;
+  font-size: 20px;
+  color: #571212;
+  font-family: 'Nunito';
+  font-weight: 500;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.description-textarea {
+  border: none;
+  border-radius: 5px;
+  margin: 20px auto;
+  font-size: 16px;
+  background-color: #f5f5f5;
+  width: 60%;
+  padding: 10px;
+  height: 120px;
+}
+
+/*dropdown-----------------fertig*/
+.dropdown-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
+
+.dropdown-select {
+  background-color: rgba(250, 226, 9, 0.21);
+  border: 3px solid #a40505;
+  border-radius: 8px;
+  width: fit-content;
+  font-size: 1px;
+}
+
+.dropdown1 {
+  margin-right: 50px;
+  margin-left: 50px;
+}
+
+.dropname1 {
+  color: #571212;
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 100;
+  font-size: 24px;
+}
+
+/*button----------------------fertig */
+.submit-button {
+  padding: 20px;
+  height: 56px;
+  margin: 20px auto;
+ 
+  width: 30%;
+  border: 1px solid rgba(0, 0, 0, 0.26);
+  border-radius: 8px;
+  font-size: 16px;
+  background: #ffcb02;
+  color: #571212;
+  cursor: pointer;
+  text-align: center;
+}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./first.css";
+import "./first_handy.css";
 import Herz from "./images/Herz.png";
 
 
@@ -50,24 +50,26 @@ const ImageUploader = () => {
       <nav className="top-bar">
         <ul className="top-bar-nav-list">
           <li>
-            <a href="#" className="left-logo">
+            <a href="#" className="nav-link">
               <img src={Herz} alt="Logo" className="logo" />
             </a>
           </li>
           <li>
-            <a href="#" className="center-logo">
+            <a href="#" className="nav-link">
               <img src={Herz} alt="Logo" className="logo" />
             </a>
           </li>
           <li>
-            <a href="#" className="right-logo">
+            <a href="#" className="nav-link">
               <img src={Herz} alt="Logo" className="logo" />
             </a>
           </li>
         </ul>
       </nav>
+      <div className="container">
+      </div>
     </div>
-      
+      <div className="container">
         <div className="input-container">
           <div className="input-field">
             <h2 className="input-label">Was ist dein Vorname?</h2>
@@ -77,7 +79,7 @@ const ImageUploader = () => {
             <h2 className="input-label">Geburtsdatum</h2>
             <input type="date" className="input-date" />
           </div>
-        
+        </div>
         <div className="container_bild">
           {images.length > 0 ? (
             images.map((image, index) => (
