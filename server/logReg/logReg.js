@@ -29,7 +29,7 @@ router.use(session({
 
 //google bucket storage für die Bilder
 const gc = new Storage({
-  keyFilename: path.join(__dirname, "./config/hshloveKey.json"),
+  keyFilename: path.join(__dirname, "../config/hshloveKey.json"),
   projectId: 'hshlove'
 })
 const profilbilder = gc.bucket('profilbilder')
@@ -52,9 +52,9 @@ const requireAuth = (req,res,next)=>{
   next();
 }
 
-router.get('/getEmail', (req, res) => {
+router.get('/getUserData', (req, res) => {
   if(req.session.authorized){
-    res.json({email:req.session.user.email})
+    res.json({data:req.session.user})
   }else{
     res.status(401).json({ email: "Meld dich an um deinen Namen hier zu lesen"})
   }
@@ -178,12 +178,12 @@ router.get("/upload", async (req, res) => {
   }
 });
 
-router.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
+router.post("/updateProfile", multer.single("imgfile"), async (req, res) => {
   try {
     let newFile
     let imgNr;
 
-
+    console.log(req.session.user)
     const uId = req.session.user._id
     var { name, birthday, description, password } = req.body;
 
@@ -192,9 +192,9 @@ router.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
     const user = await mongoHSHLove.userDataCollection.findOne({
       _id: uId,
     })
-    const validPass = await bcrypt.compare(password, user.password)
+    
 
-    if (user && validPass) {
+    if (user) {
       try {
 
         //Datenbankeintrag 'images' letzte nummer rausfinden und um 1 erhöhen
@@ -216,7 +216,7 @@ router.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
 
             const blob = profilbilder.file(newFile.originalname);
             const blobStream = blob.createWriteStream();
-
+            
             blobStream.end(newFile.buffer);
 
           } else {
@@ -229,7 +229,7 @@ router.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
 
       } catch (error) {
 
-        // res.status(500).send(error);
+        res.status(500).send(error);
       }
       try {
 
@@ -241,26 +241,50 @@ router.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
 
 
         if (req.file) {
-          await mongoHSHLove.userDataCollection.findOneAndUpdate({ "_id": uId }, { $set: data, $push: { images: newFile.originalname } })
+          var userUpdate= await mongoHSHLove.userDataCollection.findOneAndUpdate({ "_id": uId }, { $set: data, $push: { images: newFile.originalname } })
         } else {
-          await mongoHSHLove.userDataCollection.findOneAndUpdate({ "_id": uId }, { $set: data })
+          var userUpdate = await mongoHSHLove.userDataCollection.findOneAndUpdate({ "_id": uId }, { $set: data })
+          
         }
-
-        //res.status(200).send("Success");
+        req.session.user=userUpdate
+        res.status(200).send("Success");
       } catch (error) {
 
-        //res.status(500).send(error);
+        res.status(500).send(error);
       }
-      res.render("home")
+      
     } else {
       //Fehler wenn nutzerbereits existiert und passwörter nicht stimmen
-      //res.status(500).send("ERROR");
+      res.status(500).send("ERROR");
     }
   } catch (e) {
     console.log(e)
 
   }
 })
+
+
+
+var { getAllImages, updateForm } = require('../imageProcessing/imageProcessing.js');
+
+router.get("/getImages", async (req, res) => {
+  try {
+    if(req.session.authorized){
+      const user = await mongoHSHLove.userDataCollection.findOne({
+        _id: req.session.user._id,
+      }).then((user)=>{
+        res.send(user.images)
+      })
+    }else{res.status(500).send("not Authorized")}
+    
+  } catch (error) {
+    res.send("Error:" + error);
+  }
+});
+
+
+
+
 module.exports = {
   router,
   requireAuth

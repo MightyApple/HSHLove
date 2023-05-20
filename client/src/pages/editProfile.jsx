@@ -9,32 +9,80 @@ import Trenner from '../components/trenner'
 import './editProfile.css'
 export default function Root() {
     const[data, setData]= React.useState("Log dich ein")
+    const[description, setDescription]= React.useState("")
+
     
     React.useEffect(()=>{
-        const email = loadEmail()
-        console.log(email)
-        
-        
+        loadUserData()      
+        loadImages()               
     },[])
-    
-   async function loadEmail(){
-        const response = await fetch('/getEmail');
-        const data = await response.json();
-        setData(data.email)
 
-        console.log(data)
+    function createImgs(imgs){
+        
+    }
+
+    async function loadImages(){
+        const files = await fetch('/getImages')
+        const data= await files.json();
+        /*for (let index = 0; index < data.length; index++) {
+            const newImg = document.getElementById("imgContainer");
+            
+            newImg.setAttribute(
+                "src",
+                "https://storage.googleapis.com/profilbilder/"+data[index]
+            )
+            
+        }*/
+    }
+    
+   async function loadUserData(){
+        const response = await fetch('/getUserData');
+        const data= await response.json();
+        setDescription(data.data.description)
    }
+
+    function sendData(){
+        let form=new FormData()
+        form.append("description", document.getElementById("description").value)
+
+        let inputFile = document.getElementById("imgfile");
+            
+        if ( inputFile.value !== '') {
+            let file = inputFile.files[0];
+            // Create new file so we can rename the file
+            let blob = file.slice(0, file.size, "image/jpeg");
+            let newFile = new File([blob], `Profilbild_post.jpeg`, { type: "image/jpeg" });
+            form.append("imgfile",newFile)
+        }else{
+            form.append("imgfile","")
+        }
+        
+        fetch("/updateProfile", {
+            method: "POST",
+            body: form,
+        })
+        
+        
+    }
+   
+
+
 
     const tags = ['Gaming', 'Poker', 'Tiere', 'Hunde', 'Katzen', 'Essen', 'Camping', 'Wandern', 'Schlafen', 'Lesen', 'Tanzen', 'Party', 'Musik', 'Filme', 'Kochen', 'Kunst', 'Podcast', 'Singapur'] //TODO werden aus der Datenbank gezogen
     const prefs = ['männlich', 'weiblich', 'divers', 'Beziehungen', 'Freunden', 'ONS']
     const studiengaenge = ["AIS", "CVD", "BWL", "MBP"];
     const geschlecht = ["männlich", "weiblich", "divers", "BWL"];
     const maxLength = 250;
-    const imgLoopCount = 6;
+    const imgLoopCount = 1;
+
+    
+
+    
 
     return (
         <>
             <Navbar></Navbar>
+            
             <section className={'imgForm'}>
                 {Array.from({ length: imgLoopCount }, (_, index) => (
                     <ImgForm></ImgForm>
@@ -46,7 +94,9 @@ export default function Root() {
                     <textarea
                         name="description"
                         placeholder='Erzähl etwas über dich'
+                        id="description"
                         maxLength={maxLength}
+                        defaultValue={description}
                     />
                 </div>
             </section>
@@ -84,7 +134,7 @@ export default function Root() {
                 ></DropDown>
             </section>
             <section className={"primaryContainer"}>
-                <FormButton name={"Änderungen speichern"}></FormButton>
+                <FormButton onClick={sendData} name={"Änderungen speichern"}></FormButton>
             </section>
         </>
     )};
