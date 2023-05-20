@@ -48,8 +48,29 @@ const userDataSchema=new mongoose.Schema({
     intention:{
         type: String,
         enum: ["One-Night-Stand","Beziehung","Offenes"],
+    },
+    gender:{
+        type:String,
+        enum: ["männlich","weblich","diverse"]
+    },
+    degree:{
+        type:String,
+        enum:["Angewandte Informatik in Sozialenmedien"]
+    },
+    preference:{
+        type:String,
+        enum:["Hetero","Gay","Lesbian"]
+    },
+    liked:{
+        type:Array,
+        id:{
+            type:String
+        }
+    },
+    tags:{
+        type:String,
+        enum:["Ich kenne noch nicht alle Tags die eingebunden werden müssen"]
     }
-
 })
 
 const messageSchema=new mongoose.Schema({
@@ -78,18 +99,7 @@ const messageSchema=new mongoose.Schema({
     }
 })
 
-const tempSchema=new mongoose.Schema({
-    email:{
-        type:String,
-        required:true
-    },
-    password:{
-        type:String,
-        required:true
-    }
-})
 const userDataCollection=new mongoose.model("Nutzerdaten",userDataSchema);
-const tempCollection=new mongoose.model("temp",tempSchema);
 const chatCollection=new mongoose.model("chatroom",messageSchema);
 
-module.exports={userDataCollection, tempCollection, chatCollection}
+module.exports={userDataCollection, chatCollection}
