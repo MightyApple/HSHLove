@@ -29,5 +29,5 @@ roomID
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>100</y><w>50</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-
 m1= 0..n
 m2=1</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>80</y><w>240</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;-
-m1= 1
+m1= 2
 m2= 0..n</panel_attributes><additional_attributes>10;10;220;10</additional_attributes></element></diagram>
