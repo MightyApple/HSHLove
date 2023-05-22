@@ -8,7 +8,7 @@ export default function Root() {
             <section className={'startPage secondaryContainer'}>
                 <div className={'startinLogo bigHeadline'}>
                     <img src={logo} alt={'logo'} width={168} height={168}/>
-                    <p>Hsh<span>Love</span></p>
+                    <p>HSH<span>Love</span></p>
                 </div>
                 <div className={'startRoute'}>
                     <FormButton name={'Login'} route={'/login'}></FormButton>

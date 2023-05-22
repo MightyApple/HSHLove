@@ -51,15 +51,15 @@ const userDataSchema=new mongoose.Schema({
     },
     gender:{
         type:String,
-        enum: ["männlich","weblich","diverse"]
+        enum: ["männlich","weiblich","divers"]
     },
     degree:{
         type:String,
-        enum:["Angewandte Informatik in Sozialenmedien"]
+        enum:["Angewandte Informatik und soziale Medien"]
     },
     preference:{
         type:String,
-        enum:["Hetero","Gay","Lesbian"]
+        enum:["Hetero","Bisexuell","Gay","Lesbisch"]
     },
     liked:{
         type:Array,
@@ -74,13 +74,20 @@ const userDataSchema=new mongoose.Schema({
 })
 
 const messageSchema=new mongoose.Schema({
-    user1ID:{
-        type:String,
-        required:true
-    },
-    user2ID:{
-        type:String,
-        required:true
+    // user1ID:{
+    //     type:String,
+    //     required:true
+    // },
+    // user2ID:{
+    //     type:String,
+    //     required:true
+    // },
+    users:{
+        type:Array,
+        userID:{
+            // type: mongoose.Types.ObjectId,
+            type:String,
+        }
     },
     messageHistory:{
         type:Array,

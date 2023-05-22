@@ -1,4 +1,4 @@
-const { userDataCollection, tempCollection } = require("./mongodb");
+const { userDataCollection, chatCollection } = require("./mongodb");
 
 async function findUser(username, password) {
     try {
@@ -45,4 +45,44 @@ async function findUserByToken(token) {
     }
 }
 
-module.exports = { findUser, findUsernameByToken, findUserByToken };
+async function addLikedUser(userID, likedUserID) {
+
+    // TODO: like user
+
+    const match = await isMatched(likedUserID, userID); //checkt ob der user in der liked liste des anderen users ist
+    if (match) {
+        // await chatCollection.insertOne({ users: [userID, likedUserID] });
+        await chatCollection.create({ users: [userID, likedUserID] });
+        //openChat();
+    }
+    return match;
+}
+
+
+async function isMatched(likedUserID, userID) {
+    const likedUser = await userDataCollection.findOne({ _id: likedUserID }).lean();
+    const match = likedUser.likes.includes(userID); //checkt ob der user in der liked liste des anderen users ist
+    return match
+}
+
+async function getChats(userID) {
+    // find all chats where userID is in users array & populate with users
+    //TODO: gucken ob populate funktioniert
+    const chats = await chatCollection.find({ users: userID }).populate("users").lean();
+    // const chats = await chatCollection.find({ users: userID }).lean();
+    return chats;
+}
+
+// chatCollection.create({ users: [
+//     "6462526b27aab938ff9cc107",
+//     "646671a0898c1986286eb8ec"
+// ] });
+
+module.exports = {
+    findUser,
+    findUsernameByToken,
+    findUserByToken,
+    addLikedUser,
+    isMatched,
+    getChats
+};
