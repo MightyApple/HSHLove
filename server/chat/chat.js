@@ -49,11 +49,36 @@ function chatInitialisieren(io) {
         socket.emit("users", users); //sendet das array an den client
     }
 
+    function getChats(socket) {
+        database.getChats(socket._id).then((chats) => {
+            console.log(chats);
+            var users = [];
+            var messages = [];
+            chats.forEach((chat) => {
+                users.push({
+                    userId: chat.users.find((user) => user._id != socket._id),
+                    username: "TODO"
+                });
+
+                chat.messageHistory.forEach((message) => {
+                    messages.push(message);
+                });
+
+            });
+
+            socket.emit("initChats", {
+                users,
+                messages
+            });
+        });
+    }
+
     io.on("connection", (socket) => { //wird ausgeführt, wenn ein client connected
         io.emit("User connected", socket._id);
         console.log(socket.id); //gibt id des sockets aus
 
         // get chatRoomId from db where socket.receiverId == user1ID
+        getChats(socket);
 
         listingAllUsers(socket);
 
