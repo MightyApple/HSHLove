@@ -83,7 +83,7 @@ const messageSchema = new mongoose.Schema({
             type: String
         },
         timeStamp: {
-            type: Date,
+            type: String,
         },
         sentByUserID: {
             type: String,
