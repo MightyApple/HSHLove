@@ -1,12 +1,12 @@
 const mongoose=require("mongoose")
 const mongoUrl = "mongodb+srv://admin:pHscCtwkXMJeOCII@hshlove.5qisl3o.mongodb.net/HSHLove"
 mongoose.connect(mongoUrl)
-.then(()=>{
-    console.log("mongoDB connected: " +mongoUrl);
-})
-.catch(()=>{
-    console.log("failed to connect to mongodb");
-})
+    .then(() => {
+        console.log("mongoDB connected: " + mongoUrl);
+    })
+    .catch(() => {
+        console.log("failed to connect to mongodb");
+    })
 
 /**
  * Chris: Ihr wollte eine neue Collection anlegen? Dann legt zuerst ein Schema an. Dies sichert ab, dass falsche
@@ -17,96 +17,82 @@ mongoose.connect(mongoUrl)
  * und finally in module.exports einlegen
  */
 
-const userDataSchema=new mongoose.Schema({
-    email:{
-        type:String,
-        required:true
-        
-    },
-    images:{
-        type:Array
-    },
-    birthday:{
-        type:Date
-    },
-    description:{
+const userDataSchema = new mongoose.Schema({
+    email: {
         type: String,
-        default:"Das ist eine default Beschreibung"
+        required: true
+
     },
-    name:{
+    images: {
+        type: Array
+    },
+    birthday: {
+        type: Date
+    },
+    description: {
         type: String,
-        default:"Das ist ein default Name"
+        default: "Das ist eine default Beschreibung"
     },
-    password:{
-        type:String,
-        required:true
-    },
-    userID:{
-        type:String,
-        required:false
-    },
-    intention:{
+    name: {
         type: String,
-        enum: ["One-Night-Stand","Beziehung","Offenes"],
+        default: "Das ist ein default Name"
     },
-    gender:{
-        type:String,
-        enum: ["männlich","weiblich","divers"]
+    password: {
+        type: String,
+        required: true
     },
-    degree:{
-        type:String,
-        enum:["Angewandte Informatik und soziale Medien"]
+    userID: {
+        type: String,
+        required: false
     },
-    preference:{
-        type:String,
-        enum:["Hetero","Bisexuell","Gay","Lesbisch"]
+    intention: {
+        type: String,
+        enum: ["One-Night-Stand", "Beziehung", "Offenes"],
     },
-    liked:{
-        type:Array,
-        id:{
-            type:String
+    gender: {
+        type: String,
+        enum: ["männlich", "weiblich", "divers"]
+    },
+    degree: {
+        type: String,
+        enum: ["Angewandte Informatik und soziale Medien"]
+    },
+    preference: {
+        type: String,
+        enum: ["Hetero", "Bisexuell", "Gay", "Lesbisch"]
+    },
+    liked: {
+        type: Array,
+        id: {
+            type: String
         }
     },
-    tags:{
-        type:String,
-        enum:["Ich kenne noch nicht alle Tags die eingebunden werden müssen"]
+    tags: {
+        type: String,
+        enum: ["Ich kenne noch nicht alle Tags die eingebunden werden müssen"]
     }
 })
 
-const messageSchema=new mongoose.Schema({
-    // user1ID:{
-    //     type:String,
-    //     required:true
-    // },
-    // user2ID:{
-    //     type:String,
-    //     required:true
-    // },
-    users:{
-        type:Array,
-        userID:{
-            // type: mongoose.Types.ObjectId,
-            type:String,
+const messageSchema = new mongoose.Schema({
+    users: [{
+        type: String,
+        ref: "Nutzerdaten"
+    }],
+    messageHistory: [{
+        messageContent: {
+            type: String
+        },
+        timeStamp: {
+            type: String,
+        },
+        sentByUserID: {
+            type: String,
+            ref: "Nutzerdaten"
         }
-    },
-    messageHistory:{
-        type:Array,
-        message:{
-            type:Object,
-            messageContent:{
-                type:String
-            },
-            timeStamp:{
-                type:Date,
-            },
-            sentByUserID:{
-                type:String
-            }
-        }
-    }
+    }]
 })
 
-const userDataCollection=new mongoose.model("Nutzerdaten",userDataSchema);
-const chatCollection=new mongoose.model("chatroom",messageSchema);
+const userDataCollection = new mongoose.model("Nutzerdaten", userDataSchema);
+const chatCollection = new mongoose.model("chatroom", messageSchema);
 
-module.exports={userDataCollection, chatCollection}
+module.exports = { userDataCollection, chatCollection }

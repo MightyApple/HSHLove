@@ -22,6 +22,7 @@ function joinChatRooms(socket) {
     );
 }
 
+const onlineUsers = {};
 function chatInitialisieren(io) {
 
     io.use((socket, next) => {  //middleware, die vor jedem connection event ausgeführt werden sollte
@@ -38,30 +39,23 @@ function chatInitialisieren(io) {
         next();
     });
 
-    function listingAllUsers(socket) {
-        const users = []; //array mit allen usern
-        for (let [id, socket] of io.of("/").sockets) {
-            users.push({ //fügt den usernamen und die id dem array hinzu
-                userID: socket._id,
-                username: socket.username,
-            });
-        }
-        socket.emit("users", users); //sendet das array an den client
-    }
-
     function getChats(socket) {
         database.getChats(socket._id).then((chats) => {
-            console.log(chats);
             var users = [];
             var messages = [];
             chats.forEach((chat) => {
+                var otherUser = chat.users.find((user) => user._id != socket._id); //findet den anderen user in dem chatroom welcher nicht der client ist
                 users.push({
-                    userId: chat.users.find((user) => user._id != socket._id),
-                    username: "TODO"
+                    userId: otherUser._id,
+                    username: otherUser.email, // TODO: wenns in der DB ist, dann otherUser.username
                 });
 
                 chat.messageHistory.forEach((message) => {
-                    messages.push(message);
+                    messages.push({
+                        sender: message.sentByUserID.email, // TODO: wenns in der DB ist, dann message.sendByUserID.username
+                        content: message.messageContent,
+                        timestamp: message.timeStamp
+                    });
                 });
 
             });
@@ -75,12 +69,11 @@ function chatInitialisieren(io) {
 
     io.on("connection", (socket) => { //wird ausgeführt, wenn ein client connected
         io.emit("User connected", socket._id);
+        onlineUsers[socket._id] = socket;
         console.log(socket.id); //gibt id des sockets aus
 
         // get chatRoomId from db where socket.receiverId == user1ID
         getChats(socket);
-
-        listingAllUsers(socket);
 
         saveSession(socket.sessionID, {
             userId: socket._id,
@@ -93,24 +86,23 @@ function chatInitialisieren(io) {
 
         socket.on("message", ({ content, to }) => { //wird ausgeführt, wenn ein client eine private message/bilder sendet
             console.log("private message received: " + content + " from " + socket._id + " to " + to);
+            var timestamp = new Date().toLocaleString();
             io.to(to).to(socket._id).emit("message", {
                 content,
-                from: socket._id,
+                from: socket.email, //TODO: wenns in der DB ist, dann socket.username
                 to,
+                timestamp: timestamp,
+            });
+
+            database.getChat(socket._id, to).then((chat) => {
+                var chatID = chat._id;
+                database.saveChatMessage(chatID, socket._id, content, timestamp);
             });
         });
 
-        // socket.on('message', (message) => { //wird ausgeführt, wenn ein client eine message sendet
-        //     console.log("message received: " + message + " from " + socket.id);
-        //     io.emit('message', {
-        //         sender: socket.id,
-        //         text: message,
-        //         userId: socket._id
-        //     });
-        // });
-
         socket.on('disconnect', () => { //wird ausgeführt, wenn ein client disconnected
             console.log("User disconnected");
+            delete onlineUsers[socket._id];
             socket.broadcast.emit('User disconnected', socket.userId); //sendet an alle außer an den, der disconnected
         })
     });

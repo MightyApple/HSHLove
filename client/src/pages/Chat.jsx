@@ -28,8 +28,10 @@ export default function Chat({ chatMessages, receiver }) {
     setInputValue('');
   };
 
-  console.log("rerender");
-  console.log(chatMessages);
+  useEffect(() => {
+    // nach unten scrollen
+    window.scrollTo(0, document.body.scrollHeight);
+  }, []);
 
   return (
     <>
@@ -38,7 +40,7 @@ export default function Chat({ chatMessages, receiver }) {
         <div id="messages">
           {chatMessages.map((message, index) => ( //geht über alle messages und rendert
             <div key={index}>
-              <ChatMessage sender={message.from} text={message.content} />
+              <ChatMessage sender={message.from} text={message.content} timestamp={message.timestamp} />
             </div>
           ))}
         </div>

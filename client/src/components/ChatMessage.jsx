@@ -1,10 +1,6 @@
 import React from 'react'
 
-const today = new Date(); //TODO Test Zeiten entfernen (die sind nur da, damit ich stylen kann)
-const time = today.toLocaleTimeString();
-const date = today.toLocaleDateString();
-
-export default function ChatMessage({ sender, text }) {
+export default function ChatMessage({ sender, text, timestamp }) {
   return (
     <div>
       <div>
@@ -15,7 +11,7 @@ export default function ChatMessage({ sender, text }) {
         {text}
       </div>
       <div>
-        {time}
+        {timestamp}
       </div>
     </div>
   )
