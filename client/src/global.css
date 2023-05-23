@@ -72,6 +72,13 @@ body {
     color: var(--fontColor);
 }
 
+.dnoneLG {
+    display: block;
+}
+.dblockLG {
+    display: none;
+}
+
 @media (min-width: 768px) {
     :root {
         /*
@@ -99,5 +106,11 @@ body {
             Fonts
          */
         --normalSize: 20px;
+    }
+    .dnoneLG {
+        display: none;
+    }
+    .dblockLG {
+        display: block;
     }
 }

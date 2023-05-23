@@ -1,7 +1,23 @@
 import './tag.css'
-export default function Root(props) {
+import React, { useState } from 'react';
+
+function CheckboxButton(props) {
+    const [isChecked, setIsChecked] = useState(false);
+
+    const handleButtonClick = () => {
+        setIsChecked(!isChecked);
+    };
+
     return (
         <>
-            <button className={'tag '+props.size}>{props.name}</button>
+            <button
+                className={`tag ${isChecked ? 'checked' : ''}`}
+                onClick={handleButtonClick}
+            >
+                {props.name}
+            </button>
         </>
-    )};
+    );
+}
+
+export default CheckboxButton;

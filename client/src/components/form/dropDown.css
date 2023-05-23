@@ -22,3 +22,13 @@ select {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+@media (min-width: 1024px) {
+    select {
+        height: 64px;
+        font-size: 24px;
+    }
+    .dropdownArrow {
+        top: 55%;
+    }
+}

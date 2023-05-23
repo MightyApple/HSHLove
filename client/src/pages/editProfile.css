@@ -39,3 +39,23 @@ label {
 .formButton {
     margin: 80px 0 40px 0;
 }
+.tagSection {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+    label {
+        font-size: 24px;
+    }
+    .tagSection {
+        flex-direction: row;
+        gap: 14px;
+    }
+    .tagSection div {
+        flex: 1 1 0;
+    }
+    .tagSection hr {
+        flex: 0;
+    }
+}

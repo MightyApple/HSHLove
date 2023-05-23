@@ -6,9 +6,12 @@ hr {
 .small , .large {
     border-radius: 8px;
 }
-.verticle {
-    rotate: 90deg;
-}
 .small {
     width: 75%;
+}
+
+@media (min-width: 1000px) {
+    .verticle {
+        width: min-content;
+    }
 }

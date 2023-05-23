@@ -100,32 +100,36 @@ export default function Root() {
                     />
                 </div>
             </section>
-            <section className={'primaryContainer'}>
-                <label>Tags</label>
-                <div className={'tags'}>
-                    {tags.map((tag, index) => (
-                        <Tag key={index} name={tag}></Tag>
-                    ))}
+            <section className={'primaryContainer tagSection'}>
+                <div>
+                    <label>Tags</label>
+                    <div className={'tags'}>
+                        {tags.map((tag, index) => (
+                            <Tag key={index} name={tag}></Tag>
+                        ))}
+                    </div>
+                </div>
+                <Trenner class={"small verticle"}></Trenner>
+                <div>
+                    <label>Ich suche nach:</label>
+                    <div className={'tags'}>
+                        {prefs.map((pref, index) => (
+                            <Tag key={index} name={pref}></Tag>
+                        ))}
+                    </div>
                 </div>
             </section>
-            <Trenner class={"small"}></Trenner>
-            <section className={'primaryContainer'}>
-                <label>Ich suche nach:</label>
-                <div className={'tags'}>
-                    {prefs.map((pref, index) => (
-                        <Tag key={index} name={pref}></Tag>
-                    ))}
-                </div>
-            </section>
-            <Trenner class={"small"}></Trenner>
-            <section className={'primaryContainer'}>
+            <div className={'primaryContainer'}>
+                <Trenner class={"small"}></Trenner>
+            </div>
+            <section className={'primaryContainer tagSection'}>
                 <DropDown
                     label={"Ich studiere:"}
                     selectName={"studium"}
                     selectId={"studiumId"}
                     data={studiengaenge}
                 ></DropDown>
-                <Trenner class={"small"}></Trenner>
+                <Trenner class={"small dnoneLG"}></Trenner>
                 <DropDown
                     label={"Ich bin:"}
                     selectName={"geschlecht"}
@@ -133,8 +137,15 @@ export default function Root() {
                     data={geschlecht}
                 ></DropDown>
             </section>
+            <div className={'primaryContainer'}>
+                <Trenner class={"small dblockLG"}></Trenner>
+            </div>
             <section className={"primaryContainer"}>
-                <FormButton onClick={sendData} name={"Änderungen speichern"}></FormButton>
+                <div className={'primaryContainer'}>
+                    <div className={'primaryContainer'}>
+                        <FormButton onClick={sendData} name={"Änderungen speichern"}></FormButton>
+                    </div>
+                </div>
             </section>
         </>
     )};

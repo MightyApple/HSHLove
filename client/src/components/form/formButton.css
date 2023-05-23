@@ -13,3 +13,9 @@
     background-color: var(--primaryColorHover);
     cursor: pointer;
 }
+@media (min-width: 1024px) {
+    .formButton {
+        height: 70px;
+        font-size: 24px;
+    }
+}
