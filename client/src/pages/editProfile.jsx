@@ -7,7 +7,9 @@ import DropDown from '../components/form/dropDown'
 import Trenner from '../components/trenner'
 
 import './editProfile.css'
-export default function Root() {
+import FormText from "../components/form/formText";
+import LoginHead from "../components/loginHead";
+export default function Root(props) {
     const[data, setData]= React.useState("Log dich ein")
     const[description, setDescription]= React.useState("")
 
@@ -77,75 +79,92 @@ export default function Root() {
 
     
 
-    
 
-    return (
+    const mainElement =
         <>
-            <Navbar></Navbar>
-            
-            <section className={'imgForm'}>
-                {Array.from({ length: imgLoopCount }, (_, index) => (
-                    <ImgForm></ImgForm>
-                ))}
-            </section>
-            <section className={'primaryContainer'}>
-                <div className={'description'}>
-                    <label>Beschreibung:</label>
-                    <textarea
-                        name="description"
-                        placeholder='Erzähl etwas über dich'
-                        id="description"
-                        maxLength={maxLength}
-                        defaultValue={description}
-                    />
-                </div>
-            </section>
-            <section className={'primaryContainer tagSection'}>
-                <div>
-                    <label>Tags</label>
-                    <div className={'tags'}>
-                        {tags.map((tag, index) => (
-                            <Tag key={index} name={tag}></Tag>
-                        ))}
-                    </div>
-                </div>
-                <Trenner class={"small verticle"}></Trenner>
-                <div>
-                    <label>Ich suche nach:</label>
-                    <div className={'tags'}>
-                        {prefs.map((pref, index) => (
-                            <Tag key={index} name={pref}></Tag>
-                        ))}
-                    </div>
-                </div>
-            </section>
-            <div className={'primaryContainer'}>
-                <Trenner class={"small"}></Trenner>
+        <section className={'imgForm'}>
+            {Array.from({ length: imgLoopCount }, (_, index) => (
+                <ImgForm></ImgForm>
+            ))}
+        </section>
+        <section className={'primaryContainer'}>
+            <div className={'description'}>
+                <label>Beschreibung:</label>
+                <textarea
+                    name='description'
+                    placeholder='Erzähl etwas über dich'
+                    id='description'
+                    maxLength={maxLength}
+                    defaultValue={description}
+                />
             </div>
-            <section className={'primaryContainer tagSection'}>
-                <DropDown
-                    label={"Ich studiere:"}
-                    selectName={"studium"}
-                    selectId={"studiumId"}
-                    data={studiengaenge}
-                ></DropDown>
-                <Trenner class={"small dnoneLG"}></Trenner>
-                <DropDown
-                    label={"Ich bin:"}
-                    selectName={"geschlecht"}
-                    selectId={"geschlechtId"}
-                    data={geschlecht}
-                ></DropDown>
-            </section>
-            <div className={'primaryContainer'}>
-                <Trenner class={"small dblockLG"}></Trenner>
+        </section>
+        <section className={'primaryContainer tagSection'}>
+            <div>
+                <label>Tags</label>
+                <div className={'tags'}>
+                    {tags.map((tag, index) => (
+                        <Tag key={index} name={tag}></Tag>
+                    ))}
+                </div>
             </div>
-            <section className={"primaryContainer"}>
+            <Trenner class={'small verticle'}></Trenner>
+            <div>
+                <label>Ich suche nach:</label>
+                <div className={'tags'}>
+                    {prefs.map((pref, index) => (
+                        <Tag key={index} name={pref}></Tag>
+                    ))}
+                </div>
+            </div>
+        </section>
+        <div className={'primaryContainer'}>
+            <Trenner class={'small'}></Trenner>
+        </div>
+        <section className={'primaryContainer tagSection'}>
+            <DropDown
+                label={'Ich studiere:'}
+                selectName={'studium'}
+                selectId={'studiumId'}
+                data={studiengaenge}
+            ></DropDown>
+            <Trenner class={'small dnoneLG'}></Trenner>
+            <DropDown
+                label={'Ich bin:'}
+                selectName={'geschlecht'}
+                selectId={'geschlechtId'}
+                data={geschlecht}
+            ></DropDown>
+        </section>
+        <div className={'primaryContainer'}>
+            <Trenner class={'small dblockLG'}></Trenner>
+        </div>
+        <section className={'primaryContainer'}>
+            <div className={'primaryContainer'}>
                 <div className={'primaryContainer'}>
-                    <div className={'primaryContainer'}>
-                        <FormButton onClick={sendData} name={"Änderungen speichern"}></FormButton>
-                    </div>
+                    <FormButton onClick={sendData} name={'Änderungen speichern'}></FormButton>
                 </div>
-            </section>
-        </>
-    )};
+            </div>
+        </section>
+    </>;
+
+    if (props.first) {
+        return (
+            <>
+                <section className={'primaryContainer'}>
+                    <LoginHead></LoginHead>
+                    <FormText textID={'vorname'} lable={'Was ist dein Vorname?'} name={'vorname'} placeholder={'Vorname'} password={false}></FormText>
+                    <FormText textID={'geburtsdatum'} lable={'Wann hast du Geburtstag?'} name={'geburtstag'} placeholder={'Geburtsdatum'} password={false}></FormText>
+                </section>
+                {mainElement}
+            </>
+        );
+    } else {
+        return (
+            <>
+                <Navbar></Navbar>
+                {mainElement}
+            </>
+        );
+    }
+};
