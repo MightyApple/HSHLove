@@ -8,6 +8,7 @@ const mongoHSHLove = require("../mongodb")
 const session = require('express-session');
 const { Storage } = require("@google-cloud/storage");
 const Multer = require("multer");
+const MongoStore = require('connect-mongo');
 
 const router = express.Router();;
 router.use(express.json())
@@ -24,8 +25,13 @@ router.use(session({
   saveUninitialized: true,
   cookie: {
     sameSite: 'strict',
-  }
+  },
+  store: MongoStore.create({
+    mongoUrl: 'mongodb+srv://admin:pHscCtwkXMJeOCII@hshlove.5qisl3o.mongodb.net/HSHLove-Session',
+    autoRemove: 'native',
+  })
 }));
+
 
 //google bucket storage für die Bilder
 const gc = new Storage({

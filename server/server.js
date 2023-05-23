@@ -1,4 +1,5 @@
 const express = require('express')
+const cookieParser = require('cookie-parser');
 const { createServer } = require("http");
 const database = require('./database.js');
 const cors = require('cors');
@@ -6,8 +7,11 @@ const app = express();
 const path = require("path");
 const src = path.join(__dirname, "template");
 
+
+
 app.use(express.static(src));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors()); //damit der Client auf den Server zugreifen kann
 
@@ -26,7 +30,17 @@ httpServer.listen(port,()=>{
 const public_routes = [
   '/login',
   '/signup'
-]; 
+];
+
+app.use(function (req, res, next) {
+  // check if session exists
+  if (req.session.user) {
+    res.cookie('loggedIn', true);
+  } else {
+    res.cookie('loggedIn', false);
+  }
+  next();
+});
 
 app.use(function (req, res, next) { //middleware, die vor jedem request ausgeführt wird
   if (public_routes.includes(req.path)) { //wenn die route in der liste der public routes ist, dann wird die nächste middleware ausgeführt

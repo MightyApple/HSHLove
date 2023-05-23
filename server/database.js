@@ -1,3 +1,4 @@
+const mongoose=require("mongoose");
 const { userDataCollection, chatCollection } = require("./mongodb");
 
 async function findUser(username, password) {
@@ -52,7 +53,9 @@ async function addLikedUser(userID, likedUserID) {
     const match = await isMatched(likedUserID, userID); //checkt ob der user in der liked liste des anderen users ist
     if (match) {
         // await chatCollection.insertOne({ users: [userID, likedUserID] });
-        await chatCollection.create({ users: [userID, likedUserID] });
+        await chatCollection.create({
+            users: [userID, likedUserID]
+        });
         //openChat();
     }
     return match;
@@ -67,15 +70,35 @@ async function isMatched(likedUserID, userID) {
 
 async function getChats(userID) {
     // find all chats where userID is in users array & populate with users
-    //TODO: gucken ob populate funktioniert
-    const chats = await chatCollection.find({ users: userID }).populate("users").lean();
-    // const chats = await chatCollection.find({ users: userID }).lean();
+    const chats = await chatCollection.find({ users: userID })
+    .populate("users")
+    .populate("messageHistory.sentByUserID")
+    .lean(); 
     return chats;
 }
 
+async function getChat(userID, user2ID) {
+    // find all chats where userID & user2ID are in users array
+    const chat = await chatCollection.findOne({
+        users: { $all: [userID, user2ID] } // $all: [userID, user2ID] -> users array beinhaltet beide userIDs
+    }).lean();
+    return chat;
+}
+
+async function saveChatMessage(chatID, sender, content, timestamp) {
+    return chatCollection.updateOne({ _id: chatID }, { $push: {
+        messageHistory: {
+            sentByUserID: sender,
+            messageContent: content,
+            timeStamp: timestamp
+        }
+    } });
+}
+
+
 // chatCollection.create({ users: [
-//     "6462526b27aab938ff9cc107",
-//     "646671a0898c1986286eb8ec"
+//     '6462526b27aab938ff9cc107',
+//     '646671a0898c1986286eb8ec'
 // ] });
 
 module.exports = {
@@ -84,5 +107,7 @@ module.exports = {
     findUserByToken,
     addLikedUser,
     isMatched,
-    getChats
+    getChats,
+    saveChatMessage,
+    getChat
 };
