@@ -27,7 +27,7 @@ router.use(session({
     sameSite: 'strict',
   },
   store: MongoStore.create({
-    mongoUrl: 'mongodb+srv://admin:admin@hshlove.5qisl3o.mongodb.net/HSHLove-Session',
+    mongoUrl: 'mongodb+srv://admin:pHscCtwkXMJeOCII@hshlove.5qisl3o.mongodb.net/HSHLove-Session',
     autoRemove: 'native',
   })
 }));
