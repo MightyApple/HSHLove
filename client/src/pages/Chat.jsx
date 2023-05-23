@@ -19,7 +19,7 @@ export default function Chat({ chatMessages, receiver }) {
     socket.emit("message", {
       content: inputValue,
       to: receiver.userId,
-    });
+    },);
     // this.selectedUser.messages.push({
     //   content,
     //   fromSelf: true,
@@ -31,7 +31,7 @@ export default function Chat({ chatMessages, receiver }) {
   useEffect(() => {
     // nach unten scrollen
     window.scrollTo(0, document.body.scrollHeight);
-  }, []);
+  }, [chatMessages]);
 
   return (
     <>
