@@ -15,7 +15,8 @@ import Register from './pages/register';
 import EditProfile from './pages/editProfile'
 import ChatUserList from './pages/ChatUserList';
 import DebugRouter from './pages/debugRouter';
-import ErrorPage from "./error-page";
+import ErrorPage from './error-page';
+import MatchPage from './pages/matchPage'
 
 import { socket } from './components/socket';
 import { useState } from 'react';
@@ -136,7 +137,10 @@ function App() {
             path: "edit",
             element: <EditProfile />,
         },
-
+        {
+            path: "match",
+            element: <MatchPage />,
+        },
     ]);
 
     console.log("loggedIn: " + loggedIn);

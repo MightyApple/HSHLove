@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 export default function Root() {
     return (
         <>
@@ -7,7 +7,7 @@ export default function Root() {
                     <Link to={'chat'}>Chat</Link>
                 </li>
                 <li>
-                    <Link to={'homepage'}>Homepage</Link>
+                    <Link to={'homepage'}>Error</Link>
                 </li>
                 <li>
                     <Link to={'login'}>Login</Link>
@@ -20,6 +20,9 @@ export default function Root() {
                 </li>
                 <li>
                     <Link to={'edit'}>Profil bearbeiten</Link>
+                </li>
+                <li>
+                    <Link to={'match'}>Match Page</Link>
                 </li>
             </ul>
         </>

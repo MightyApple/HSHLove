@@ -1,12 +1,10 @@
 import './login.css'
-import logo from '../assets/logo.svg'
 
 import React from 'react'
 import FormText from '../components/form/formText'
 import FormButton from '../components/form/formButton'
 import LoginHead from '../components/loginHead'
 import {Link, Navigate} from "react-router-dom";
-import { useState } from 'react'
 export default function Root({ setLoggedIn }) {
     const[succes, setSucces]= React.useState(false)
     
