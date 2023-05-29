@@ -1,0 +1,116 @@
+.slider {
+    height: 72vh;
+    width: 100%;
+    padding: 0;
+}
+.slider .slick-dots {
+    bottom: 10px;
+}
+.slider div.content {
+    position: relative;
+}
+.slider div.content img {
+    height: 72vh;
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+.slider div.content ul {
+    position: absolute;
+    bottom: 40px;
+    left: 5px;
+    color: #BEBEBE;
+    text-shadow: 1px 0 0 #000, 0 0 0 #000, 0 1px 0 #000, 0 0 0 #000;
+    font-size: 20px;
+}
+.slider div.content ul .name {
+    font-size: 36px;
+    color: var(--white);
+    line-height: var(--lineHeight);
+}
+.slider div.content ul .age {
+    color: #BEBEBE;
+    font-size: 25px;
+}
+
+.matchButton {
+    height: 15vh;
+    width: 50%;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+#decline {
+    background-color: #F6C8C8;
+}
+#decline::before {
+    content: "";
+    display: block;
+    height: 10vh;
+    width: 10vh;
+    background-size: 10vh 10vh;
+    background-image: url("../assets/black-x-10353.svg");
+    background-repeat: no-repeat;
+    margin: 0 auto;
+}
+#accept {
+    background-color: #DDF6C8;
+}
+#accept::before {
+    content: "";
+    display: block;
+    height: 10vh;
+    width: 10vh;
+    background-size: 10vh 10vh;
+    background-image: url("../assets/check-symbol-4810.svg");
+    background-repeat: no-repeat;
+    margin: 0 auto;
+}
+.scrollUp img {
+    width: 100px;
+    height: auto;
+    margin: 0 auto;
+}
+.desc {
+    color: var(--fontColor);
+    font-size: var(--normalSize);
+    padding-bottom: 10px;
+}
+
+.tagSection .tagBox {
+    padding: 0 var(--containerPrimary);
+}
+.tagSection hr {
+    width: 100vw
+}
+
+@media (min-width: 1000px) {
+    .scrollUp {
+        display: none;
+    }
+    .tagSection .tagBox {
+        padding: 0 16px;
+    }
+
+    .desc {
+        color: var(--fontColor);
+        font-size: 24px;
+        padding-bottom: 10px;
+    }
+
+    .slider div.content ul {
+        position: absolute;
+        bottom: 40px;
+        left: 5px;
+        color: #BEBEBE;
+        text-shadow: 1px 0 0 #000, 0 0 0 #000, 0 1px 0 #000, 0 0 0 #000;
+        font-size: 24px;
+    }
+    .slider div.content ul .name {
+        font-size: 40px;
+        color: var(--white);
+        line-height: var(--lineHeight);
+    }
+    .slider div.content ul .age {
+        color: #BEBEBE;
+        font-size: 29px;
+    }
+}

@@ -11,8 +11,9 @@ function CheckboxButton(props) {
     return (
         <>
             <button
-                className={`tag ${isChecked ? 'checked' : ''}`}
+                className={props.class+` tag ${isChecked ? 'checked' : ''}`}
                 onClick={handleButtonClick}
+                disabled={props.disabled}
             >
                 {props.name}
             </button>

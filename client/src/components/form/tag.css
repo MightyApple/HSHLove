@@ -10,7 +10,7 @@
     font-weight: 800;
     line-height: var(--normalLineHeight);
 }
-.tag:hover, .tag.checked {
+.tag.hover:hover, .tag.checked {
     background: rgb(233, 168, 205);
 }
 

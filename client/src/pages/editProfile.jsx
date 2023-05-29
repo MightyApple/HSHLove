@@ -104,7 +104,7 @@ export default function Root(props) {
                 <label>Tags</label>
                 <div className={'tags'}>
                     {tags.map((tag, index) => (
-                        <Tag key={index} name={tag}></Tag>
+                        <Tag key={index} name={tag} disabled={false} class={'hover'}></Tag>
                     ))}
                 </div>
             </div>
@@ -113,7 +113,7 @@ export default function Root(props) {
                 <label>Ich suche nach:</label>
                 <div className={'tags'}>
                     {prefs.map((pref, index) => (
-                        <Tag key={index} name={pref}></Tag>
+                        <Tag key={index} name={pref} disabled={false} class={'hover'}></Tag>
                     ))}
                 </div>
             </div>
