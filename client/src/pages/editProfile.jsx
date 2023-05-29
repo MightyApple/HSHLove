@@ -73,9 +73,9 @@ export default function Root(props) {
     const tags = ['Gaming', 'Poker', 'Tiere', 'Hunde', 'Katzen', 'Essen', 'Camping', 'Wandern', 'Schlafen', 'Lesen', 'Tanzen', 'Party', 'Musik', 'Filme', 'Kochen', 'Kunst', 'Podcast', 'Singapur'] //TODO werden aus der Datenbank gezogen
     const prefs = ['männlich', 'weiblich', 'divers', 'Beziehungen', 'Freunden', 'ONS']
     const studiengaenge = ["AIS", "CVD", "BWL", "MBP"];
-    const geschlecht = ["männlich", "weiblich", "divers", "BWL"];
+    const geschlecht = ["männlich", "weiblich", "divers"];
     const maxLength = 250;
-    const imgLoopCount = 1;
+    const imgLoopCount = 2;
 
     
 
@@ -148,13 +148,13 @@ export default function Root(props) {
         </section>
     </>;
 
-    if (props.first) {
+    if (!props.first) {
         return (
             <>
                 <section className={'primaryContainer'}>
                     <LoginHead></LoginHead>
                     <FormText textID={'vorname'} lable={'Was ist dein Vorname?'} name={'vorname'} placeholder={'Vorname'} password={false}></FormText>
-                    <FormText textID={'geburtsdatum'} lable={'Wann hast du Geburtstag?'} name={'geburtstag'} placeholder={'Geburtsdatum'} password={false}></FormText>
+                    <FormText textID={'geburtsdatum'} lable={'Wann hast du Geburtstag?'} name={'geburtstag'} placeholder={'Geburtsdatum'} password={false} date={true}></FormText>
                 </section>
                 {mainElement}
             </>

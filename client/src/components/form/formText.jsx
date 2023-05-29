@@ -10,7 +10,10 @@ export default function Root(props) {
     let inputType = props.password && showPassword ? 'password' : 'text';
 
     if (!props.password) {
-        inputType = 'text'
+        inputType = 'text';
+    }
+    if (props.date) {
+        inputType = 'date';
     }
 
     function togglePassword() {
