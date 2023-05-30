@@ -4,3 +4,8 @@
 .formLogin .normalFontSize {
     padding: 29px 0 80px 0;
 }
+@media (max-width: 370px) {
+    .formLogin .bigHeadline {
+        font-size: 50px;
+    }
+}
