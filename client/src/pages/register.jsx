@@ -1,15 +1,13 @@
 import LoginHead from "../components/loginHead";
 import FormText from "../components/form/formText";
 import FormButton from "../components/form/formButton";
-import {Link, Navigate } from "react-router-dom";
+import {Link, Navigate, useNavigate } from "react-router-dom";
 import React from "react";
 
+
 export default function Root() {
-    
-    const[succes, setSucces]= React.useState(false)
-
-
-    
+    const navigate= useNavigate();
+    const[succes, setSucces]= React.useState(false);
     
     const submitForm = async ()=>{
         let email = document.getElementById("email");
@@ -21,7 +19,7 @@ export default function Root() {
             passwordwdh:passwordwdh.value
         }
         
-        const result = await fetch("/signup",{
+        const result = await fetch("/validateData",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -31,15 +29,14 @@ export default function Root() {
         const resData= await result.json()
         
         setSucces(resData.noError)
-        
-        
-        
     }
     
-    if(succes){return <Navigate to="/login"/> }
+    if(succes){
+        navigate('/edit', { state: { email: document.getElementById("email").value, password: document.getElementById("password").value } })
+    }
     
     
-    
+
     
     return (
         <>

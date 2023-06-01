@@ -41,10 +41,6 @@ const userDataSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    userID: {
-        type: String,
-        required: false
-    },
     intention: {
         type: String,
         enum: ["One-Night-Stand", "Beziehung", "Offenes"],
