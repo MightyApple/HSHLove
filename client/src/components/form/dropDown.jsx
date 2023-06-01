@@ -6,7 +6,7 @@ export default function Root(props) {
                 <label>{props.label}</label>
                 <select name={props.selectName} id={props.selectId}>
                     {props.data.map((item, index) => (
-                        <option value="item">{item}</option>
+                        <option value={item}>{item}</option>
                     ))}
                 </select>
                 <div className={"dropdownArrow"}>
