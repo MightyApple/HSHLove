@@ -51,7 +51,7 @@ const userDataSchema = new mongoose.Schema({
     },
     degree: {
         type: String,
-        enum: ["Angewandte Informatik und soziale Medien"]
+        enum: ["AIS","BWL"]
     },
     preference: {
         type: String,

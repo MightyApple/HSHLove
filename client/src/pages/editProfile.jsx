@@ -18,9 +18,12 @@ export default function Root(props) {
 
     const {state} = useLocation();
      // Read values passed on state
-    const { email, password } = state;
-    let mail= email;
-    let pass=password;
+    if(state!=null){
+        const { email, password } = state;
+        var mail= email;
+        var pass=password;
+    }
+    
     if(succes){
         navigate('/edit')
     }
