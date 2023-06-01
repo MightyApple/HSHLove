@@ -26,7 +26,7 @@ export default function Chat({ chatMessages, receiver }) {
     // });
 
     setInputValue('');
-  };
+  }
 
   useEffect(() => {
     // nach unten scrollen

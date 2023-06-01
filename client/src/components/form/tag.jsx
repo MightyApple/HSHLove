@@ -5,7 +5,9 @@ function CheckboxButton(props) {
     const [isChecked, setIsChecked] = useState(false);
 
     const handleButtonClick = () => {
-        setIsChecked(!isChecked);
+        if (props.class.includes('click')) {
+            setIsChecked(!isChecked);
+        }
     };
 
     return (

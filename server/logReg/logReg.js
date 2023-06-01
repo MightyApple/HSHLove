@@ -10,7 +10,7 @@ const { Storage } = require("@google-cloud/storage");
 const Multer = require("multer");
 const MongoStore = require('connect-mongo');
 
-const router = express.Router();;
+const router = express.Router();
 router.use(express.json())
 router.use(express.urlencoded({ extended: false }))
 

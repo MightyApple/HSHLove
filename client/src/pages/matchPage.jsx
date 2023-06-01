@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -13,6 +13,71 @@ import Trenner from '../components/trenner';
 import Tag from "../components/form/tag";
 
 function MatchPage() {
+    const [images, setImages] = useState([""]);
+    const [prefs, setPrefs] = useState(['ONS']);
+    const [tags, setTags] = useState(['Gaming', 'Poker', 'Tiere', 'Hunde', 'Katzen', 'Essen', 'Camping']);
+    const [desc, setDesc] = useState("Hi ich bin Getränkelieferant.");
+    const [name, setName] = useState("BBoi");
+    const [age, setAge] = useState(18);
+    const [studiengang, setStudiengang] = useState("Hää Sport");
+    const [semester, setSemester] = useState("9. Semester"); //TODO Semseter eintragbar machen
+    const [city, setCity] = useState("Bonn"); //TODO City STudiengang zuordnen
+
+    /**
+     * Rechnet aus, wie alt der Nutzer ist
+     * @param date
+     * @returns {number}
+     */
+    function birthday(date) {
+        const birthday = new Date(date);
+        const today = new Date();
+        let age = today.getFullYear() - birthday.getFullYear();
+
+        // Überprüfen, ob der Geburtstag bereits stattgefunden hat
+        if (
+            today.getMonth() < birthday.getMonth() ||
+            (today.getMonth() === birthday.getMonth() &&
+                today.getDate() < birthday.getDate())
+        ) {
+            // Reduziere das Alter um 1, wenn der Geburtstag noch nicht stattgefunden hat
+            age--;
+        }
+        return age;
+    }
+
+    async function fetchData() {
+        try {
+            const response = await fetch('/getProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                setDesc(result.data.description);
+                setStudiengang(result.data.degree);
+                setName(result.data.name);
+                setAge(birthday(result.data.birthday));
+                setTags(result.data.tags);
+                setPrefs(result.data.intention);
+                setImages(result.data.images)
+                console.log(result.data);
+            } else {
+                console.log('Error:', response.statusText);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+
+
     const isWideScreen = useMediaQuery({minWidth: 1000});
     const isMediumScreen = useMediaQuery({ minWidth: 426, maxWidth: 999 });
 
@@ -24,33 +89,23 @@ function MatchPage() {
         arrows: false
     };
 
-    if (isWideScreen) {
+    if (isWideScreen && images.length >= 3) {
         settings.slidesToShow = 3;
-    } else if (isMediumScreen) {
+    } else if (isMediumScreen && images.length >= 2) {
         settings.slidesToShow = 2;
     } else {
         settings.slidesToShow = 1;
     }
-
-    const images = 4; //TODO Hier werden alle Bilder nachher reingeladen
-    const prefs = ['Beziehungen']
-    const tags = ['Gaming', 'Poker', 'Tiere', 'Hunde', 'Katzen', 'Essen', 'Camping'];
-    const desc = "Hi ich bin Getränkelieferant.";
-    const name = "BBoi";
-    const age = 18;
-    const studiengang = "Hää Sport";
-    const semester = "9tes Semester";
-    const city = "Bonn";
 
     return (
         <>
             <Navbar></Navbar>
             <section className={'primaryContainer slider'}>
                 <Slider {...settings}>
-                    {Array.from({length: images}, (_, index) => (
-                        <div className={'content'}>
-                            <img src={selectedImage} alt="Bild 1"/>
-                            <ul className={'normalFontSize'}>
+                    {Array.from({length: images.length}, (_, index) => (
+                        <div key={index} className={'content'}>
+                            <img src={'https://storage.googleapis.com/profilbilder/'+images[index]} alt={"Bild "+index}/>
+                            <ul className={'normalFontSize visible'+index}>
                                 <li className={'name'}>{name} <span className={'age'}>{age}</span></li>
                                 <li>{studiengang}</li>
                                 <li>{semester}</li>
@@ -74,7 +129,7 @@ function MatchPage() {
                 <div className={'tagBox'}>
                     <div className={'tags'}>
                         {tags.map((tag, index) => (
-                            <Tag key={index} name={tag} disabled={false} class={'hover'}></Tag>
+                            <Tag key={index} name={tag} disabled={false} class={'b'}></Tag>
                         ))}
                     </div>
                 </div>
@@ -82,7 +137,7 @@ function MatchPage() {
                 <div className={'tagBox'}>
                     <div className={'tags'}>
                         {prefs.map((pref, index) => (
-                            <Tag key={index} name={pref} disabled={false} class={'hover'}></Tag>
+                            <Tag key={index} name={pref} disabled={false} class={'b'}></Tag>
                         ))}
                     </div>
                 </div>

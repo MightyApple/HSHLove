@@ -15,7 +15,7 @@
     object-fit: cover;
     object-position: top;
 }
-.slider div.content ul {
+.slider div.content ul.visible0 {
     position: absolute;
     bottom: 40px;
     left: 5px;
@@ -23,12 +23,12 @@
     text-shadow: 1px 0 0 #000, 0 0 0 #000, 0 1px 0 #000, 0 0 0 #000;
     font-size: 20px;
 }
-.slider div.content ul .name {
+.slider div.content ul.visible0 .name {
     font-size: 36px;
     color: var(--white);
     line-height: var(--lineHeight);
 }
-.slider div.content ul .age {
+.slider div.content ul.visible0 .age {
     color: #BEBEBE;
     font-size: 25px;
 }
@@ -96,7 +96,7 @@
         padding-bottom: 10px;
     }
 
-    .slider div.content ul {
+    .slider div.content ul.visible0 {
         position: absolute;
         bottom: 40px;
         left: 5px;
@@ -104,12 +104,12 @@
         text-shadow: 1px 0 0 #000, 0 0 0 #000, 0 1px 0 #000, 0 0 0 #000;
         font-size: 24px;
     }
-    .slider div.content ul .name {
+    .slider div.content ul.visible0 .name {
         font-size: 40px;
         color: var(--white);
         line-height: var(--lineHeight);
     }
-    .slider div.content ul .age {
+    .slider div.content ul.visible0 .age {
         color: #BEBEBE;
         font-size: 29px;
     }

@@ -45,10 +45,10 @@ const userDataSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    intention: {
+    intention: [{
         type: String,
         enum: ["One-Night-Stand", "Beziehung", "Offenes"],
-    },
+    }],
     gender: {
         type: String,
         enum: ["männlich", "weiblich", "divers"]
@@ -67,10 +67,10 @@ const userDataSchema = new mongoose.Schema({
             type: String
         }
     },
-    tags: {
+    tags: [{
         type: String,
         enum: ["Ich kenne noch nicht alle Tags die eingebunden werden müssen"]
-    }
+    }]
 })
 
 const messageSchema = new mongoose.Schema({
