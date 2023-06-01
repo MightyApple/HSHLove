@@ -1,8 +1,10 @@
 import FormButton from "../components/form/formButton";
 import logo from "../assets/logo.svg";
 import './startingPage.css'
+import { useLocation } from "react-router-dom";
 
 export default function Root() {
+    
     return (
         <>
             <section className={'startPage secondaryContainer'}>

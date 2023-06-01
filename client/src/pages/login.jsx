@@ -4,12 +4,13 @@ import React from 'react'
 import FormText from '../components/form/formText'
 import FormButton from '../components/form/formButton'
 import LoginHead from '../components/loginHead'
-import {Link, Navigate} from "react-router-dom";
+import {Link, Navigate, useNavigate} from "react-router-dom";
 export default function Root({ setLoggedIn }) {
+    const navigate = useNavigate();
     const[succes, setSucces]= React.useState(false)
     
     if(succes){
-        return <Navigate to="/edit"/>
+        navigate('/')
     }
     
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from '../components/navbar'
 import FormButton from "../components/form/formButton";
 import Tag from '../components/form/tag'
@@ -9,18 +9,59 @@ import Trenner from '../components/trenner'
 import './editProfile.css'
 import FormText from "../components/form/formText";
 import LoginHead from "../components/loginHead";
+import { useLocation, useNavigate } from 'react-router-dom';
 export default function Root(props) {
     const[data, setData]= React.useState("Log dich ein")
     const[description, setDescription]= React.useState("")
+    const navigate= useNavigate();
+    const[succes, setSucces]= React.useState(false)
 
+    const {state} = useLocation();
+     // Read values passed on state
+    if(state!=null){
+        const { email, password } = state;
+        var mail= email;
+        var pass=password;
+    }
     
+    if(succes){
+        navigate('/edit')
+    }
+
     React.useEffect(()=>{
         loadUserData()      
         loadImages()               
     },[])
+    
+    const submitForm = async ()=>{
+        let email = mail;
+        let password = pass;
+        let firstname = document.getElementById("vorname");
+        let birthdate = document.getElementById("geburtsdatum");
+        let description = document.getElementById("description");
+        let degree = document.getElementById("studiumId");
+        let gender = document.getElementById("geschlechtId");
 
-    function createImgs(imgs){
+        const data= {
+            email: email,
+            password: password,
+            firstname: firstname.value,
+            birthdate: birthdate.value,
+            description: description.value,
+            degree: degree.value,
+            gender: gender.value,
+        }
         
+        const result = await fetch("/signup",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        const resData= await result.json()
+        
+        setSucces(resData.noError)
     }
 
     async function loadImages(){
@@ -43,7 +84,7 @@ export default function Root(props) {
         setDescription(data.data.description)
    }
 
-    function sendData(){
+    /*function sendData(){
         let form=new FormData()
         form.append("description", document.getElementById("description").value)
 
@@ -65,7 +106,7 @@ export default function Root(props) {
         })
         
         
-    }
+    }*/
    
 
 
@@ -142,7 +183,7 @@ export default function Root(props) {
         <section className={'primaryContainer'}>
             <div className={'primaryContainer'}>
                 <div className={'primaryContainer'}>
-                    <FormButton onClick={sendData} name={'Änderungen speichern'}></FormButton>
+                    <FormButton onClick={submitForm} name={'Änderungen speichern'}></FormButton>
                 </div>
             </div>
         </section>

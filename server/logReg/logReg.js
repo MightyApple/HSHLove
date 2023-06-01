@@ -102,29 +102,26 @@ router.get("/personalSpace", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
   try {
-
-    const { email, password, passwordwdh } = req.body;
-    const user = await mongoHSHLove.userDataCollection.findOne({
+    const { email, password, firstname, birthdate, description, degree, gender } = req.body;
+    console.log("data: " +email, password, firstname, birthdate, description, degree, gender)
+    console.log("passwort hashen")
+    const hash = await bcrypt.hash(password, 10)
+    const data = {
       email: email,
-    })
-    console.log(user)
-    if (user == null && password == passwordwdh) {
-      console.log("passwort hashen")
-      const hash = await bcrypt.hash(password, 10)
-      const data = {
-        email: email,
-        password: hash
-      }
-
-      const t = await mongoHSHLove.userDataCollection.insertMany([data]);
-      console.log(t)
-      res.send({noError:true})
-      //alles nach der eingabe in die datenbank wird hiernach ausgeführt
-      console.log("schau in die DB")
-    } else {
-      //Fehler wenn nutzerbereits existiert und passwörter nicht stimmen
-      res.send({noError:false});
+      password: hash,
+      name: firstname,
+      birthday: birthdate,
+      description: description,
+      degree: degree,
+      gender: gender,
     }
+
+    const t = await mongoHSHLove.userDataCollection.insertMany([data]);
+    console.log(t)
+    res.send({noError:true})
+    //alles nach der eingabe in die datenbank wird hiernach ausgeführt
+    console.log("schau in die DB")
+    
   } catch (e) {
     console.log(e)
     res.status(500).send("something broke in the registration")
@@ -288,6 +285,24 @@ router.get("/getImages", async (req, res) => {
   }
 });
 
+router.post("/validateData", async (req, res) => {
+  try {
+    const { email, password, passwordwdh } = req.body;
+    const user = await mongoHSHLove.userDataCollection.findOne({
+      email: email,
+    })
+    console.log(user)
+    if (user == null && password == passwordwdh) {
+      res.send({noError:true})
+    } else {
+      //Fehler wenn nutzerbereits existiert und passwörter nicht stimmen
+      res.send({noError:false});
+    }
+  } catch (e) {
+    console.log(e)
+    res.status(500).send("something broke in the registration")
+  }
+})
 
 
 
