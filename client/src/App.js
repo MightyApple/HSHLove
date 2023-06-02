@@ -80,6 +80,10 @@ function App() {
             setChatMessages(messages);
         });
 
+        socket.on("newMatch", (user) => {
+            setMatchedUsers((matchedUsers) => [...matchedUsers, user]);
+        });
+
     
         // socket.on("User connected", (user) => {
         //     console.log("User connected: " + user);

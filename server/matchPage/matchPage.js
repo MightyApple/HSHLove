@@ -75,10 +75,14 @@ router.post("/likeProfile", async (req, res) => {
 
         const result = await mongoHSHLove.userDataCollection.updateOne(filter, update);
         console.log(result);
-        res.send({ noError: true });
-        console.log("Schau in die DB");
 
-        await addLikedUser(data.myId, data._id);
+        const match = await addLikedUser(data.myId, data._id);
+
+        res.send({
+            noError: true,
+            match
+        });
+        console.log("Schau in die DB");
 
     } catch (e) {
         console.log(e);

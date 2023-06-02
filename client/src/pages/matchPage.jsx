@@ -12,6 +12,8 @@ import Navbar from '../components/navbar';
 import Trenner from '../components/trenner';
 import Tag from "../components/form/tag";
 
+import { socket } from '../components/socket';
+
 function MatchPage() {
     const [id, setId] = useState([""]);
     const [images, setImages] = useState([""]);
@@ -102,6 +104,17 @@ function MatchPage() {
             });
 
             if (response.ok) {
+                var { match } = await response.json();
+
+                if (match) {
+                    console.log("Match");
+                    // { _id: id, myId: myId}
+                    socket.emit('newMatch', {
+                        matchId: data._id,
+                    });
+                } else {
+                    console.log("No Match");
+                }
                 //Neues Profil laden
                 fetchData();
                 //console.log(result.data);

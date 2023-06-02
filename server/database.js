@@ -46,9 +46,20 @@ async function findUserByToken(token) {
     }
 }
 
-async function addLikedUser(userID, likedUserID) {
+async function findUserByID(userID) {
+    try {
+        const user = await userDataCollection.findOne({ _id: userID }).lean();
+        if (!user) {
+            throw new Error('Invalid userID');
+        }
 
-    // TODO: like user
+        return user;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function addLikedUser(userID, likedUserID) {
 
     const match = await isMatched(likedUserID, userID); //checkt ob der user in der liked liste des anderen users ist
     if (match) {
@@ -56,15 +67,13 @@ async function addLikedUser(userID, likedUserID) {
         await chatCollection.create({
             users: [userID, likedUserID]
         });
-        //openChat();
     }
     return match;
 }
 
-
 async function isMatched(likedUserID, userID) {
     const likedUser = await userDataCollection.findOne({ _id: likedUserID }).lean();
-    const match = likedUser.likes.includes(userID); //checkt ob der user in der liked liste des anderen users ist
+    const match = likedUser.liked.includes(userID); //checkt ob der user in der liked liste des anderen users ist
     return match
 }
 
@@ -105,6 +114,7 @@ module.exports = {
     findUser,
     findUsernameByToken,
     findUserByToken,
+    findUserByID,
     addLikedUser,
     isMatched,
     getChats,

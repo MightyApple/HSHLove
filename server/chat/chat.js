@@ -52,6 +52,7 @@ function chatInitialisieren(io) {
 
                 chat.messageHistory.forEach((message) => {
                     messages.push({
+                        receiverId: otherUser._id,
                         sender: message.sentByUserID.email, // TODO: wenns in der DB ist, dann message.sendByUserID.username
                         content: message.messageContent,
                         timestamp: message.timeStamp
@@ -97,6 +98,22 @@ function chatInitialisieren(io) {
             database.getChat(socket._id, to).then((chat) => {
                 var chatID = chat._id;
                 database.saveChatMessage(chatID, socket._id, content, timestamp);
+            });
+        });
+
+        socket.on("newMatch", async ({ matchId }) => {
+            console.log("new match received");
+            // match chatroom zum client hinzufügen
+            var otherUser = await database.findUserByID(matchId);
+            socket.emit("newMatch", {
+                userId: otherUser._id,
+                username: otherUser.email, // TODO: wenns in der DB ist, dann otherUser.username
+            });
+
+            // match chatroom zum anderen user hinzufügen
+            socket.to(matchId).emit("newMatch", {
+                userId: socket._id,
+                username: socket.email, // TODO: wenns in der DB ist, dann socket.username
             });
         });
 

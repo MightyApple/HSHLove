@@ -5,24 +5,16 @@ import Navbar from '../components/navbar';
 
 export default function ChatUserList({ chatMessages, matchedUsers }) {
     const [selectedUser, setSelectedUser] = useState(null);
-    // const [users, setUsers] = useState([ // TODO: DB Abfrage ob Match vorhanden ist, wenn ja dann wird der User in die Liste eingefügt
-    //     { userId: 1, username: "Max" },
-    //     { userId: 2, username: "Moritz" },
-    //     { userId: 3, username: "Peter" },
-    //     { userId: 4, username: "Hans" },
-    // ]);
-    
-    // fetch ('/getUserMatches').then(response => response.json()).then(data => { //data ist das was der Server zurückgibt, also den Beispielnamen Max
-    //     console.log(data);
-    //     return data; //returned von der fetch Funktion den Usernamen
-    //     });
+
+
+    var selectedUserMessages = chatMessages.filter((message) => message.receiverId === selectedUser?.userId); // filtert alle Nachrichten, die an den ausgewählten User gesendet wurden
 
     if (selectedUser) { // wenn ein user ausgewählt wurde, dann wird der Chat gerendert
         return (
             <>
                 <Navbar></Navbar>
                 <button onClick={() => setSelectedUser(null)}>Back</button>	
-                <Chat chatMessages={chatMessages} receiver={selectedUser}></Chat>
+                <Chat chatMessages={selectedUserMessages} receiver={selectedUser}></Chat>
             </>
         )
     }
