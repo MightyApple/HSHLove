@@ -25,6 +25,7 @@ function MatchPage() {
     const [city, setCity] = useState("Bonn"); //TODO City STudiengang zuordnen
 
     const [myId, setMyId] = useState("");
+    const [myTags, setMyTags] = useState("");
 
     /**
      * Rechnet aus, wie alt der Nutzer ist
@@ -79,7 +80,8 @@ function MatchPage() {
     async function getUser() {
         return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
                 setMyId(data._id);
-                return data; //returned von der fetch Funktion den ganzen User
+                setMyTags(data.tags);
+                console.log(data)
             }
         );
     }

@@ -9,6 +9,7 @@ const session = require('express-session');
 const { Storage } = require("@google-cloud/storage");
 const Multer = require("multer");
 const MongoStore = require('connect-mongo');
+const {addLikedUser} = require("../database");
 
 const router = express.Router();
 router.use(express.json())
@@ -76,6 +77,8 @@ router.post("/likeProfile", async (req, res) => {
         console.log(result);
         res.send({ noError: true });
         console.log("Schau in die DB");
+
+        await addLikedUser(data.myId, data._id);
 
     } catch (e) {
         console.log(e);
