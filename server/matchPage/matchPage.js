@@ -51,6 +51,40 @@ router.post("/getProfile", async (req, res) => {
     }
 })
 
+router.post("/likeProfile", async (req, res) => {
+    console.log("ANGEKOMMEN!!!!!!");
+    try {
+        const data = req.body;
+        console.log("data: " + data._id);
+        console.log("data2: " + data.myId);
+
+        const filter = { _id: data.myId };
+        const user = await mongoHSHLove.userDataCollection.findOne(filter);
+
+        // Überprüfen, ob der Wert bereits im Array vorhanden ist
+        if (user && user.liked.includes(data._id)) {
+            console.log("Der Wert ist bereits im Array vorhanden.");
+            res.send({ noError: true });
+            return;
+        }
+
+        const update = {
+            $push: { liked: data._id }
+        };
+
+        const result = await mongoHSHLove.userDataCollection.updateOne(filter, update);
+        console.log(result);
+        res.send({ noError: true });
+        console.log("Schau in die DB");
+
+    } catch (e) {
+        console.log(e);
+        res.status(500).send("Something broke in the registration");
+    }
+});
+
+
+
 module.exports = {
     router,
 }

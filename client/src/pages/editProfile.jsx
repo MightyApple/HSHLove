@@ -189,7 +189,7 @@ export default function Root(props) {
         </section>
     </>;
 
-    if (!props.first) {
+    if (props.first) {
         return (
             <>
                 <section className={'primaryContainer'}>

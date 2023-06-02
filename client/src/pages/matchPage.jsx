@@ -13,6 +13,7 @@ import Trenner from '../components/trenner';
 import Tag from "../components/form/tag";
 
 function MatchPage() {
+    const [id, setId] = useState([""]);
     const [images, setImages] = useState([""]);
     const [prefs, setPrefs] = useState(['ONS']);
     const [tags, setTags] = useState(['Gaming', 'Poker', 'Tiere', 'Hunde', 'Katzen', 'Essen', 'Camping']);
@@ -22,6 +23,8 @@ function MatchPage() {
     const [studiengang, setStudiengang] = useState("Hää Sport");
     const [semester, setSemester] = useState("9. Semester"); //TODO Semseter eintragbar machen
     const [city, setCity] = useState("Bonn"); //TODO City STudiengang zuordnen
+
+    const [myId, setMyId] = useState("");
 
     /**
      * Rechnet aus, wie alt der Nutzer ist
@@ -56,6 +59,7 @@ function MatchPage() {
 
             if (response.ok) {
                 const result = await response.json();
+                setId(result.data._id);
                 setDesc(result.data.description);
                 setStudiengang(result.data.degree);
                 setName(result.data.name);
@@ -63,7 +67,7 @@ function MatchPage() {
                 setTags(result.data.tags);
                 setPrefs(result.data.intention);
                 setImages(result.data.images)
-                console.log(result.data);
+                console.log(result.data._id);
             } else {
                 console.log('Error:', response.statusText);
             }
@@ -72,9 +76,40 @@ function MatchPage() {
         }
     }
 
+    async function getUser() {
+        return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
+                setMyId(data._id);
+                return data; //returned von der fetch Funktion den ganzen User
+            }
+        );
+    }
+
     useEffect(() => {
+        getUser();
         fetchData();
     }, []);
+
+    async function likeProfile(data) {
+        try {
+            const response = await fetch('/likeProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                //Neues Profil laden
+                fetchData();
+                //console.log(result.data);
+            } else {
+                console.log('Error:', response.statusText);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
 
 
 
@@ -97,6 +132,9 @@ function MatchPage() {
         settings.slidesToShow = 1;
     }
 
+
+    console.log("myID "+ myId)
+
     return (
         <>
             <Navbar></Navbar>
@@ -117,7 +155,7 @@ function MatchPage() {
             </section>
             <div>
                 <button className={'matchButton'} id={'decline'}></button>
-                <button className={'matchButton'} id={'accept'}></button>
+                <button className={'matchButton'} id={'accept'} onClick={() => likeProfile({ _id: id, myId: myId})}></button>
             </div>
             <a className={'scrollUp'} href={'#'}>
                 <img src={scrollUp} alt={'scrollUp'}/>
