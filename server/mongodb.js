@@ -107,6 +107,6 @@ const courseSchema = new mongoose.Schema({
 const userDataCollection = new mongoose.model("Nutzerdaten", userDataSchema);
 const chatCollection = new mongoose.model("chatroom", messageSchema);
 const tagCollection = new mongoose.model("tag", tagSchema);
-const courseCollection = new mongoose.model("studiengang", courseSchema);
+const courseCollection = new mongoose.model("studiengangs", courseSchema);
 
 module.exports = { userDataCollection, chatCollection, tagCollection, courseCollection }

@@ -139,7 +139,7 @@ export default function Root(props) {
                 const result = await response.json();
                 console.log("Studiengänge");
                 console.log(result);
-                //setStudiengaenge(result.data); TODO Wenn die Studiengänge nicht mehr leer sind, soll das rein.
+                setStudiengaenge(result.data);
             } else {
                 console.log('Error:', response.statusText);
             }
@@ -155,9 +155,13 @@ export default function Root(props) {
 
 
     const [tags, setTags] = useState([{name: "test"}]);
-    const [studiengaenge, setStudiengaenge] = useState(["test"]);
-    const prefs = ['männlich', 'weiblich', 'divers', 'Beziehungen', 'Freunden', 'ONS']
-    const geschlecht = ["männlich", "weiblich", "divers"];
+    const [studiengaenge, setStudiengaenge] = useState([{name: "test", _id: "test"}]);
+    const prefs = ['männlich', 'weiblich', 'divers', 'Beziehungen', 'Freunden', 'ONS'];
+    const geschlecht = [
+        {name: "männlich", _id: "männlich"},
+        {name: "weiblich", _id: "weiblich"},
+        {name: "divers", _id: "divers"}
+    ];
     const maxLength = 250;
     const imgLoopCount = 6;
 
