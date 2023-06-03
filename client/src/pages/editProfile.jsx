@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from '../components/navbar'
 import FormButton from "../components/form/formButton";
 import Tag from '../components/form/tag'
@@ -107,13 +107,56 @@ export default function Root(props) {
         
         
     }*/
-   
+
+    async function fetchData() {
+        try {
+            const response = await fetch('/getTags', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                setTags(result.data);
+            } else {
+                console.log('Error:', response.statusText);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+
+        try {
+            const response = await fetch('/getDegree', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log("Studiengänge");
+                console.log(result);
+                //setStudiengaenge(result.data); TODO Wenn die Studiengänge nicht mehr leer sind, soll das rein.
+            } else {
+                console.log('Error:', response.statusText);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
 
 
-    const tags = ['Gaming', 'Poker', 'Tiere', 'Hunde', 'Katzen', 'Essen', 'Camping', 'Wandern', 'Schlafen', 'Lesen', 'Tanzen', 'Party', 'Musik', 'Filme', 'Kochen', 'Kunst', 'Podcast', 'Singapur'] //TODO werden aus der Datenbank gezogen
+    const [tags, setTags] = useState([{name: "test"}]);
+    const [studiengaenge, setStudiengaenge] = useState(["test"]);
     const prefs = ['männlich', 'weiblich', 'divers', 'Beziehungen', 'Freunden', 'ONS']
-    const studiengaenge = ["AIS", "CVD", "BWL", "MBP"];
     const geschlecht = ["männlich", "weiblich", "divers"];
     const maxLength = 250;
     const imgLoopCount = 6;
@@ -125,7 +168,7 @@ export default function Root(props) {
         <>
         <section className={'imgForm'}>
             {Array.from({ length: imgLoopCount }, (_, index) => (
-                <ImgForm></ImgForm>
+                <ImgForm key={index}></ImgForm>
             ))}
         </section>
         <section className={'primaryContainer'}>
@@ -145,7 +188,7 @@ export default function Root(props) {
                 <label>Tags</label>
                 <div className={'tags'}>
                     {tags.map((tag, index) => (
-                        <Tag key={index} name={tag} disabled={false} class={'hover click'}></Tag>
+                        <Tag key={index} name={tag.name} id={tag._id} disabled={false} class={'hover click'}></Tag>
                     ))}
                 </div>
             </div>

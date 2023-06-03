@@ -53,7 +53,6 @@ router.post("/getProfile", async (req, res) => {
 })
 
 router.post("/likeProfile", async (req, res) => {
-    console.log("ANGEKOMMEN!!!!!!");
     try {
         const data = req.body;
         console.log("data: " + data._id);
@@ -90,6 +89,37 @@ router.post("/likeProfile", async (req, res) => {
     }
 });
 
+
+router.post("/getTags", async (req, res) => {
+    try {
+        const user = await mongoHSHLove.tagCollection.find({});
+        console.log(user)
+
+        req.session.currentUser = user;
+
+        res.json({data:req.session.currentUser})
+
+    } catch (e) {
+        console.log(e)
+        res.status(500).send("something broke in the registration")
+    }
+})
+
+router.post("/getDegree", async (req, res) => {
+    try {
+        const user = await mongoHSHLove.courseCollection.find({});
+        console.log("Studiengänge")
+        console.log(user)
+
+        req.session.currentUser = user;
+
+        res.json({data:req.session.currentUser})
+
+    } catch (e) {
+        console.log(e)
+        res.status(500).send("something broke in the registration")
+    }
+})
 
 
 module.exports = {

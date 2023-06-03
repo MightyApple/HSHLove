@@ -93,13 +93,20 @@ const messageSchema = new mongoose.Schema({
 })
 
 const tagSchema = new mongoose.Schema({
-    name: [{
+    name: {
         type: String
-    }],
+    },
+})
+
+const courseSchema = new mongoose.Schema({
+    name: {
+        type: String
+    },
 })
 
 const userDataCollection = new mongoose.model("Nutzerdaten", userDataSchema);
 const chatCollection = new mongoose.model("chatroom", messageSchema);
 const tagCollection = new mongoose.model("tag", tagSchema);
+const courseCollection = new mongoose.model("studiengang", courseSchema);
 
-module.exports = { userDataCollection, chatCollection, tagCollection }
+module.exports = { userDataCollection, chatCollection, tagCollection, courseCollection }

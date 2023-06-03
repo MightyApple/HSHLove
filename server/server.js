@@ -69,7 +69,7 @@ app.get('/getUsername', (req, res) => {
 })
 
 app.get('/getUser', (req, res) => {
-  console.log("TEST "+req.session.user);
+  console.log(req.session.user);
   res.send(req.session.user);
 });
 
