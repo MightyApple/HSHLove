@@ -40,11 +40,26 @@ router.post("/getProfile", async (req, res) => {
         const user = await mongoHSHLove.userDataCollection.findOne({
             email: email,
         })
-        console.log(user)
+        console.log("!_----------_!")
+        console.log(user.degree)
+
+        const degree = await mongoHSHLove.courseCollection.findOne({
+            _id: user.degree,
+        })
+
+        let tags = [];
+        for (let i in user.tags) {
+            tags.push(await mongoHSHLove.tagCollection.findOne({
+                _id: user.tags[i],
+            }) )
+        }
+        console.log(tags)
 
         req.session.currentUser = user;
+        req.session.currentDegree = degree;
+        req.session.currentTags = tags;
 
-        res.json({data:req.session.currentUser})
+        res.json({data:req.session.currentUser, degree:req.session.currentDegree, tag:req.session.currentTags})
 
     } catch (e) {
         console.log(e)

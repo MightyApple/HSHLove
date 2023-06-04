@@ -18,7 +18,7 @@ function MatchPage() {
     const [id, setId] = useState([""]);
     const [images, setImages] = useState([""]);
     const [prefs, setPrefs] = useState(['ONS']);
-    const [tags, setTags] = useState(['Gaming', 'Poker', 'Tiere', 'Hunde', 'Katzen', 'Essen', 'Camping']);
+    const [tags, setTags] = useState([{name: "test"}]);
     const [desc, setDesc] = useState("Hi ich bin Getränkelieferant.");
     const [name, setName] = useState("BBoi");
     const [age, setAge] = useState(18);
@@ -64,13 +64,14 @@ function MatchPage() {
                 const result = await response.json();
                 setId(result.data._id);
                 setDesc(result.data.description);
-                setStudiengang(result.data.degree);
+                setStudiengang(result.degree.name);
+                setCity(result.degree.campus);
                 setName(result.data.name);
                 setAge(birthday(result.data.birthday));
-                setTags(result.data.tags);
+                setTags(result.tag);
                 setPrefs(result.data.intention);
-                setImages(result.data.images)
-                console.log(result.data._id);
+                setImages(result.data.images);
+                console.log(result.tag);
             } else {
                 console.log('Error:', response.statusText);
             }
@@ -182,7 +183,7 @@ function MatchPage() {
                 <div className={'tagBox'}>
                     <div className={'tags'}>
                         {tags.map((tag, index) => (
-                            <Tag key={index} name={tag} disabled={false} class={'b'}></Tag>
+                            <Tag key={index} name={tag.name} disabled={false} class={'b'}></Tag>
                         ))}
                     </div>
                 </div>
