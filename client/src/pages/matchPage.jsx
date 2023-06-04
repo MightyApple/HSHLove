@@ -26,8 +26,8 @@ function MatchPage() {
     const [semester, setSemester] = useState("9. Semester"); //TODO Semseter eintragbar machen
     const [city, setCity] = useState("Bonn"); //TODO City STudiengang zuordnen
 
-    const [myId, setMyId] = useState("");
-    const [myTags, setMyTags] = useState("");
+    const [currentUserId, setCurrentUserId] = useState("");
+    const [currentUserTags, setcurrentUserTags] = useState("");
 
     /**
      * Rechnet aus, wie alt der Nutzer ist
@@ -51,7 +51,11 @@ function MatchPage() {
         return age;
     }
 
-    async function fetchData() {
+    /**
+     * Gibt den Nutzer zurück, welcher aktuell vorgeschlagen wird
+     * @returns {Promise<void>}
+     */
+    async function getUserData() {
         try {
             const response = await fetch('/getProfile', {
                 method: 'POST',
@@ -80,18 +84,22 @@ function MatchPage() {
         }
     }
 
-    async function getUser() {
+    /**
+     * Gibt den aktuell angemeldeten Nutzer zurück
+     * @returns {Promise<any>}
+     */
+    async function getCurrentUser() {
         return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
-                setMyId(data._id);
-                setMyTags(data.tags);
+                setCurrentUserId(data._id);
+                setcurrentUserTags(data.tags);
                 console.log(data)
             }
         );
     }
 
     useEffect(() => {
-        getUser();
-        fetchData();
+        getCurrentUser();
+        getUserData();
     }, []);
 
     async function likeProfile(data) {
@@ -109,7 +117,7 @@ function MatchPage() {
 
                 if (match) {
                     console.log("Match");
-                    // { _id: id, myId: myId}
+                     //{ _id: id, currentUserId: currentUserId}
                     socket.emit('newMatch', {
                         matchId: data._id,
                     });
@@ -117,7 +125,7 @@ function MatchPage() {
                     console.log("No Match");
                 }
                 //Neues Profil laden
-                fetchData();
+                getUserData();
                 //console.log(result.data);
             } else {
                 console.log('Error:', response.statusText);
@@ -149,7 +157,6 @@ function MatchPage() {
     }
 
 
-    console.log("myID "+ myId)
 
     return (
         <>
@@ -171,7 +178,7 @@ function MatchPage() {
             </section>
             <div>
                 <button className={'matchButton'} id={'decline'}></button>
-                <button className={'matchButton'} id={'accept'} onClick={() => likeProfile({ _id: id, myId: myId})}></button>
+                <button className={'matchButton'} id={'accept'} onClick={() => likeProfile({ _id: id, currentUserId: currentUserId})}></button>
             </div>
             <a className={'scrollUp'} href={'#'}>
                 <img src={scrollUp} alt={'scrollUp'}/>
