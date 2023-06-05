@@ -76,13 +76,25 @@ router.get("/personalSpace", async (req, res) => {
     }
   }
 })
-
+function stringToArray(string){
+  try{
+    var array = string.split(",")
+    return array
+  }catch(e){
+    return string
+  }
+  
+  
+}
 router.post("/signup", multer.fields([{name:"images", maxCount: 6}]),async (req, res) => {
   try {
     
     const incomingData = req.body;
     //console.log("data: " +incomingData.email, incomingData.password, incomingData.firstname, incomingData.birthdate, incomingData.description, incomingData.degree, incomingData.gender, incomingData.intention, incomingData.tags, incomingData.preference)
     //console.log("passwort hashen")
+    let tagsArr=stringToArray(incomingData.tags)
+    let prefArr=stringToArray(incomingData.preference)
+    let intentArr=stringToArray(incomingData.intention)
     const hash = await bcrypt.hash(incomingData.password, 10)
     const data = {
       email: incomingData.email,
@@ -92,9 +104,9 @@ router.post("/signup", multer.fields([{name:"images", maxCount: 6}]),async (req,
       description: incomingData.description,
       degree: incomingData.degree,
       gender: incomingData.gender,
-      intention: incomingData.intention,
-      tags: incomingData.tags,
-      preference: incomingData.preference,
+      intention: intentArr,
+      tags: tagsArr,
+      preference: prefArr,
     }
     
     const t = await mongoHSHLove.userDataCollection.insertMany([data]).then(()=>{
@@ -156,7 +168,7 @@ function prepareImage(img, imgNr,uId){
 
       } else {
 
-        throw "error with img";
+        
       }
     } catch (error) {
       console.log(error)
@@ -217,25 +229,19 @@ router.get("/upload", async (req, res) => {
   }
 });
 
-router.post("/updateProfile", multer.single("imgfile"), async (req, res) => {
+router.post("/updateProfile", multer.fields([{name:"images", maxCount: 6}]), async (req, res) => {
   try {
     let newFile
     let imgNr;
 
-    console.log(req.session.user)
     const uId = req.session.user._id
-    var { name, birthday, description, password } = req.body;
-
-
 
     const user = await mongoHSHLove.userDataCollection.findOne({
       _id: uId,
     })
     
-
     if (user) {
       try {
-
         //Datenbankeintrag 'images' letzte nummer rausfinden und um 1 erhöhen
         if (user.toJSON().images.length === 0) {
           imgNr = 1
@@ -257,27 +263,29 @@ router.post("/updateProfile", multer.single("imgfile"), async (req, res) => {
             const blobStream = blob.createWriteStream();
             
             blobStream.end(newFile.buffer);
-
           } else {
-
-            throw "error with img";
+            
           }
         } catch (error) {
           console.log(error)
         }
-
       } catch (error) {
-
         res.status(500).send(error);
       }
+
       try {
-
+        const incomingData = req.body;
+        let tagsArr=stringToArray(incomingData.tags)
+        let prefArr=stringToArray(incomingData.preference)
+        let intentArr=stringToArray(incomingData.intention)
         const data = {
-          name: name,
-          birthday: birthday,
-          description: description,
+          description: incomingData.description,
+          degree: incomingData.degree,
+          gender: incomingData.gender,
+          intention: intentArr,
+          tags: tagsArr,
+          preference: prefArr,
         }
-
 
         if (req.file) {
           var userUpdate= await mongoHSHLove.userDataCollection.findOneAndUpdate({ "_id": uId }, { $set: data, $push: { images: newFile.originalname } })

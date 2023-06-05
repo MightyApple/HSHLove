@@ -14,6 +14,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Root(props) {
     const[description, setDescription]= React.useState("")
+    const[userTags,setUserTags]=React.useState();
     const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false)
 
@@ -26,15 +27,50 @@ export default function Root(props) {
     if(succes){navigate("/login")}
 
     React.useEffect(()=>{
+       
+        fetchData() 
         if(!props.first){
             loadUserData()      
             loadImages()
-        } 
-        fetchData()                  
+        }                 
     },[])
     
-    const submitForm = async ()=>{
-        let data
+   
+
+    const updateForm= async ()=>{
+        let formData = new FormData();
+        let imgs = document.getElementsByClassName("img")
+        
+        let description = document.getElementById("description");
+        let degree = document.getElementById("studiumId");
+        let gender = document.getElementById("geschlechtId");
+        let prefTags = getPrefTags();
+        let likingTags= getLikingTags();
+        let intentTags = getIntentionTags();
+        
+        formData.append("description", description.value)
+        formData.append("degree", degree.value)
+        formData.append("gender", gender.value)
+        formData.append("intention", intentTags)
+        formData.append("tags", likingTags)
+        formData.append("preference", prefTags)
+
+        for(let i=0;i<imgs.length;i++){
+            if(imgs[i].files[0]!==undefined){
+                formData.append("images",imgs[i].files[0] );
+            }
+        }  
+
+        const result = await fetch("/updateProfile",{
+            method: 'POST',
+            body: formData
+        })
+        const resData= await result.json()
+        
+        setSucces(resData.noError)
+    }
+
+    const submitFirstTimeForm = async ()=>{
         let formData = new FormData();
         let imgs = document.getElementsByClassName("img")
         
@@ -89,35 +125,40 @@ export default function Root(props) {
         }*/
     }
     
-   async function loadUserData(){
-        const response = await fetch('/getUserData');
-        const data= await response.json();
-        setDescription(data.data.description)
-   }
+    async function loadUserData(){
+            const response = await fetch('/getUserData');
+            const data= await response.json();
+            setDescription(data.data.description)
+            setUserTagsActive(data)
+            setUserDropDowns(data)        
+    }
+    function setUserDropDowns(data){
+        document.getElementById("studiumId").value=data.data.degree
+        document.getElementById("geschlechtId").value=data.data.gender
+    } 
+    function setUserTagsActive(data){        
+        data.data.tags.forEach(element => {
+            document.getElementById(element).classList.add("checked")
+        });
 
-    /*function sendData(){
-        let form=new FormData()
-        form.append("description", document.getElementById("description").value)
-
-        let inputFile = document.getElementById("imgfile");
-            
-        if ( inputFile.value !== '') {
-            let file = inputFile.files[0];
-            // Create new file so we can rename the file
-            let blob = file.slice(0, file.size, "image/jpeg");
-            let newFile = new File([blob], `Profilbild_post.jpeg`, { type: "image/jpeg" });
-            form.append("imgfile",newFile)
-        }else{
-            form.append("imgfile","")
+        let prefList= document.getElementsByClassName("pref tag")
+        for(let i=0;i<prefList.length;i++){
+            for (let index = 0; index < data.data.preference.length; index++) {
+                if(prefList[i].innerHTML==data.data.preference[index]){
+                    prefList[i].classList.add("checked")
+                }
+            }
         }
-        
-        fetch("/updateProfile", {
-            method: "POST",
-            body: form,
-        })
-        
-        
-    }*/
+
+        let intentList= document.getElementsByClassName("intent tag")
+        for(let i=0;i<intentList.length;i++){
+            for (let index = 0; index < data.data.intention.length; index++) {
+                if(intentList[i].innerHTML==data.data.intention[index]){
+                    intentList[i].classList.add("checked")
+                }
+            }
+        }
+    }
     function getLikingTags(){
         let tags = []
         let tagID=[]
@@ -270,7 +311,7 @@ export default function Root(props) {
         <section className={'primaryContainer'}>
             <div className={'primaryContainer'}>
                 <div className={'primaryContainer'}>
-                    <FormButton onClick={submitForm} name={'Änderungen speichern'}></FormButton>
+                    <FormButton onClick={props.first?submitFirstTimeForm : updateForm} name={'Änderungen speichern'}></FormButton>
                 </div>
             </div>
         </section>
