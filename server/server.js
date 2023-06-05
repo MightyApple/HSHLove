@@ -1,12 +1,20 @@
 const express = require('express')
 const cookieParser = require('cookie-parser');
 const { createServer } = require("http");
-const database = require('./database.js');
 const cors = require('cors');
-const app = express();
 const path = require("path");
-const src = path.join(__dirname, "template");
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
+const database = require('./database.js');
+const chat = require('./chat/chat.js');
+const { router:routes, requireAuth } = require('./logReg/logReg.js');
+const { router:matchRoutes } = require('./matchPage/matchPage.js');
+
+const app = express();
+const httpServer = createServer(app);
+const src = path.join(__dirname, "template");
+const port = process.env.PORT || 3001 //nimmt den Port aus der Umgebungsvariablen oder 3001
 
 
 app.use(express.static(src));
@@ -15,15 +23,24 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors()); //damit der Client auf den Server zugreifen kann
 
-const port = process.env.PORT || 3001 //nimmt den Port aus der Umgebungsvariablen oder 3001
-var chat = require('./chat/chat.js');
-var { router:routes, requireAuth } = require('./logReg/logReg.js');
-var { router:matchRoutes } = require('./matchPage/matchPage.js');
+//Session mit cookies
+app.use(session({
+  secret: "lol",
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+      sameSite: 'strict',
+  },
+  store: MongoStore.create({
+      mongoUrl: 'mongodb+srv://admin:pHscCtwkXMJeOCII@hshlove.5qisl3o.mongodb.net/HSHLove-Session',
+      autoRemove: 'native',
+  })
+}));
+
 app.use('/', routes);
 app.use('/', matchRoutes);
-const { env } = require('process');
 
-const httpServer = createServer(app);
+
 httpServer.listen(port,()=>{
   console.log("Server succesfully startet at Port : "+port)
 }); //app.listen(3000) geht nicht! erstellt neuen http server
@@ -53,11 +70,6 @@ app.use(function (req, res, next) { //middleware, die vor jedem request ausgefü
 
   next();
 });
-
-// app.use(function (req, res, next) { //middleware, die vor jedem request ausgeführt wird
-//   req.username = getUsernameByToken(req.token);
-//   next();
-// });
 
 app.get('/getUsername', (req, res) => {
   database.findUsernameByToken(req.token).then((user) => { //nachdem der Eintrag gefunden wurde, senden wir den Usernamen zurück an den Client
