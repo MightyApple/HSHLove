@@ -21,7 +21,6 @@ const userDataSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true
-
     },
     images: {
         type: Array
@@ -62,6 +61,12 @@ const userDataSchema = new mongoose.Schema({
         
     }],
     liked: {
+        type: Array,
+        id: {
+            type: String
+        }
+    },
+    disliked: {
         type: Array,
         id: {
             type: String
