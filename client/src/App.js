@@ -139,7 +139,7 @@ function App() {
         },
         {
             path: "edit",
-            element: <EditProfile first={true} />,
+            element: <EditProfile  />,
         },
         {
             path: "match",
