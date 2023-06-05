@@ -136,6 +136,21 @@ function MatchPage() {
     }
 
 
+    async function dislikeProfile(data) {
+        try {
+            const response = await fetch('/dislikeProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
+
 
     const isWideScreen = useMediaQuery({minWidth: 1000});
     const isMediumScreen = useMediaQuery({ minWidth: 426, maxWidth: 999 });
@@ -177,7 +192,7 @@ function MatchPage() {
                 </Slider>
             </section>
             <div>
-                <button className={'matchButton'} id={'decline'}></button>
+                <button className={'matchButton'} id={'decline'} onClick={() => dislikeProfile({ _id: id, currentUserId: currentUserId})}></button>
                 <button className={'matchButton'} id={'accept'} onClick={() => likeProfile({ _id: id, currentUserId: currentUserId})}></button>
             </div>
             <a className={'scrollUp'} href={'#'}>
