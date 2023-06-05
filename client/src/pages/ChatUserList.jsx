@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import Chat from './Chat';
 import Navbar from '../components/navbar';
 
 
 export default function ChatUserList({ chatMessages, matchedUsers }) {
     const [selectedUser, setSelectedUser] = useState(null);
-
 
     var selectedUserMessages = chatMessages.filter((message) => message.receiverId === selectedUser?.userId); // filtert alle Nachrichten, die an den ausgewählten User gesendet wurden
 
