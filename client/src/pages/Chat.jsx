@@ -40,7 +40,7 @@ export default function Chat({ chatMessages, receiver }) {
         <div id="messages">
           {chatMessages.map((message, index) => ( //geht über alle messages und rendert
             <div key={index}>
-              <ChatMessage sender={message.from} text={message.content} timestamp={message.timestamp} />
+              <ChatMessage sender={message.sender} text={message.content} timestamp={message.timestamp} />
             </div>
           ))}
         </div>
