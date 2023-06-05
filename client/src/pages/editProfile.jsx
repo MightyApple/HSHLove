@@ -33,69 +33,42 @@ export default function Root(props) {
         fetchData()                  
     },[])
     
-    function temp(){
-        let imgs = document.getElementsByClassName("imgInputField")
-        console.log(imgs[0].value)
-
-    }
     const submitForm = async ()=>{
         let data
-
-        if(props.first){
-            let email = mail;
-            let password = pass;
-            let firstname = document.getElementById("vorname");
-            let birthdate = document.getElementById("geburtsdatum");
-            let description = document.getElementById("description");
-            let degree = document.getElementById("studiumId");
-            let gender = document.getElementById("geschlechtId");
-            let prefTags = getPrefTags();
-            let likingTags= getLikingTags();
-            let intentTags = getIntentionTags();
-
-            
-
-            data= {
-                email: email,
-                password: password,
-                firstname: firstname.value,
-                birthdate: birthdate.value,
-                description: description.value,
-                degree: degree.value,
-                gender: gender.value,
-                intention: intentTags,
-                tags: likingTags,
-                preference: prefTags,
-            } 
-        }else{
-            let email = mail;
-            let password = pass;
-            let description = document.getElementById("description");
-            let degree = document.getElementById("studiumId");
-            let gender = document.getElementById("geschlechtId");
-            let prefTags = getPrefTags();
-            let likingTags= getLikingTags();
-            let intentTags = getIntentionTags();
-
-            data= {
-                email: email,
-                password: password, 
-                description: description.value,
-                degree: degree.value,
-                gender: gender.value,
-                intention: intentTags,
-                tags: likingTags,
-                preference: prefTags,
-            } 
-        }
+        let formData = new FormData();
+        let imgs = document.getElementsByClassName("img")
         
-        console.log()
+        let email = mail;
+        let password = pass;
+        let firstname = document.getElementById("vorname");
+        let birthdate = document.getElementById("geburtsdatum");
+        let description = document.getElementById("description");
+        let degree = document.getElementById("studiumId");
+        let gender = document.getElementById("geschlechtId");
+        let prefTags = getPrefTags();
+        let likingTags= getLikingTags();
+        let intentTags = getIntentionTags();
+        
+        formData.append("email", email)
+        formData.append("password", password)
+        formData.append("firstname", firstname.value)
+        formData.append("birthdate", birthdate.value)
+        formData.append("description", description.value)
+        formData.append("degree", degree.value)
+        formData.append("gender", gender.value)
+        formData.append("intention", intentTags)
+        formData.append("tags", likingTags)
+        formData.append("preference", prefTags)
+
+        for(let i=0;i<imgs.length;i++){
+            if(imgs[i].files[0]!==undefined){
+                formData.append("images",imgs[i].files[0] );
+            }
+        }  
+
         const result = await fetch("/signup",{
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            body: formData
         })
         const resData= await result.json()
         
@@ -214,9 +187,6 @@ export default function Root(props) {
         }
     }
 
-    
-
-
 
     const [tags, setTags] = useState([{name: "test"}]);
     const [studiengaenge, setStudiengaenge] = useState([{name: "test", _id: "test"}]);
@@ -237,7 +207,7 @@ export default function Root(props) {
         <>
         <section className={'imgForm'}>
             {Array.from({ length: imgLoopCount }, (_, index) => (
-                <ImgForm key={index}></ImgForm>
+                <ImgForm key={index} ></ImgForm>
             ))}
         </section>
         <section className={'primaryContainer'}>
@@ -300,7 +270,7 @@ export default function Root(props) {
         <section className={'primaryContainer'}>
             <div className={'primaryContainer'}>
                 <div className={'primaryContainer'}>
-                    <FormButton onClick={temp} name={'Änderungen speichern'}></FormButton>
+                    <FormButton onClick={submitForm} name={'Änderungen speichern'}></FormButton>
                 </div>
             </div>
         </section>

@@ -77,11 +77,12 @@ router.get("/personalSpace", async (req, res) => {
   }
 })
 
-router.post("/signup", async (req, res) => {
+router.post("/signup", multer.fields([{name:"images", maxCount: 6}]),async (req, res) => {
   try {
+    
     const incomingData = req.body;
-    console.log("data: " +incomingData.email, incomingData.password, incomingData.firstname, incomingData.birthdate, incomingData.description, incomingData.degree, incomingData.gender, incomingData.intention, incomingData.tags, incomingData.preference)
-    console.log("passwort hashen")
+    //console.log("data: " +incomingData.email, incomingData.password, incomingData.firstname, incomingData.birthdate, incomingData.description, incomingData.degree, incomingData.gender, incomingData.intention, incomingData.tags, incomingData.preference)
+    //console.log("passwort hashen")
     const hash = await bcrypt.hash(incomingData.password, 10)
     const data = {
       email: incomingData.email,
@@ -95,19 +96,19 @@ router.post("/signup", async (req, res) => {
       tags: incomingData.tags,
       preference: incomingData.preference,
     }
-    if(req.files){
-      console.log("files incoming")
-    }else{
-      console.log("what files")
-    }
-    //const t = await mongoHSHLove.userDataCollection.insertMany([data]);
-    //uploadProfileImages(imgs,true,incomingData.email);
-    //updateDatabaseImgInformation(imgNames)
-    console.log(t)
-    res.send({noError:true})
-    //alles nach der eingabe in die datenbank wird hiernach ausgeführt
-    console.log("schau in die DB")
     
+    const t = await mongoHSHLove.userDataCollection.insertMany([data]).then(()=>{
+      try{
+        if(req.files){
+          uploadProfileImages(req.files,true,incomingData.email);
+          
+        }
+      }catch(e){
+        console.log(e)
+      }
+    })
+    res.send({noError:true})
+    //alles nach der eingabe in die datenbank wird hiernach ausgeführt  
   } catch (e) {
     console.log(e)
     res.status(500).send("something broke in the registration")
@@ -120,23 +121,28 @@ async function uploadProfileImages(imgs,newUser,email){
   })
 
   if (user) {
-    for(let i=0;i<imgs.length;i++){
+    
+    for(let i=0;i<imgs.images.length;i++){
       if(newUser){
-        var img = prepareImage(imgs[i],i+1,user._id)
+        var img = prepareImage(imgs.images[i],i+1,user._id)
         uploadImage(img)
+        updateDatabaseImgInformation(img.originalname,email)
       }
     }
   }  
 }
-
+async function updateDatabaseImgInformation(imgName, email){
+  await mongoHSHLove.userDataCollection.findOneAndUpdate({ email: email }, { $push: { images: imgName } })
+}
 function prepareImage(img, imgNr,uId){
   try {
     //Datenbankeintrag 'images' letzte nummer rausfinden und um 1 erhöhen
     try {
       if (img) {
+        let newName=uId + "_" + imgNr.toString() + ".jpeg"
         let newFile = {
           fieldname: img.fieldname,
-          originalname: uId + "_" + imgNr.toString() + ".jpeg",
+          originalname: newName,
           encoding: img.encoding,
           mimetype: img.mimetype,
           buffer: img.buffer,

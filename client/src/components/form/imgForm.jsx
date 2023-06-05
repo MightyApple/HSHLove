@@ -20,7 +20,7 @@ export default function ImgForm() {
 
     return (
         <div className={'imgInputField'}>
-            <input type="file" onChange={handleImageChange} />
+            <input type="file" onChange={handleImageChange} class="img" accept="image/png, image/gif, image/jpeg" />
             {selectedImage && <img src={selectedImage} alt="Vorschau" />}
         </div>
     );
