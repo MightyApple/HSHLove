@@ -91,7 +91,7 @@ function chatInitialisieren(io) {
             io.to(to).to(socket._id).emit("message", {
                 content,
                 from: socket.email, //TODO: wenns in der DB ist, dann socket.username
-                to,
+                receiverId: to,
                 timestamp: timestamp,
             });
 
