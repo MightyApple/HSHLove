@@ -1,3 +1,5 @@
+const {uploadImage} =require("../imageProcessing/imageProcessing") 
+
 const express = require('express')
 //const database = require('./database.js'); mongoHSHLove sollte ausreichen
 const path = require("path")
@@ -77,21 +79,30 @@ router.get("/personalSpace", async (req, res) => {
 
 router.post("/signup", async (req, res) => {
   try {
-    const { email, password, firstname, birthdate, description, degree, gender } = req.body;
-    console.log("data: " +email, password, firstname, birthdate, description, degree, gender)
+    const incomingData = req.body;
+    console.log("data: " +incomingData.email, incomingData.password, incomingData.firstname, incomingData.birthdate, incomingData.description, incomingData.degree, incomingData.gender, incomingData.intention, incomingData.tags, incomingData.preference)
     console.log("passwort hashen")
-    const hash = await bcrypt.hash(password, 10)
+    const hash = await bcrypt.hash(incomingData.password, 10)
     const data = {
-      email: email,
+      email: incomingData.email,
       password: hash,
-      name: firstname,
-      birthday: birthdate,
-      description: description,
-      degree: degree,
-      gender: gender,
+      name: incomingData.firstname,
+      birthday: incomingData.birthdate,
+      description: incomingData.description,
+      degree: incomingData.degree,
+      gender: incomingData.gender,
+      intention: incomingData.intention,
+      tags: incomingData.tags,
+      preference: incomingData.preference,
     }
-
-    const t = await mongoHSHLove.userDataCollection.insertMany([data]);
+    if(req.files){
+      console.log("files incoming")
+    }else{
+      console.log("what files")
+    }
+    //const t = await mongoHSHLove.userDataCollection.insertMany([data]);
+    //uploadProfileImages(imgs,true,incomingData.email);
+    //updateDatabaseImgInformation(imgNames)
     console.log(t)
     res.send({noError:true})
     //alles nach der eingabe in die datenbank wird hiernach ausgeführt
@@ -102,8 +113,52 @@ router.post("/signup", async (req, res) => {
     res.status(500).send("something broke in the registration")
   }
 })
-//TODO personalspace daten ändern und abfragen
 
+async function uploadProfileImages(imgs,newUser,email){
+  const user = await mongoHSHLove.userDataCollection.findOne({
+    email: email,
+  })
+
+  if (user) {
+    for(let i=0;i<imgs.length;i++){
+      if(newUser){
+        var img = prepareImage(imgs[i],i+1,user._id)
+        uploadImage(img)
+      }
+    }
+  }  
+}
+
+function prepareImage(img, imgNr,uId){
+  try {
+    //Datenbankeintrag 'images' letzte nummer rausfinden und um 1 erhöhen
+    try {
+      if (img) {
+        let newFile = {
+          fieldname: img.fieldname,
+          originalname: uId + "_" + imgNr.toString() + ".jpeg",
+          encoding: img.encoding,
+          mimetype: img.mimetype,
+          buffer: img.buffer,
+          size: img.size
+        }
+        return newFile;
+        /*const blob = profilbilder.file(newFile.originalname);
+        const blobStream = blob.createWriteStream();
+
+        blobStream.end(newFile.buffer);*/
+
+      } else {
+
+        throw "error with img";
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
 
 
 

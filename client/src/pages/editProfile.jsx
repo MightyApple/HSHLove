@@ -10,48 +10,86 @@ import './editProfile.css'
 import FormText from "../components/form/formText";
 import LoginHead from "../components/loginHead";
 import { useLocation, useNavigate } from 'react-router-dom';
+
+
 export default function Root(props) {
-    const[data, setData]= React.useState("Log dich ein")
     const[description, setDescription]= React.useState("")
     const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false)
 
-    const {state} = useLocation();
      // Read values passed on state
-    if(state!=null){
-        const { email, password } = state;
-        var mail= email;
-        var pass=password;
+    if(props.first){       
+        var mail= props.data.email;
+        var pass= props.data.password;
     }
     
-    if(succes){
-        navigate('/edit')
-    }
+    if(succes){navigate("/login")}
 
     React.useEffect(()=>{
-        loadUserData()      
-        loadImages()               
+        if(!props.first){
+            loadUserData()      
+            loadImages()
+        } 
+        fetchData()                  
     },[])
     
-    const submitForm = async ()=>{
-        let email = mail;
-        let password = pass;
-        let firstname = document.getElementById("vorname");
-        let birthdate = document.getElementById("geburtsdatum");
-        let description = document.getElementById("description");
-        let degree = document.getElementById("studiumId");
-        let gender = document.getElementById("geschlechtId");
+    function temp(){
+        let imgs = document.getElementsByClassName("imgInputField")
+        console.log(imgs[0].value)
 
-        const data= {
-            email: email,
-            password: password,
-            firstname: firstname.value,
-            birthdate: birthdate.value,
-            description: description.value,
-            degree: degree.value,
-            gender: gender.value,
+    }
+    const submitForm = async ()=>{
+        let data
+
+        if(props.first){
+            let email = mail;
+            let password = pass;
+            let firstname = document.getElementById("vorname");
+            let birthdate = document.getElementById("geburtsdatum");
+            let description = document.getElementById("description");
+            let degree = document.getElementById("studiumId");
+            let gender = document.getElementById("geschlechtId");
+            let prefTags = getPrefTags();
+            let likingTags= getLikingTags();
+            let intentTags = getIntentionTags();
+
+            
+
+            data= {
+                email: email,
+                password: password,
+                firstname: firstname.value,
+                birthdate: birthdate.value,
+                description: description.value,
+                degree: degree.value,
+                gender: gender.value,
+                intention: intentTags,
+                tags: likingTags,
+                preference: prefTags,
+            } 
+        }else{
+            let email = mail;
+            let password = pass;
+            let description = document.getElementById("description");
+            let degree = document.getElementById("studiumId");
+            let gender = document.getElementById("geschlechtId");
+            let prefTags = getPrefTags();
+            let likingTags= getLikingTags();
+            let intentTags = getIntentionTags();
+
+            data= {
+                email: email,
+                password: password, 
+                description: description.value,
+                degree: degree.value,
+                gender: gender.value,
+                intention: intentTags,
+                tags: likingTags,
+                preference: prefTags,
+            } 
         }
         
+        console.log()
         const result = await fetch("/signup",{
             method: 'POST',
             headers: {
@@ -107,7 +145,37 @@ export default function Root(props) {
         
         
     }*/
+    function getLikingTags(){
+        let tags = []
+        let tagID=[]
+    
+        tags=document.getElementsByClassName("like checked")
+        for(let i=0;i<tags.length;i++){
+            tagID.push(tags[i].id)
+        }
+        return tagID
+    }
+    function getIntentionTags(){
+        let tags = []
+        let tagInnerHtml=[]
+    
+        tags=document.getElementsByClassName("intent checked")
+        for(let i=0;i<tags.length;i++){
+            tagInnerHtml.push(tags[i].innerHTML)
+        }
+        return tagInnerHtml
+    }
 
+    function getPrefTags(){
+        let tags = []
+        let tagInnerHtml=[]
+    
+        tags=document.getElementsByClassName("pref checked")
+        for(let i=0;i<tags.length;i++){
+            tagInnerHtml.push(tags[i].innerHTML)
+        }
+        return tagInnerHtml
+    }
     async function fetchData() {
         try {
             const response = await fetch('/getTags', {
@@ -137,8 +205,6 @@ export default function Root(props) {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log("Studiengänge");
-                console.log(result);
                 setStudiengaenge(result.data);
             } else {
                 console.log('Error:', response.statusText);
@@ -148,15 +214,14 @@ export default function Root(props) {
         }
     }
 
-    useEffect(() => {
-        fetchData();
-    }, []);
+    
 
 
 
     const [tags, setTags] = useState([{name: "test"}]);
     const [studiengaenge, setStudiengaenge] = useState([{name: "test", _id: "test"}]);
-    const prefs = ['männlich', 'weiblich', 'divers', 'Beziehungen', 'Freunden', 'ONS'];
+    const prefs = ['männlich', 'weiblich', 'divers', ];
+    const intention = ['Beziehungen', 'Freunden', 'ONS'];
     const geschlecht = [
         {name: "männlich", _id: "männlich"},
         {name: "weiblich", _id: "weiblich"},
@@ -192,16 +257,21 @@ export default function Root(props) {
                 <label>Tags</label>
                 <div className={'tags'}>
                     {tags.map((tag, index) => (
-                        <Tag key={index} name={tag.name} id={tag._id} disabled={false} class={'hover click'}></Tag>
+                        <Tag key={index} name={tag.name} id={tag._id} disabled={false} class={'like hover click'}></Tag>
                     ))}
                 </div>
             </div>
             <Trenner class={'small verticle'}></Trenner>
             <div>
                 <label>Ich suche nach:</label>
-                <div className={'tags'}>
+                <div className={'tags intention'}>
+                    {intention.map((pref, index) => (
+                        <Tag key={index} name={pref} id={pref._id} disabled={false} class={'intent hover click'}></Tag>
+                    ))}
+                </div>
+                <div className={'tags pref'}>
                     {prefs.map((pref, index) => (
-                        <Tag key={index} name={pref} disabled={false} class={'hover click'}></Tag>
+                        <Tag key={index} name={pref} id={pref._id} disabled={false} class={'pref hover click'}></Tag>
                     ))}
                 </div>
             </div>
@@ -230,7 +300,7 @@ export default function Root(props) {
         <section className={'primaryContainer'}>
             <div className={'primaryContainer'}>
                 <div className={'primaryContainer'}>
-                    <FormButton onClick={submitForm} name={'Änderungen speichern'}></FormButton>
+                    <FormButton onClick={temp} name={'Änderungen speichern'}></FormButton>
                 </div>
             </div>
         </section>

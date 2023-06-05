@@ -15,6 +15,7 @@ const multer = Multer({
   });
 
 const profilbilder = gc.bucket('profilbilder')
+const chatBilder= gc.bucket('chatbilder')
 
 //--------------------------- Nicht fertig
 async function getAllImages(userID){
@@ -24,6 +25,23 @@ async function getAllImages(userID){
     }catch(e){
         console.log(e)
     }    
+}
+
+async function uploadChatImage(Image){
+  /*
+  New File muss am besten so aussehen.
+  newFile = {
+      fieldname: req.file.fieldname,
+      originalname: uId + "_" + imgNr.toString() + ".jpeg",
+      encoding: req.file.encoding,
+      mimetype: req.file.mimetype,
+      buffer: req.file.buffer,
+      size: req.file.size
+  }*/
+
+  const blob = chatBilder.file(Image.originalname);
+  const blobStream = blob.createWriteStream();
+  blobStream.end(Image.buffer);
 }
 
 async function uploadImage(Image){
@@ -42,6 +60,10 @@ async function uploadImage(Image){
     const blobStream = blob.createWriteStream();
 
     blobStream.end(Image.buffer);
+}
+
+function checkImages(){
+  var formData = req.file;
 }
 
 async function updateForm(req){
@@ -217,5 +239,6 @@ router.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
 */
 module.exports ={
     getAllImages,
-    updateForm
+    updateForm,
+    uploadImage
 }

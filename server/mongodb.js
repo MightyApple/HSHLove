@@ -47,20 +47,20 @@ const userDataSchema = new mongoose.Schema({
     },
     intention: [{
         type: String,
-        enum: ["One-Night-Stand", "Beziehung", "Offenes"],
+        
     }],
     gender: {
         type: String,
-        enum: ["männlich", "weiblich", "divers"]
+        
     },
     degree: {
         type: String,
-        enum: ["AIS","BWL"]
+        
     },
-    preference: {
+    preference: [{
         type: String,
-        enum: ["Hetero", "Bisexuell", "Gay", "Lesbisch"]
-    },
+        
+    }],
     liked: {
         type: Array,
         id: {
@@ -69,7 +69,7 @@ const userDataSchema = new mongoose.Schema({
     },
     tags: [{
         type: String,
-        enum: ["Ich kenne noch nicht alle Tags die eingebunden werden müssen"]
+        
     }]
 })
 
