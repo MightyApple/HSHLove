@@ -144,11 +144,9 @@ async function uploadProfileImages(imgs,newUser,email){
         const user = await mongoHSHLove.userDataCollection.findOne({
           _id: uId,
         })
-        if (user.toJSON().images.length === 0) {
-          var imgNr = 1
-        } else {
-          var imgNr = (parseInt(user.toJSON().images[user.toJSON().images.length - 1].split("_").pop().split(".")[0]) + 1)
-        }
+        let x = await profilbilder.getFiles({ prefix: user._id})
+        let size = x[0].length
+        let imgNr = size+1
         var img = prepareImage(imgs.images[i],imgNr,user._id)    
         uploadImage(img)
         updateDatabaseImgInformation(img.originalname,email)
@@ -305,7 +303,18 @@ router.post("/updateProfile", multer.fields([{name:"images", maxCount: 6}]), asy
   }
 })
 
-
+router.post("/removeImage", async (req,res)=>{
+  let data=req.body;
+  let srcString= data.src.split("/")[4];
+  try{
+    console.log(srcString)
+    await mongoHSHLove.userDataCollection.findOneAndUpdate({ "_id": req.session.user._id,  }, { $pull: {images:srcString} })
+    res.send({ok:true})
+  }catch(e){
+    res.status(500).send({ok:false})
+  }
+  
+})
 
 var { getAllImages, updateForm } = require('../imageProcessing/imageProcessing.js');
 

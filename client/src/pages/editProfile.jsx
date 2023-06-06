@@ -113,7 +113,7 @@ export default function Root(props) {
     }
 
 //TODO gib dem die Backend entfernen Logik
-    function removeImage(event) {
+    async function removeImage(event) {
         // Zugriff auf das geklickte Button-Element
         var button = event.target;
 
@@ -123,8 +123,30 @@ export default function Root(props) {
         // Zugriff auf das übergeordnete imgInputField-Element
         var imgInputField = imageContainer.parentNode;
 
-        // Entferne das imageContainer-Element aus dem imgInputField
-        imgInputField.removeChild(imageContainer);
+        var allContainer = document.getElementsByClassName('imageContainer');
+        console.log(allContainer)
+        for (let index = 0; index < allContainer.length; index++) {
+            if(allContainer[index]===imageContainer){
+                let srcString=allContainer[index].getElementsByTagName('img')[0].src
+                
+                console.log(srcString)
+                const response =  fetch('/removeImage', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ "src": srcString })
+                });
+    
+                if (response.ok) {
+                    // Entferne das imageContainer-Element aus dem imgInputField
+                    imgInputField.removeChild(imageContainer);
+                } else {
+                    console.log('Error:', response.statusText);
+                }
+            }
+        }
 
         // Erzeuge ein neues ImgForm-Element
         var newImgForm = React.createElement(ImgForm);
