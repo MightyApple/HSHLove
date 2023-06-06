@@ -11,6 +11,7 @@ import './editProfile.css'
 import FormText from "../components/form/formText";
 import LoginHead from "../components/loginHead";
 import { useLocation, useNavigate } from 'react-router-dom';
+import LoadingScreen from "../components/loadingScreen";
 
 
 export default function Root(props) {
@@ -305,80 +306,96 @@ export default function Root(props) {
     const maxLength = 250;
     const imgLoopCount = 6;
 
-    
+
+
+
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // Simuliere einen asynchronen Ladevorgang
+        setTimeout(() => {
+            setIsLoading(false); // Setze isLoading auf false, wenn der Ladevorgang abgeschlossen ist
+        }, 3000);
+    }, []);
+
 
 
     const mainElement =
         <>
-        <section className={'imgForm'}>
-            {Array.from({ length: imgLoopCount }, (_, index) => (
-                <ImgForm key={index} ></ImgForm>
-            ))}
-        </section>
-        <section className={'primaryContainer'}>
-            <div className={'description'}>
-                <label>Beschreibung:</label>
-                <textarea
-                    name='description'
-                    placeholder='Erzähl etwas über dich'
-                    id='description'
-                    maxLength={maxLength}
-                    defaultValue={description}
-                />
-            </div>
-        </section>
-        <section className={'primaryContainer tagSection'}>
-            <div>
-                <label>Tags</label>
-                <div className={'tags'}>
-                    {tags.map((tag, index) => (
-                        <Tag key={index} name={tag.name} id={tag._id} disabled={false} class={'like hover click'}></Tag>
-                    ))}
+        {isLoading ? (
+            <LoadingScreen /> // Zeige den Ladebildschirm an, solange isLoading true ist
+        ) : (
+        <div>
+            <section className={'imgForm'}>
+                {Array.from({ length: imgLoopCount }, (_, index) => (
+                    <ImgForm key={index} ></ImgForm>
+                ))}
+            </section>
+            <section className={'primaryContainer'}>
+                <div className={'description'}>
+                    <label>Beschreibung:</label>
+                    <textarea
+                        name='description'
+                        placeholder='Erzähl etwas über dich'
+                        id='description'
+                        maxLength={maxLength}
+                        defaultValue={description}
+                    />
                 </div>
-            </div>
-            <Trenner class={'small verticle'}></Trenner>
-            <div>
-                <label>Ich suche nach:</label>
-                <div className={'tags intention'}>
-                    {intention.map((pref, index) => (
-                        <Tag key={index} name={pref} id={pref._id} disabled={false} class={'intent hover click'}></Tag>
-                    ))}
+            </section>
+            <section className={'primaryContainer tagSection'}>
+                <div>
+                    <label>Tags</label>
+                    <div className={'tags'}>
+                        {tags.map((tag, index) => (
+                            <Tag key={index} name={tag.name} id={tag._id} disabled={false} class={'like hover click'}></Tag>
+                        ))}
+                    </div>
                 </div>
-                <div className={'tags pref'}>
-                    {prefs.map((pref, index) => (
-                        <Tag key={index} name={pref} id={pref._id} disabled={false} class={'pref hover click'}></Tag>
-                    ))}
+                <Trenner class={'small verticle'}></Trenner>
+                <div>
+                    <label>Ich suche nach:</label>
+                    <div className={'tags intention'}>
+                        {intention.map((pref, index) => (
+                            <Tag key={index} name={pref} id={pref._id} disabled={false} class={'intent hover click'}></Tag>
+                        ))}
+                    </div>
+                    <div className={'tags pref'}>
+                        {prefs.map((pref, index) => (
+                            <Tag key={index} name={pref} id={pref._id} disabled={false} class={'pref hover click'}></Tag>
+                        ))}
+                    </div>
                 </div>
-            </div>
-        </section>
-        <div className={'primaryContainer'}>
-            <Trenner class={'small'}></Trenner>
-        </div>
-        <section className={'primaryContainer tagSection'}>
-            <DropDown
-                label={'Ich studiere:'}
-                selectName={'studium'}
-                selectId={'studiumId'}
-                data={studiengaenge}
-            ></DropDown>
-            <Trenner class={'small dnoneLG'}></Trenner>
-            <DropDown
-                label={'Ich bin:'}
-                selectName={'geschlecht'}
-                selectId={'geschlechtId'}
-                data={geschlecht}
-            ></DropDown>
-        </section>
-        <div className={'primaryContainer'}>
-            <Trenner class={'small dblockLG'}></Trenner>
-        </div>
-        <section className={'primaryContainer'}>
+            </section>
             <div className={'primaryContainer'}>
-                <div className={'primaryContainer'}>
-                    <FormButton onClick={props.first?submitFirstTimeForm : updateForm} name={'Änderungen speichern'}></FormButton>
-                </div>
+                <Trenner class={'small'}></Trenner>
             </div>
-        </section>
+            <section className={'primaryContainer tagSection'}>
+                <DropDown
+                    label={'Ich studiere:'}
+                    selectName={'studium'}
+                    selectId={'studiumId'}
+                    data={studiengaenge}
+                ></DropDown>
+                <Trenner class={'small dnoneLG'}></Trenner>
+                <DropDown
+                    label={'Ich bin:'}
+                    selectName={'geschlecht'}
+                    selectId={'geschlechtId'}
+                    data={geschlecht}
+                ></DropDown>
+            </section>
+            <div className={'primaryContainer'}>
+                <Trenner class={'small dblockLG'}></Trenner>
+            </div>
+            <section className={'primaryContainer'}>
+                <div className={'primaryContainer'}>
+                    <div className={'primaryContainer'}>
+                        <FormButton onClick={props.first?submitFirstTimeForm : updateForm} name={'Änderungen speichern'}></FormButton>
+                    </div>
+                </div>
+            </section>
+        </div>)}
     </>;
 
     if (props.first) {

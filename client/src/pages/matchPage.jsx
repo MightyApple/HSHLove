@@ -11,6 +11,7 @@ import './matchPage.css';
 import Navbar from '../components/navbar';
 import Trenner from '../components/trenner';
 import Tag from "../components/form/tag";
+import LoadingScreen from '../components/loadingScreen';
 
 import { socket } from '../components/socket';
 
@@ -194,59 +195,74 @@ function MatchPage() {
 
 
 
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // Simuliere einen asynchronen Ladevorgang
+        setTimeout(() => {
+            setIsLoading(false); // Setze isLoading auf false, wenn der Ladevorgang abgeschlossen ist
+        }, 3000);
+    }, []);
+
+
     return (
         <>
-            <Navbar></Navbar>
-            <section className={'primaryContainer slider'}>
-                <Slider {...settings}>
-                    {Array.from({length: images.length}, (_, index) => (
-                        <div key={index} className={'content'}>
-                            <img src={'https://storage.googleapis.com/profilbilder/'+images[index]} alt={"Bild "+index}/>
-                            <ul className={'normalFontSize visible'+index}>
-                                <li className={'name'}>{name} <span className={'age'}>{age}</span></li>
-                                <li>{studiengang}</li>
-                                <li>{semester}</li>
-                                <li>{city}</li>
-                            </ul>
+        {isLoading ? (
+            <LoadingScreen /> // Zeige den Ladebildschirm an, solange isLoading true ist
+        ) : (
+            <div>
+                <Navbar></Navbar>
+                <section className={'primaryContainer slider'}>
+                    <Slider {...settings}>
+                        {Array.from({length: images.length}, (_, index) => (
+                            <div key={index} className={'content'}>
+                                <img src={'https://storage.googleapis.com/profilbilder/'+images[index]} alt={"Bild "+index}/>
+                                <ul className={'normalFontSize visible'+index}>
+                                    <li className={'name'}>{name} <span className={'age'}>{age}</span></li>
+                                    <li>{studiengang}</li>
+                                    <li>{semester}</li>
+                                    <li>{city}</li>
+                                </ul>
+                            </div>
+                        ))}
+                    </Slider>
+                </section>
+                <div>
+                    <button className={'matchButton'} id={'decline'} onClick={() => dislikeProfile({ _id: id, currentUserId: currentUserId})}></button>
+                    <button className={'matchButton'} id={'accept'} onClick={() => likeProfile({ _id: id, currentUserId: currentUserId})}></button>
+                </div>
+                <a className={'scrollUp'} href={'#'}>
+                    <img src={scrollUp} alt={'scrollUp'}/>
+                </a>
+                <div>
+                    <Trenner></Trenner>
+                </div>
+                <section className={'tagSection'}>
+                    <div className={'tagBox'}>
+                        <div className={'tags'}>
+                            {tags.map((tag, index) => (
+                                <Tag key={index} name={tag.name} disabled={false} class={tag.class}></Tag>
+                            ))}
                         </div>
-                    ))}
-                </Slider>
-            </section>
-            <div>
-                <button className={'matchButton'} id={'decline'} onClick={() => dislikeProfile({ _id: id, currentUserId: currentUserId})}></button>
-                <button className={'matchButton'} id={'accept'} onClick={() => likeProfile({ _id: id, currentUserId: currentUserId})}></button>
-            </div>
-            <a className={'scrollUp'} href={'#'}>
-                <img src={scrollUp} alt={'scrollUp'}/>
-            </a>
-            <div>
-                <Trenner></Trenner>
-            </div>
-            <section className={'tagSection'}>
-                <div className={'tagBox'}>
-                    <div className={'tags'}>
-                        {tags.map((tag, index) => (
-                            <Tag key={index} name={tag.name} disabled={false} class={tag.class}></Tag>
-                        ))}
                     </div>
-                </div>
-                <Trenner class={'small verticle'}></Trenner>
-                <div className={'tagBox'}>
-                    <div className={'tags'}>
-                        {prefs.map((pref, index) => (
-                            <Tag key={index} name={pref} disabled={false} class={'b'}></Tag>
-                        ))}
+                    <Trenner class={'small verticle'}></Trenner>
+                    <div className={'tagBox'}>
+                        <div className={'tags'}>
+                            {prefs.map((pref, index) => (
+                                <Tag key={index} name={pref} disabled={false} class={'b'}></Tag>
+                            ))}
+                        </div>
                     </div>
+                </section>
+                <div>
+                    <Trenner></Trenner>
                 </div>
-            </section>
-            <div>
-                <Trenner></Trenner>
-            </div>
-            <section className={'primaryContainer'}>
-                <p className={'desc'}>
-                    {desc}
-                </p>
-            </section>
+                <section className={'primaryContainer'}>
+                    <p className={'desc'}>
+                        {desc}
+                    </p>
+                </section>
+            </div>)}
         </>
     )
 }
