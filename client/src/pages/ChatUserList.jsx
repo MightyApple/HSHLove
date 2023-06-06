@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import Chat from './Chat';
 import Navbar from '../components/navbar';
 import "./ChatUserList.css";
@@ -6,13 +6,13 @@ import "./ChatUserList.css";
 import Trenner from '../components/trenner'
 import UserBanner from  '../components/userBanner'
 
-
-export default function ChatUserList({ chatMessages, matchedUsers }) {
-    console.log("matchtUser")
-    console.log(matchedUsers)
+export default function ChatUserList({ chatRooms, matchedUsers }) {
     const [selectedUser, setSelectedUser] = useState(null);
+    var selectedChatRoom = chatRooms.find((chatRoom) => chatRoom.users.some((user) => user._id === selectedUser?.userId));
+    var selectedUserMessages = selectedChatRoom?.messages;
 
-    var selectedUserMessages = chatMessages.filter((message) => message.receiverId === selectedUser?.userId); // filtert alle Nachrichten, die an den ausgewählten User gesendet wurden
+
+
 
     if (selectedUser) { // wenn ein user ausgewählt wurde, dann wird der Chat gerendert
         return (

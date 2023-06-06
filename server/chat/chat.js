@@ -42,7 +42,7 @@ function chatInitialisieren(io) {
     function getChats(socket) {
         database.getChats(socket._id).then((chats) => {
             var users = [];
-            var messages = [];
+            var chatRooms = [];
             chats.forEach((chat) => {
                 var otherUser = chat.users.find((user) => user._id != socket._id); //findet den anderen user in dem chatroom welcher nicht der client ist
                 users.push({
@@ -51,6 +51,7 @@ function chatInitialisieren(io) {
                     profileImage: otherUser.images[0],
                 });
 
+                var messages = [];
                 chat.messageHistory.forEach((message) => {
                     messages.push({
                         receiverId: otherUser._id,
@@ -60,12 +61,16 @@ function chatInitialisieren(io) {
                         timestamp: message.timeStamp
                     });
                 });
-
+                chatRooms.push({ //fügt den chatroom dem array hinzu
+                    id: chat._id,
+                    users: chat.users,
+                    messages: messages,
+                });
             });
 
             socket.emit("initChats", {
                 users,
-                messages
+                chatRooms
             });
         });
     }
@@ -90,32 +95,35 @@ function chatInitialisieren(io) {
         socket.on("message", ({ content, to }) => { //wird ausgeführt, wenn ein client eine private message/bilder sendet
             //console.log("private message received: " + content + " from " + socket._id + " to " + to);
             var timestamp = new Date().toLocaleString();
-            io.to(to).to(socket._id).emit("message", {
-                content,
-                from: socket.email, //TODO: wenns in der DB ist, dann socket.username
-                receiverId: to,
-                timestamp: timestamp,
-            });
 
             database.getChat(socket._id, to).then((chat) => {
                 var chatID = chat._id;
+
+                io.to(to).to(socket._id).emit("message", {
+                    chatID: chat._id,
+                    content,
+                    sender: socket._id,
+                    from: socket.name, 
+                    receiverId: to,
+                    timestamp: timestamp,
+                });
+
                 database.saveChatMessage(chatID, socket._id, content, timestamp);
             });
         });
 
         socket.on("newMatch", async ({ matchId }) => {
-            //console.log("new match received");
             // match chatroom zum client hinzufügen
             var otherUser = await database.findUserByID(matchId);
             socket.emit("newMatch", {
                 userId: otherUser._id,
-                username: otherUser.email, // TODO: wenns in der DB ist, dann otherUser.username
+                username: otherUser.name
             });
 
             // match chatroom zum anderen user hinzufügen
             socket.to(matchId).emit("newMatch", {
                 userId: socket._id,
-                username: socket.email, // TODO: wenns in der DB ist, dann socket.username
+                username: socket.name
             });
         });
 
