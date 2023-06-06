@@ -1,0 +1,13 @@
+.userBorder {
+    border: 4px solid rgba(0, 0, 0, 0.2);
+    border-left: none;
+    border-right: none;
+}
+.userBorder .user {
+    display: flex;
+    width: 100%;
+    background: linear-gradient(270deg, #FFCB02 0%, #EE171E 100%);
+    color: var(--white);
+    gap: 14px;
+    padding: 5px 10px;
+}

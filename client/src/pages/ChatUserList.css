@@ -1,0 +1,9 @@
+.primaryContainer .small {
+    margin: 38px 0;
+}
+.primaryContainer p {
+    color: var(--black);
+    opacity: 70%;
+    text-align: center;
+    font-size: 18px;
+}

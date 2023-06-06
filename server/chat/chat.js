@@ -47,13 +47,15 @@ function chatInitialisieren(io) {
                 var otherUser = chat.users.find((user) => user._id != socket._id); //findet den anderen user in dem chatroom welcher nicht der client ist
                 users.push({
                     userId: otherUser._id,
-                    username: otherUser.email, // TODO: wenns in der DB ist, dann otherUser.username
+                    username: otherUser.name,
+                    profileImage: otherUser.images[0],
                 });
 
                 chat.messageHistory.forEach((message) => {
                     messages.push({
                         receiverId: otherUser._id,
-                        sender: message.sentByUserID.email, // TODO: wenns in der DB ist, dann message.sendByUserID.username
+                        receiverImage: otherUser.images[0],
+                        sender: message.sentByUserID._id, // TODO: wenns in der DB ist, dann message.sendByUserID.username
                         content: message.messageContent,
                         timestamp: message.timeStamp
                     });

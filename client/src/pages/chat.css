@@ -41,21 +41,32 @@
     flex-direction: column;
 }
 
-#messages > div {
-    padding: 0.5rem 1rem;
-    max-width: min-content;
-    white-space: nowrap;
-    border-radius: 30px;
+#messages div {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 14px;
+}
+#messages div.receiver-message {
+    flex-direction: row;
 }
 
-#messages > div:nth-child(odd) {
-    border: 1px solid var(--primaryColor);
+#messages div .profilePicture {
+    transform: translateY(14px);
+}
+
+#messages div .messageContent {
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+    border-radius: 30px;
+    background-color: var(--white);
+    margin: 12px 0;
+}
+
+#messages div.sender-message .messageContent {
+    border: 3px solid var(--secondaryColor);
     align-self: end;
-} /*die ungerade Anzahl der Nachrichten wird rot umrandet*/
-#messages > div:nth-child(even) {
-    border: 1px solid var(--secondaryColor);
-}  /*gerade Anzahl TODO: die Farbe an die IDs anpassen*/
+}
 
-.profileImg {
-
+#messages div.receiver-message .messageContent {
+    border: 3px solid var(--primaryColor);
 }

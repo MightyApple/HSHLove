@@ -1,18 +1,19 @@
-import React from 'react'
+import React from 'react';
+import './chatMessage.css';
 
 export default function ChatMessage({ sender, text, timestamp }) {
   return (
     <div>
-      <div>
+        {/*<div>
         Absender {sender}
         <img src="" alt="" className="profileImg" width="" height="" />
-      </div>
+      </div>*/}
       <div className="message">
         {text}
       </div>
-      <div>
+        {/*<div>
         {timestamp}
-      </div>
+      </div>*/}
     </div>
   )
 }
