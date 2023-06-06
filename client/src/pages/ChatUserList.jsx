@@ -29,8 +29,8 @@ export default function ChatUserList({ chatMessages, matchedUsers }) {
         <>
             <Navbar></Navbar>
             {matchedUsers.map((user, index) => (
-                <div onClick={() => setSelectedUser(user)}>
-                    <UserBanner key={index} user={user}></UserBanner>
+                <div key={index} onClick={() => setSelectedUser(user)}>
+                    <UserBanner user={user}></UserBanner>
                 </div>
             ))}
             <div className={"primaryContainer"}>
