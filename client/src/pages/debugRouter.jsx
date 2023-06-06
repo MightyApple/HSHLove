@@ -24,6 +24,9 @@ export default function Root() {
                 <li>
                     <Link to={'match'}>Match Page</Link>
                 </li>
+                <li>
+                    <Link to={'admin'}>Admin</Link>
+                </li>
             </ul>
         </>
     )};

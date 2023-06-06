@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import ReactDOM from 'react-dom';
 import Navbar from '../components/navbar'
 import FormButton from "../components/form/formButton";
 import Tag from '../components/form/tag'
@@ -111,14 +112,77 @@ export default function Root(props) {
         setSucces(resData.noError)
     }
 
-    async function loadImages(data){
-        var imgField= document.getElementsByClassName("imgInputField")
+//TODO gib dem die Backend entfernen Logik
+    async function removeImage(event) {
+        // Zugriff auf das geklickte Button-Element
+        var button = event.target;
+
+        // Zugriff auf das übergeordnete imageContainer-Element
+        var imageContainer = button.parentNode;
+
+        // Zugriff auf das übergeordnete imgInputField-Element
+        var imgInputField = imageContainer.parentNode;
+
+        var allContainer = document.getElementsByClassName('imageContainer');
+        
+        for (let index = 0; index < allContainer.length; index++) {
+            if(allContainer[index]===imageContainer){
+                let srcString=allContainer[index].getElementsByTagName('img')[0].src
+                const response =  fetch('/removeImage', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ "src": srcString })
+                });
+    
+                if (response.ok) {
+                    // Entferne das imageContainer-Element aus dem imgInputField
+                    imgInputField.removeChild(imageContainer);
+                } else {
+                    console.log('Error:', response.statusText);
+                }
+            }
+        }
+
+        // Erzeuge ein neues ImgForm-Element
+        var newImgForm = React.createElement(ImgForm);
+
+        // Rendere das ImgForm-Element und füge es zum imgInputField hinzu
+        ReactDOM.render(newImgForm, imgInputField);
+    }
+
+    async function loadImages(data) {
+        var imgField = document.getElementsByClassName("imgInputField");
         for (let index = 0; index < data.data.images.length; index++) {
-           
-            let imgString="https://storage.googleapis.com/profilbilder/"+data.data.images[index].toString();
-            console.log(imgString)
-            imgField[index].innerHTML="<img src= "+imgString+" alt=vorschau/>"
+            let imgString =
+                "https://storage.googleapis.com/profilbilder/" +
+                data.data.images[index].toString();
             
+
+            // Erzeuge das DOM-Element für das Bild und den Button
+            var imageContainer = document.createElement("div");
+            imageContainer.className = "imageContainer";
+
+            var imageElement = document.createElement("img");
+            imageElement.src = imgString;
+            imageElement.alt = "Vorschau";
+
+            var removeButton = document.createElement("button");
+            removeButton.className = "removeButton";
+            removeButton.innerText = "X";
+
+            // Weise den Event-Handler programmatisch zu
+            removeButton.addEventListener("click", removeImage);
+
+            // Füge das Bild und den Button zum Container hinzu
+            imageContainer.appendChild(imageElement);
+            imageContainer.appendChild(removeButton);
+
+            // Füge den Container zum imgField hinzu
+            imgField[index].innerHTML = ""; // Leere den Inhalt des imgField
+            imgField[index].appendChild(imageContainer);
         }
     }
     

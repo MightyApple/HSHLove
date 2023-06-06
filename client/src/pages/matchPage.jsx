@@ -72,10 +72,20 @@ function MatchPage() {
                 setCity(result.degree.campus);
                 setName(result.data.name);
                 setAge(birthday(result.data.birthday));
-                setTags(result.tag);
+                //setTags(result.tag);
                 setPrefs(result.data.intention);
                 setImages(result.data.images);
-                console.log(result.tag);
+                let placeholderTag = [];
+                for (let tag in result.tag) {
+                    for (let tag2 in currentUserTags) {
+                        if (result.tag[tag]._id === currentUserTags[tag2]) {
+                            placeholderTag.push({name: result.tag[tag].name, class: "checked"})
+                        } else {
+                            placeholderTag.push({name: result.tag[tag].name, class: ""})
+                        }
+                    }
+                }
+                setTags(placeholderTag);
             } else {
                 console.log('Error:', response.statusText);
             }
@@ -205,7 +215,7 @@ function MatchPage() {
                 <div className={'tagBox'}>
                     <div className={'tags'}>
                         {tags.map((tag, index) => (
-                            <Tag key={index} name={tag.name} disabled={false} class={'b'}></Tag>
+                            <Tag key={index} name={tag.name} disabled={false} class={tag.class}></Tag>
                         ))}
                     </div>
                 </div>

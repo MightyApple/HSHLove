@@ -1,0 +1,31 @@
+.text{
+    font-size: 24px;
+    color: black;
+    text-align: center;
+    font-family: 'Nunito';
+    font-style: normal;
+    font-weight: 500;  
+}
+
+.adminHeader {
+    display: flex;
+    align-items: center;
+    
+   
+    height: 50px;
+    padding-right: 60px;
+    
+    
+    
+}
+
+.adminHeader img {
+    cursor: pointer;
+}
+
+.adminHeader .div1 {
+    flex-grow: 1;
+}
+
+
+
