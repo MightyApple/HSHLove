@@ -18,10 +18,20 @@ export default function ImgForm() {
         }
     };
 
+    function handleRemoveImage() {
+        setSelectedImage(null);
+    }
+
     return (
         <div className={'imgInputField'}>
             <input type="file" onChange={handleImageChange} class="img" accept="image/png, image/gif, image/jpeg" />
-            {selectedImage && <img src={selectedImage} alt="Vorschau" />}
+            {selectedImage &&
+            <div className="imageContainer">
+                <img src={selectedImage} alt="Vorschau" />
+                <button className="removeButton" onClick={handleRemoveImage}>
+                    X
+                </button>
+            </div>}
         </div>
     );
 }

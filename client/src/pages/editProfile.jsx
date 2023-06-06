@@ -111,14 +111,51 @@ export default function Root(props) {
         setSucces(resData.noError)
     }
 
-    async function loadImages(data){
-        var imgField= document.getElementsByClassName("imgInputField")
+//TODO gib dem die Backend entfernen Logik
+    function removeImage(event) {
+        // Zugriff auf das geklickte Button-Element
+        var button = event.target;
+
+        // Zugriff auf das übergeordnete imageContainer-Element
+        var imageContainer = button.parentNode;
+
+        // Zugriff auf das übergeordnete imgInputField-Element
+        var imgInputField = imageContainer.parentNode;
+
+        // Entferne das imageContainer-Element aus dem imgInputField
+        imgInputField.removeChild(imageContainer);
+    }
+
+    async function loadImages(data) {
+        var imgField = document.getElementsByClassName("imgInputField");
         for (let index = 0; index < data.data.images.length; index++) {
-           
-            let imgString="https://storage.googleapis.com/profilbilder/"+data.data.images[index].toString();
-            console.log(imgString)
-            imgField[index].innerHTML="<img src= "+imgString+" alt=vorschau/>"
-            
+            let imgString =
+                "https://storage.googleapis.com/profilbilder/" +
+                data.data.images[index].toString();
+            console.log(imgString);
+
+            // Erzeuge das DOM-Element für das Bild und den Button
+            var imageContainer = document.createElement("div");
+            imageContainer.className = "imageContainer";
+
+            var imageElement = document.createElement("img");
+            imageElement.src = imgString;
+            imageElement.alt = "Vorschau";
+
+            var removeButton = document.createElement("button");
+            removeButton.className = "removeButton";
+            removeButton.innerText = "X";
+
+            // Weise den Event-Handler programmatisch zu
+            removeButton.addEventListener("click", removeImage);
+
+            // Füge das Bild und den Button zum Container hinzu
+            imageContainer.appendChild(imageElement);
+            imageContainer.appendChild(removeButton);
+
+            // Füge den Container zum imgField hinzu
+            imgField[index].innerHTML = ""; // Leere den Inhalt des imgField
+            imgField[index].appendChild(imageContainer);
         }
     }
     
