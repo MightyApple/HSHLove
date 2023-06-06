@@ -7,3 +7,20 @@
     text-align: center;
     font-size: 18px;
 }
+
+.wideChat {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    min-height: 90vh;
+}
+.wideChatSide {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-left: 4px solid rgba(0, 0, 0, 0.2);
+}
+.startinLogo {
+    justify-content: center;
+    align-items: center;
+}
