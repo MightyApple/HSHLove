@@ -124,12 +124,10 @@ export default function Root(props) {
         var imgInputField = imageContainer.parentNode;
 
         var allContainer = document.getElementsByClassName('imageContainer');
-        console.log(allContainer)
+        
         for (let index = 0; index < allContainer.length; index++) {
             if(allContainer[index]===imageContainer){
                 let srcString=allContainer[index].getElementsByTagName('img')[0].src
-                
-                console.log(srcString)
                 const response =  fetch('/removeImage', {
                     method: 'POST',
                     headers: {
@@ -161,7 +159,7 @@ export default function Root(props) {
             let imgString =
                 "https://storage.googleapis.com/profilbilder/" +
                 data.data.images[index].toString();
-            console.log(imgString);
+            
 
             // Erzeuge das DOM-Element für das Bild und den Button
             var imageContainer = document.createElement("div");
