@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import ReactDOM from 'react-dom';
 import Navbar from '../components/navbar'
 import FormButton from "../components/form/formButton";
 import Tag from '../components/form/tag'
@@ -124,6 +125,12 @@ export default function Root(props) {
 
         // Entferne das imageContainer-Element aus dem imgInputField
         imgInputField.removeChild(imageContainer);
+
+        // Erzeuge ein neues ImgForm-Element
+        var newImgForm = React.createElement(ImgForm);
+
+        // Rendere das ImgForm-Element und füge es zum imgInputField hinzu
+        ReactDOM.render(newImgForm, imgInputField);
     }
 
     async function loadImages(data) {
