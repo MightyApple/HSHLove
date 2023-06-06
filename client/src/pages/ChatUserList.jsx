@@ -14,12 +14,6 @@ export default function ChatUserList({ chatMessages, matchedUsers }) {
 
     var selectedUserMessages = chatMessages.filter((message) => message.receiverId === selectedUser?.userId); // filtert alle Nachrichten, die an den ausgewählten User gesendet wurden
 
-    // const selectedUserMessages = useMemo(() => {
-    //     return chatMessages.filter((message) => message.receiverId === selectedUser?.userId); // filtert alle Nachrichten, die an den ausgewählten User gesendet wurden
-    // }, [chatMessages, selectedUser]);
-
-    console.log('render ChatUserList');
-
     if (selectedUser) { // wenn ein user ausgewählt wurde, dann wird der Chat gerendert
         return (
             <>

@@ -30,9 +30,6 @@ export default function Chat({ chatMessages, receiver }) {
   }
 
   useEffect(() => {
-    console.log("Receiver")
-    console.log(receiver.userId)
-    console.log(chatMessages)
     // nach unten scrollen
     window.scrollTo(0, document.body.scrollHeight);
   }, [chatMessages]);

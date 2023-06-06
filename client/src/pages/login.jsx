@@ -12,8 +12,15 @@ export default function Root({ setLoggedIn }) {
     if(succes){
         navigate('/')
     }
-    
-
+    React.useEffect(()=>{
+        var input = document.getElementById("password");
+        input.addEventListener("keyup", function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                document.getElementById("submitBtn").click();
+            }
+        });
+    },[])
     const submitForm = async ()=>{
         let email = document.getElementById("email");
         let password = document.getElementById("password");
