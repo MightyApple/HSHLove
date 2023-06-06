@@ -15,8 +15,8 @@ router.post("/getProfile", async (req, res) => {
         const user = await mongoHSHLove.userDataCollection.findOne({
             email: email,
         })
-        console.log("!_----------_!")
-        console.log(user.degree)
+        //console.log("!_----------_!")
+        //console.log(user.degree)
 
         const degree = await mongoHSHLove.courseCollection.findOne({
             _id: user.degree,
@@ -28,7 +28,7 @@ router.post("/getProfile", async (req, res) => {
                 _id: user.tags[i],
             }) )
         }
-        console.log(tags)
+        //console.log(tags)
 
         req.session.currentUser = user;
         req.session.currentDegree = degree;
@@ -45,15 +45,15 @@ router.post("/getProfile", async (req, res) => {
 router.post("/likeProfile", async (req, res) => {
     try {
         const data = req.body;
-        console.log("data: " + data._id);
-        console.log("data2: " + data.currentUserId);
+        //console.log("data: " + data._id);
+        //console.log("data2: " + data.currentUserId);
 
         const filter = { _id: data.currentUserId };
         const user = await mongoHSHLove.userDataCollection.findOne(filter);
 
         // Überprüfen, ob der Wert bereits im Array vorhanden ist
         if (user && user.liked.includes(data._id)) {
-            console.log("Der Wert ist bereits im Array vorhanden.");
+            //console.log("Der Wert ist bereits im Array vorhanden.");
             res.send({ noError: true });
             return;
         }
@@ -63,7 +63,7 @@ router.post("/likeProfile", async (req, res) => {
         };
 
         const result = await mongoHSHLove.userDataCollection.updateOne(filter, update);
-        console.log(result);
+        //console.log(result);
 
         const match = await addLikedUser(data.currentUserId, data._id);
 
@@ -71,7 +71,7 @@ router.post("/likeProfile", async (req, res) => {
             noError: true,
             match
         });
-        console.log("Schau in die DB");
+        //console.log("Schau in die DB");
 
     } catch (e) {
         console.log(e);
@@ -83,15 +83,15 @@ router.post("/likeProfile", async (req, res) => {
 router.post("/dislikeProfile", async (req, res) => {
     try {
         const data = req.body;
-        console.log("data: " + data._id);
-        console.log("data2: " + data.currentUserId);
+        //console.log("data: " + data._id);
+        //console.log("data2: " + data.currentUserId);
 
         const filter = { _id: data.currentUserId };
         const user = await mongoHSHLove.userDataCollection.findOne(filter);
 
         // Überprüfen, ob der Wert bereits im Array vorhanden ist
         if (user && user.disliked.includes(data._id)) {
-            console.log("Der Wert ist bereits im Array vorhanden.");
+            //console.log("Der Wert ist bereits im Array vorhanden.");
             res.send({ noError: true });
             return;
         }
@@ -101,12 +101,12 @@ router.post("/dislikeProfile", async (req, res) => {
         };
 
         const result = await mongoHSHLove.userDataCollection.updateOne(filter, update);
-        console.log(result);
+        //console.log(result);
 
         res.send({
             noError: true,
         });
-        console.log("Schau in die DB");
+        //console.log("Schau in die DB");
 
     } catch (e) {
         console.log(e);
@@ -133,8 +133,8 @@ router.post("/getTags", async (req, res) => {
 router.post("/getDegree", async (req, res) => {
     try {
         const user = await mongoHSHLove.courseCollection.find({});
-        console.log("Studiengänge")
-        console.log(user)
+        //console.log("Studiengänge")
+        //console.log(user)
 
         req.session.currentUser = user;
 

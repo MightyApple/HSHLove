@@ -14,28 +14,29 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Root(props) {
     const[description, setDescription]= React.useState("")
-    const[userTags,setUserTags]=React.useState();
     const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false)
 
-     // Read values passed on state
+    // Read values passed on state
     if(props.first){       
         var mail= props.data.email;
         var pass= props.data.password;
     }
     
     if(succes){navigate("/login")}
-
+    let reRender=true
     React.useEffect(()=>{
-       
-        fetchData() 
-        if(!props.first){
-            loadUserData()      
-            loadImages()
-        }                 
-    },[])
-    
-   
+        (async()=>{
+            await fetchData() 
+            if(!props.first&&reRender){
+                loadUserData()      
+                
+                reRender=false
+            } 
+        })();
+                        
+    },[reRender])
+
 
     const updateForm= async ()=>{
         let formData = new FormData();
@@ -65,9 +66,8 @@ export default function Root(props) {
             method: 'POST',
             body: formData
         })
-        const resData= await result.json()
+        navigate("/match")
         
-        setSucces(resData.noError)
     }
 
     const submitFirstTimeForm = async ()=>{
@@ -111,26 +111,26 @@ export default function Root(props) {
         setSucces(resData.noError)
     }
 
-    async function loadImages(){
-        const files = await fetch('/getImages')
-        const data= await files.json();
-        /*for (let index = 0; index < data.length; index++) {
-            const newImg = document.getElementById("imgContainer");
+    async function loadImages(data){
+        var imgField= document.getElementsByClassName("imgInputField")
+        for (let index = 0; index < data.data.images.length; index++) {
+           
+            let imgString="https://storage.googleapis.com/profilbilder/"+data.data.images[index].toString();
+            console.log(imgString)
+            imgField[index].innerHTML+="<img src= "+imgString+" alt=vorschau/>"
             
-            newImg.setAttribute(
-                "src",
-                "https://storage.googleapis.com/profilbilder/"+data[index]
-            )
-            
-        }*/
+        }
     }
     
     async function loadUserData(){
-            const response = await fetch('/getUserData');
-            const data= await response.json();
+        fetch('/getUserData')
+        .then((res)=>res.json())
+        .then((data)=>{
             setDescription(data.data.description)
             setUserTagsActive(data)
-            setUserDropDowns(data)        
+            setUserDropDowns(data) 
+            loadImages(data)
+        })       
     }
     function setUserDropDowns(data){
         document.getElementById("studiumId").value=data.data.degree

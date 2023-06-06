@@ -35,9 +35,12 @@ const requireAuth = (req,res,next)=>{
   next();
 }
 
-router.get('/getUserData', (req, res) => {
+router.get('/getUserData', async (req, res) => {
   if(req.session.authorized){
-    res.json({data:req.session.user})
+    const user = await mongoHSHLove.userDataCollection.findOne({
+      _id:req.session.user._id 
+    })
+    res.json({data:user})
   }else{
     res.status(401).json({ email: "Meld dich an um deinen Namen hier zu lesen"})
   }
@@ -131,12 +134,25 @@ async function uploadProfileImages(imgs,newUser,email){
   const user = await mongoHSHLove.userDataCollection.findOne({
     email: email,
   })
-
+  const uId = user._id
+  
   if (user) {
     
     for(let i=0;i<imgs.images.length;i++){
       if(newUser){
         var img = prepareImage(imgs.images[i],i+1,user._id)
+        uploadImage(img)
+        updateDatabaseImgInformation(img.originalname,email)
+      }else{
+        const user = await mongoHSHLove.userDataCollection.findOne({
+          _id: uId,
+        })
+        if (user.toJSON().images.length === 0) {
+          var imgNr = 1
+        } else {
+          var imgNr = (parseInt(user.toJSON().images[user.toJSON().images.length - 1].split("_").pop().split(".")[0]) + 1)
+        }
+        var img = prepareImage(imgs.images[i],imgNr,user._id)    
         uploadImage(img)
         updateDatabaseImgInformation(img.originalname,email)
       }
@@ -232,37 +248,16 @@ router.get("/upload", async (req, res) => {
 router.post("/updateProfile", multer.fields([{name:"images", maxCount: 6}]), async (req, res) => {
   try {
     let newFile
-    let imgNr;
-
-    const uId = req.session.user._id
-
-    const user = await mongoHSHLove.userDataCollection.findOne({
-      _id: uId,
-    })
     
-    if (user) {
+    const incomingData = req.body;
+
+    
       try {
         //Datenbankeintrag 'images' letzte nummer rausfinden und um 1 erhöhen
-        if (user.toJSON().images.length === 0) {
-          imgNr = 1
-        } else {
-          imgNr = (parseInt(user.toJSON().images[user.toJSON().images.length - 1].split("_").pop().split(".")[0]) + 1)
-        }
+        
         try {
-          if (req.file) {
-            newFile = {
-              fieldname: req.file.fieldname,
-              originalname: uId + "_" + imgNr.toString() + ".jpeg",
-              encoding: req.file.encoding,
-              mimetype: req.file.mimetype,
-              buffer: req.file.buffer,
-              size: req.file.size
-            }
-
-            const blob = profilbilder.file(newFile.originalname);
-            const blobStream = blob.createWriteStream();
-            
-            blobStream.end(newFile.buffer);
+          if (req.files) {
+            uploadProfileImages(req.files,false,req.session.user.email);
           } else {
             
           }
@@ -274,7 +269,7 @@ router.post("/updateProfile", multer.fields([{name:"images", maxCount: 6}]), asy
       }
 
       try {
-        const incomingData = req.body;
+        
         let tagsArr=stringToArray(incomingData.tags)
         let prefArr=stringToArray(incomingData.preference)
         let intentArr=stringToArray(incomingData.intention)
@@ -300,10 +295,7 @@ router.post("/updateProfile", multer.fields([{name:"images", maxCount: 6}]), asy
         res.status(500).send(error);
       }
       
-    } else {
-      //Fehler wenn nutzerbereits existiert und passwörter nicht stimmen
-      res.status(500).send("ERROR");
-    }
+    
   } catch (e) {
     console.log(e)
 
@@ -335,7 +327,6 @@ router.post("/validateData", async (req, res) => {
     const user = await mongoHSHLove.userDataCollection.findOne({
       email: email,
     })
-    console.log(user)
     if (user == null && password == passwordwdh) {
       res.send({noError:true})
     } else {
