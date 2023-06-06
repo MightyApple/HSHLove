@@ -17,6 +17,7 @@ import ChatUserList from './pages/ChatUserList';
 import DebugRouter from './pages/debugRouter';
 import ErrorPage from './error-page';
 import MatchPage from './pages/matchPage'
+import Admin from './pages/admin'
 
 import { socket } from './components/socket';
 import { useState } from 'react';
@@ -144,6 +145,10 @@ function App() {
         {
             path: "match",
             element: <MatchPage />,
+        },
+        {
+            path: "admin",
+            element: <Admin />,
         },
     ]);
 

@@ -1,0 +1,22 @@
+.startPage .startinLogo {
+    text-align: center;
+    padding: 44px 0;
+}
+.startPage .startinLogo img {
+    margin: 0 auto;
+}
+.startPage .startinLogo p {
+    color: var(--secondaryColor);
+    text-shadow:
+ 
+    1px 1px 0 #000,
+            -1px 1px 0 #000,
+            1px -1px 0 #000,
+            -1px -1px 0 #000;
+}
+.startPage .startinLogo p span {
+    color: var(--primaryColor);
+}
+.startPage .startRoute div {
+    padding-top: 44px;
+}
