@@ -76,8 +76,11 @@ function MatchPage() {
                 setPrefs(result.data.intention);
                 setImages(result.data.images);
                 let placeholderTag = [];
+                console.log(result.tag)
                 for (let tag in result.tag) {
+                    console.log(1)
                     for (let tag2 in currentUserTags) {
+                        console.log(2)
                         if (result.tag[tag]._id === currentUserTags[tag2]) {
                             placeholderTag.push({name: result.tag[tag].name, class: "checked"})
                         } else {
@@ -85,6 +88,7 @@ function MatchPage() {
                         }
                     }
                 }
+                console.log(placeholderTag)
                 setTags(placeholderTag);
             } else {
                 console.log('Error:', response.statusText);
@@ -99,18 +103,25 @@ function MatchPage() {
      * @returns {Promise<any>}
      */
     async function getCurrentUser() {
-        return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
+        return fetch('/getUser')
+            .then(response => response.json())
+            .then(data => {
                 setCurrentUserId(data._id);
                 setcurrentUserTags(data.tags);
-                console.log(data)
-            }
-        );
+                console.log(data);
+            });
     }
 
     useEffect(() => {
         getCurrentUser();
-        getUserData();
     }, []);
+
+    //Das ist hier ausgelagert, damit die Tags immer einlesbar sind
+    useEffect(() => {
+        if (currentUserTags) {
+            getUserData();
+        }
+    }, [currentUserTags]);
 
     async function likeProfile(data) {
         try {
