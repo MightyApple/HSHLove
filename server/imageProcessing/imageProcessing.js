@@ -55,7 +55,7 @@ async function uploadImage(Image){
         buffer: req.file.buffer,
         size: req.file.size
     }*/
-
+    console.log("stage 7")
     const blob = profilbilder.file(Image.originalname);
     const blobStream = blob.createWriteStream();
 

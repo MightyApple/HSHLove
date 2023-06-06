@@ -117,7 +117,7 @@ export default function Root(props) {
            
             let imgString="https://storage.googleapis.com/profilbilder/"+data.data.images[index].toString();
             console.log(imgString)
-            imgField[index].innerHTML+="<img src= "+imgString+" alt=vorschau/>"
+            imgField[index].innerHTML="<img src= "+imgString+" alt=vorschau/>"
             
         }
     }
