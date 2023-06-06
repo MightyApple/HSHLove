@@ -22,6 +22,8 @@ import Admin from './pages/admin'
 import { socket } from './components/socket';
 import { useState } from 'react';
 
+import toast, { Toaster } from 'react-hot-toast';
+
 function getCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -41,7 +43,7 @@ function getCookie(cname) {
 function App() {
     const [loggedIn, setLoggedIn] = useState(sessionCheck()); //TODO: muss mit session/cookie synchronisiert werden
 
-    const [chatMessages, setChatMessages] = useState([]);
+    const [chatRooms, setChatRooms] = useState([]);
     const [matchedUsers, setMatchedUsers] = useState([]);
 
     function sessionCheck() {
@@ -71,18 +73,49 @@ function App() {
 
     useEffect(() => { // wird einmal ausgeführt
         socket.on("message", (message) => {
-            console.log("message received: " + message + " from " + socket.id);
-            setChatMessages((chatMessages) => [...chatMessages, message]);
+            //console.log("message received: " + JSON.stringify(message) + " from " + socket.id);
+            setChatRooms((chatRooms) => {
+                var { chatID, ...chatMessage } = message;
+                var updatedChatRoom = chatRooms.find((chatRoom) => chatRoom.id === chatID);
+                updatedChatRoom.messages.push(chatMessage);
+                return [...chatRooms, updatedChatRoom];
+            });
+
+            // kein toast wenn der sender der aktuelle user ist
+            if(message.sender === socket.auth.username) {
+                return;
+            }
+            // kein toast wenn wir uns bereits in einem Chat befinden
+            if (window.location.pathname === "/chat") {
+                return;
+            }
+
+            toast(message.from + ": " + message.content, {
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                }
+            })
+
         });
 
-        socket.on("initChats", ({users, messages}) => {
+        socket.on("initChats", ({users, chatRooms}) => {
             setMatchedUsers(users);
-            console.log(messages);
-            setChatMessages(messages);
+            console.log(chatRooms);
+            setChatRooms(chatRooms);
         });
 
         socket.on("newMatch", (user) => {
             setMatchedUsers((matchedUsers) => [...matchedUsers, user]);
+
+            toast("Neuer Match: " + user.username, {
+                style: {
+                    borderRadius: '10px',
+                    background: '#333',
+                    color: '#fff',
+                }
+            });
         });
 
     
@@ -123,7 +156,7 @@ function App() {
         // ChatUserList bekommt die chatMessages und onlineUsers als props übergeben
         {
             path: "chat",
-            element: <ChatUserList chatMessages={chatMessages} matchedUsers={matchedUsers} />,
+            element: <ChatUserList chatRooms={chatRooms} matchedUsers={matchedUsers} />,
         },
         {
         // Brauche Info, ob User eingeloggt ist, damit wir connecten können
@@ -152,10 +185,13 @@ function App() {
         },
     ]);
 
-    console.log("loggedIn: " + loggedIn);
     return (
         <>
             <RouterProvider router={router} />
+            <Toaster
+                position="top-center"
+                duration={5000}
+            />
         </>
     );
 }
