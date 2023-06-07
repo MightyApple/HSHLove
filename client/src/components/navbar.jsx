@@ -13,11 +13,11 @@ export default function Root() {
                         <img src={chat} alt={'chat'} width={40} height={40}/>
                         <p>Chats</p>
                     </Link>
-                    <Link to={'/'}>
+                    <Link to={'/match'}>
                         <img src={logo} alt={'logo'} width={40} height={40}/>
                         <p>Finde neue Leute</p>
                     </Link>
-                    <Link to={'/'}>
+                    <Link to={'/edit'}>
                         <img src={profile} alt={'profile'} width={40} height={40}/>
                         <p>Dein Profil</p>
                     </Link>

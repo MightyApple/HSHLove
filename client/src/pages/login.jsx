@@ -10,7 +10,7 @@ export default function Root({ setLoggedIn }) {
     const[succes, setSucces]= React.useState(false)
     
     if(succes){
-        navigate('/')
+        navigate('/match')
     }
     React.useEffect(()=>{
         var input = document.getElementById("password");

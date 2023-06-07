@@ -3,6 +3,8 @@ nav {
     width: 100%;
     justify-content: space-between;
     margin: 14px 0 36px 0;
+    position: relative;
+    z-index: 2;
 }
 nav a {
     display: flex;

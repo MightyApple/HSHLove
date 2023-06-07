@@ -149,7 +149,7 @@ function App() {
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <DebugRouter />,
+            element: <StartingPage />,
 
             errorElement: <ErrorPage />,
         },
@@ -169,8 +169,8 @@ function App() {
             element: <Register />,
         },
         {
-            path: "start",
-            element: <StartingPage />,
+            path: "debug",
+            element: <DebugRouter />,
         },
         {
             path: "edit",
