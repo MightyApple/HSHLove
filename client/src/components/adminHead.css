@@ -10,13 +10,8 @@
 .adminHeader {
     display: flex;
     align-items: center;
-    
-   
     height: 50px;
     padding-right: 60px;
-    
-    
-    
 }
 
 .adminHeader img {
@@ -26,6 +21,17 @@
 .adminHeader .div1 {
     flex-grow: 1;
 }
+
+
+.iconLink {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    display: flex;
+    align-items: center;
+    
+  }
+  
 
 
 
