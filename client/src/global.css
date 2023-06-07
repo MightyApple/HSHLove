@@ -45,7 +45,7 @@
 
 body {
     background: linear-gradient(168.3deg, var(--white) 46.5%, var(--bgSecondaryColor) 83.37%, var(--bgPrimaryColor) 107.3%);
-    min-height: 100vh;
+    min-height: 97.9vh;
     height: 100%;
     max-width: 100vw;
 }

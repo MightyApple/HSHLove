@@ -70,3 +70,10 @@
 #messages div.receiver-message .messageContent {
     border: 3px solid var(--primaryColor);
 }
+
+@media (min-width: 769px) {
+    .chatBox {
+        overflow: scroll;
+        height: 67vh;
+    }
+}
