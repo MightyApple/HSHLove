@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useRef} from 'react';
 import "./chat.css";
 import ChatMessage from '../components/ChatMessage';
 import ProfilePicture from '../components/profilePicture'
@@ -8,6 +8,8 @@ import { socket } from '../components/socket';
 
 export default function Chat({ chatMessages, receiver }) {
   const [inputValue, setInputValue] = useState('');
+
+  const scrollableDivRef = useRef(null);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -26,11 +28,13 @@ export default function Chat({ chatMessages, receiver }) {
   useEffect(() => {
     // nach unten scrollen
     window.scrollTo(0, document.body.scrollHeight);
+
+    scrollableDivRef.current.scrollTop = scrollableDivRef.current.scrollHeight;
   }, [chatMessages.length]);
 
   return (
     <>
-      <div className="chatBox">
+      <div className="chatBox" ref={scrollableDivRef}>
         <div id="messages">
           {chatMessages.map((message, index) => (
               <div key={index} className={message.sender === receiver.userId ? 'receiver-message' : 'sender-message'}>
