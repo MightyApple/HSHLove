@@ -9,12 +9,11 @@ label {
     justify-content: space-between;
 }
 .imgForm {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    width: fit-content;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: repeat(2, 1fr);
+    justify-items: start;
     margin: 0 var(--containerPrimary);
-    column-gap: 67px;
     padding: 5px;
     background-color: var(--white);
     row-gap: 20px;
@@ -44,6 +43,12 @@ label {
     flex-direction: column;
 }
 
+@media (min-width: 1000px) {
+    .small {
+        width: 100%;
+    }
+}
+
 @media (min-width: 1024px) {
     label {
         font-size: 24px;
@@ -57,5 +62,13 @@ label {
     }
     .tagSection hr {
         flex: 0;
+    }
+}
+
+@media (min-width: 1320px) {
+    .imgForm {
+        grid-template-columns: repeat(5, 1fr) auto;
+        grid-template-rows: 1fr;
+
     }
 }

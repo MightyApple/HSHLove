@@ -5,6 +5,11 @@
     background-image: url("../../assets/placeholderImg.png");
     background-size: cover;
     background-position: center;
+
+    grid-column: span 1;
+}
+.imgInputField:nth-child(2), .imgInputField:nth-child(5) {
+    justify-self: center;
 }
 .imgInputField, .imgInputField input {
     position: relative;
@@ -37,4 +42,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media (min-width: 426px) {
+    .imgInputField img, .imgInputField, .imgInputField input {
+        height: 150px;
+        width: 125px;
+    }
+}
+@media (min-width: 856px) {
+    .imgInputField img, .imgInputField, .imgInputField input {
+        height: 200px;
+        width: 166px;
+    }
+}
+
+@media (min-width: 1320px) {
+    .imgInputField:nth-child(2), .imgInputField:nth-child(5) {
+        justify-self: auto;
+    }
 }

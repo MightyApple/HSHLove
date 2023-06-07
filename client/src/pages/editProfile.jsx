@@ -201,7 +201,7 @@ export default function Root(props) {
         document.getElementById("studiumId").value=data.data.degree
         document.getElementById("geschlechtId").value=data.data.gender
     } 
-    function setUserTagsActive(data){        
+    function setUserTagsActive(data){
         data.data.tags.forEach(element => {
             document.getElementById(element).classList.add("checked")
         });
