@@ -74,6 +74,5 @@
 @media (min-width: 769px) {
     .chatBox {
         overflow: scroll;
-        height: 67vh;
     }
 }
