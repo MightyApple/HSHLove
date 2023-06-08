@@ -323,8 +323,6 @@ router.post("/removeImage", async (req,res)=>{
   
 })
 
-var { getAllImages, updateForm } = require('../imageProcessing/imageProcessing.js');
-
 router.get("/getImages", async (req, res) => {
   try {
     if(req.session.authorized){

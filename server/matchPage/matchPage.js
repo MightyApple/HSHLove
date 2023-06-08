@@ -185,10 +185,9 @@ router.post("/dislikeProfile", async (req, res) => {
 });
 
 
-router.post("/getTags", async (req, res) => {
+router.get("/getTags", async (req, res) => {
     try {
         const user = await mongoHSHLove.tagCollection.find({});
-        console.log(user)
 
         req.session.currentUser = user;
 
@@ -196,11 +195,11 @@ router.post("/getTags", async (req, res) => {
 
     } catch (e) {
         console.log(e)
-        res.status(500).send("something broke in the registration")
+        res.status(500).send("something broke in the /getTags")
     }
 })
 
-router.post("/getDegree", async (req, res) => {
+router.get("/getDegree", async (req, res) => {
     try {
         const user = await mongoHSHLove.courseCollection.find({});
         //console.log("Studiengänge")
@@ -212,7 +211,7 @@ router.post("/getDegree", async (req, res) => {
 
     } catch (e) {
         console.log(e)
-        res.status(500).send("something broke in the registration")
+        res.status(500).send("something broke in the /getDegree")
     }
 })
 
