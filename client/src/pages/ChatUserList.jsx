@@ -16,8 +16,6 @@ export default function ChatUserList({ chatRooms, matchedUsers }) {
     var selectedChatRoom = chatRooms.find((chatRoom) => chatRoom.users.some((user) => user._id === selectedUser?.userId));
     var selectedUserMessages = selectedChatRoom?.messages;
 
-
-
     const isWideScreen = useMediaQuery({minWidth: 769});
 
     if (isWideScreen && selectedUser) {

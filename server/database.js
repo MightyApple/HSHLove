@@ -90,7 +90,9 @@ async function getChat(userID, user2ID) {
     // find all chats where userID & user2ID are in users array
     const chat = await chatCollection.findOne({
         users: { $all: [userID, user2ID] } // $all: [userID, user2ID] -> users array beinhaltet beide userIDs
-    }).lean();
+    })
+    .populate("users")
+    .lean();
     return chat;
 }
 

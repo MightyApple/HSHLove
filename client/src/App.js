@@ -110,8 +110,11 @@ function App() {
             setChatRooms(chatRooms);
         });
 
-        socket.on("newMatch", (user) => {
+        socket.on("newMatch", (data) => {
+            var user = data.user;
+            var chatRoom = data.chatRoom;
             setMatchedUsers((matchedUsers) => [...matchedUsers, user]);
+            setChatRooms((chatRooms) => [...chatRooms, chatRoom]);
 
             toast("Neuer Match: " + user.username, {
                 style: {
