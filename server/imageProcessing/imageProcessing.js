@@ -239,5 +239,6 @@ router.post("/personalSpace", multer.single("imgfile"), async (req, res) => {
 module.exports ={
     getAllImages,
     updateForm,
-    uploadImage
+    uploadImage,
+    uploadChatImage
 }
