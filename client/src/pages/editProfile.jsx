@@ -1,3 +1,4 @@
+
 import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from '../components/navbar'
@@ -306,8 +307,16 @@ export default function Root(props) {
 
     const [tags, setTags] = useState([{name: "test"}]);
     const [studiengaenge, setStudiengaenge] = useState([{name: "test", _id: "test"}]);
-    const prefs = ['männlich', 'weiblich', 'divers', ];
-    const intention = ['Beziehungen', 'Freunden', 'ONS'];
+    const prefs = [
+        {name:'männlich', _id:'männlich'},
+        {name:'weiblich', _id:'weiblich'},
+        {name:'diverse', _id:'diverse'}
+    ];
+    const intention = [
+        {name:'Beziehung', _id:'Beziehung'},
+        {name:'Freunde', _id:'Freunde'},
+        {name:'ONS', _id:'ONS'},
+    ];
     const geschlecht = [
         {name: "männlich", _id: "männlich"},
         {name: "weiblich", _id: "weiblich"},
@@ -354,12 +363,12 @@ export default function Root(props) {
                     <label>Ich suche nach:</label>
                     <div className={'tags intention'}>
                         {intention.map((pref, index) => (
-                            <Tag key={index} name={pref} id={pref._id} disabled={false} class={'intent hover click'}></Tag>
+                            <Tag key={index} name={pref.name} id={pref._id} disabled={false} class={'intent hover click'}></Tag>
                         ))}
                     </div>
                     <div className={'tags pref'}>
                         {prefs.map((pref, index) => (
-                            <Tag key={index} name={pref} id={pref._id} disabled={false} class={'pref hover click'}></Tag>
+                            <Tag key={index} name={pref.name} id={pref._id} disabled={false} class={'pref hover click'}></Tag>
                         ))}
                     </div>
                 </div>
