@@ -97,13 +97,16 @@ router.post("/signup", multer.fields([{name:"images", maxCount: 6}]),async (req,
     let prefArr=stringToArray(incomingData.preference)
     let intentArr=stringToArray(incomingData.intention)
     const hash = await bcrypt.hash(incomingData.password, 10)
+    const degree = await mongoHSHLove.courseCollection.findOne({
+      name: incomingData.degree,
+    });
     const data = {
       email: incomingData.email,
       password: hash,
       name: incomingData.firstname,
       birthday: incomingData.birthdate,
       description: incomingData.description,
-      degree: incomingData.degree,
+      degree: degree._id,
       gender: incomingData.gender,
       intention: intentArr,
       tags: tagsArr,
