@@ -24,12 +24,13 @@ function MatchPage() {
     const [name, setName] = useState("BBoi");
     const [age, setAge] = useState(18);
     const [studiengang, setStudiengang] = useState("Hää Sport");
-    const [semester, setSemester] = useState("9. Semester"); //TODO Semseter eintragbar machen
-    const [city, setCity] = useState("Bonn"); //TODO City STudiengang zuordnen
+    const [city, setCity] = useState("Bonn");
 
     const [currentUser, setCurrentUser] = useState("");
     const [currentUserId, setCurrentUserId] = useState("");
     const [currentUserTags, setcurrentUserTags] = useState("");
+
+    const [profil, setProfil] = useState(true);
 
     /**
      * Rechnet aus, wie alt der Nutzer ist
@@ -69,35 +70,42 @@ function MatchPage() {
 
             if (response.ok) {
                 const result = await response.json();
-                setId(result.data._id);
-                setDesc(result.data.description);
-                setStudiengang(result.degree.name);
-                setCity(result.degree.campus);
-                setName(result.data.name);
-                setAge(birthday(result.data.birthday));
-                //setTags(result.tag);
-                setPrefs(result.data.intention);
-                setImages(result.data.images);
-                let placeholderTag = [];
-                console.log(result.tag)
-                let matchedTag = false;
-                for (let tag in result.tag) {
-                    matchedTag = false;
-                    console.log(1)
-                    for (let tag2 in currentUserTags) {
-                        console.log(2)
-                        if (result.tag[tag]._id === currentUserTags[tag2]) {
-                            matchedTag = true
+                console.log("result")
+                console.log(result)
+                if (Object.keys(result).length === 0) {
+                    setProfil(false);
+                } else {
+                    setId(result.data._id);
+                    setDesc(result.data.description);
+                    setStudiengang(result.degree.name);
+                    setCity(result.degree.campus);
+                    setName(result.data.name);
+                    setAge(birthday(result.data.birthday));
+                    //setTags(result.tag);
+                    setPrefs(result.data.intention);
+                    setImages(result.data.images);
+                    let placeholderTag = [];
+                    console.log(result.tag)
+                    let matchedTag = false;
+                    for (let tag in result.tag) {
+                        matchedTag = false;
+                        console.log(1)
+                        for (let tag2 in currentUserTags) {
+                            console.log(2)
+                            if (result.tag[tag]._id === currentUserTags[tag2]) {
+                                matchedTag = true
+                            }
+                        }
+                        if (matchedTag) {
+                            placeholderTag.push({name: result.tag[tag].name, class: "checked"})
+                        } else {
+                            placeholderTag.push({name: result.tag[tag].name, class: ""})
                         }
                     }
-                    if (matchedTag) {
-                        placeholderTag.push({name: result.tag[tag].name, class: "checked"})
-                    } else {
-                        placeholderTag.push({name: result.tag[tag].name, class: ""})
-                    }
+                    console.log(placeholderTag)
+                    setTags(placeholderTag);
                 }
-                console.log(placeholderTag)
-                setTags(placeholderTag);
+
             } else {
                 console.log('Error:', response.statusText);
             }
@@ -228,59 +236,75 @@ function MatchPage() {
         {isLoading ? (
             <LoadingScreen /> // Zeige den Ladebildschirm an, solange isLoading true ist
         ) : (
-            <div>
-                <Navbar></Navbar>
-                <section className={'primaryContainer slider'}>
-                    <Slider {...settings}>
-                        {Array.from({length: images.length}, (_, index) => (
-                            <div key={index} className={'content'}>
-                                <img src={'https://storage.googleapis.com/profilbilder/'+images[index]} alt={"Bild "+index}/>
-                                <ul className={'normalFontSize visible'+index}>
-                                    <li className={'name'}>{name} <span className={'age'}>{age}</span></li>
-                                    <li>{studiengang}</li>
-                                    <li>{semester}</li>
-                                    <li>{city}</li>
-                                </ul>
+            profil ? (
+                    <div>
+                        <Navbar></Navbar>
+                        <section className={'primaryContainer slider'}>
+                            <Slider {...settings}>
+                                {Array.from({length: images.length}, (_, index) => (
+                                    <div key={index} className={'content'}>
+                                        <img src={'https://storage.googleapis.com/profilbilder/' + images[index]}
+                                             alt={"Bild " + index}/>
+                                        <ul className={'normalFontSize visible' + index}>
+                                            <li className={'name'}>{name} <span className={'age'}>{age}</span></li>
+                                            <li>{studiengang}</li>
+                                            <li>{city}</li>
+                                        </ul>
+                                    </div>
+                                ))}
+                            </Slider>
+                        </section>
+                        <div>
+                            <button className={'matchButton'} id={'decline'}
+                                    onClick={() => dislikeProfile({_id: id, currentUserId: currentUserId})}></button>
+                            <button className={'matchButton'} id={'accept'}
+                                    onClick={() => likeProfile({_id: id, currentUserId: currentUserId})}></button>
+                        </div>
+                        <a className={'scrollUp'} href={'#'}>
+                            <img src={scrollUp} alt={'scrollUp'}/>
+                        </a>
+                        <div>
+                            <Trenner></Trenner>
+                        </div>
+                        <section className={'tagSection'}>
+                            <div className={'tagBox'}>
+                                <div className={'tags'}>
+                                    {tags.map((tag, index) => (
+                                        <Tag key={index} name={tag.name} disabled={false} class={tag.class}></Tag>
+                                    ))}
+                                </div>
                             </div>
-                        ))}
-                    </Slider>
-                </section>
-                <div>
-                    <button className={'matchButton'} id={'decline'} onClick={() => dislikeProfile({ _id: id, currentUserId: currentUserId})}></button>
-                    <button className={'matchButton'} id={'accept'} onClick={() => likeProfile({ _id: id, currentUserId: currentUserId})}></button>
-                </div>
-                <a className={'scrollUp'} href={'#'}>
-                    <img src={scrollUp} alt={'scrollUp'}/>
-                </a>
-                <div>
-                    <Trenner></Trenner>
-                </div>
-                <section className={'tagSection'}>
-                    <div className={'tagBox'}>
-                        <div className={'tags'}>
-                            {tags.map((tag, index) => (
-                                <Tag key={index} name={tag.name} disabled={false} class={tag.class}></Tag>
-                            ))}
+                            <Trenner class={'small verticle'}></Trenner>
+                            <div className={'tagBox'}>
+                                <div className={'tags'}>
+                                    {prefs.map((pref, index) => (
+                                        <Tag key={index} name={pref} disabled={false} class={'b'}></Tag>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+                        <div>
+                            <Trenner></Trenner>
                         </div>
+                        <section className={'primaryContainer'}>
+                            <p className={'desc'}>
+                                {desc}
+                            </p>
+                        </section>
                     </div>
-                    <Trenner class={'small verticle'}></Trenner>
-                    <div className={'tagBox'}>
-                        <div className={'tags'}>
-                            {prefs.map((pref, index) => (
-                                <Tag key={index} name={pref} disabled={false} class={'b'}></Tag>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+            ) : (
                 <div>
-                    <Trenner></Trenner>
+                    <Navbar></Navbar>
+
+                    <section className={"primaryContainer"}>
+                        <h1 className={"bigHeadline"}>Senke deine ansprüce!<br />Hier gibt es niemanden für dich</h1>
+                        <div>
+                            <Trenner></Trenner>
+                        </div>
+                    </section>
                 </div>
-                <section className={'primaryContainer'}>
-                    <p className={'desc'}>
-                        {desc}
-                    </p>
-                </section>
-            </div>)}
+                )
+            )}
         </>
     )
 }
