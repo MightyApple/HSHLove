@@ -18,6 +18,8 @@ export default function Root(props) {
     const[description, setDescription]= React.useState("")
     const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false)
+    const [isLoading, setIsLoading] = useState(true);
+    const [userInformation, setUserInformation] = useState({});
 
     // Read values passed on state
     if(props.first){       
@@ -32,12 +34,22 @@ export default function Root(props) {
             await fetchData() 
             if(!props.first&&reRender){
                 loadUserData()      
-                
+
                 reRender=false
             } 
         })();
                         
     },[reRender])
+    React.useEffect(()=>{
+        if(JSON.stringify(userInformation)!==JSON.stringify({})){
+            
+            setDescription(userInformation.data.description)
+            setUserTagsActive(userInformation)
+            setUserDropDowns(userInformation) 
+            loadImages(userInformation) 
+        }
+                     
+    },[userInformation])
 
 
     const updateForm= async ()=>{
@@ -190,14 +202,13 @@ export default function Root(props) {
         fetch('/getUserData')
         .then((res)=>res.json())
         .then((data)=>{
-            setDescription(data.data.description)
-            setUserTagsActive(data)
-            setUserDropDowns(data) 
-            loadImages(data)
+            setUserInformation(data)
+            setIsLoading(false); // Setze isLoading auf false, wenn der Ladevorgang abgeschlossen ist
         })       
     }
     function setUserDropDowns(data){
-        document.getElementById("studiumId").value=data.data.degree
+        let degree=document.getElementById(data.data.degree).innerHTML
+        document.getElementById("studiumId").value=degree
         document.getElementById("geschlechtId").value=data.data.gender
     } 
     function setUserTagsActive(data){
@@ -257,7 +268,7 @@ export default function Root(props) {
     async function fetchData() {
         try {
             const response = await fetch('/getTags', {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -275,7 +286,7 @@ export default function Root(props) {
 
         try {
             const response = await fetch('/getDegree', {
-                method: 'POST',
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -304,27 +315,14 @@ export default function Root(props) {
     ];
     const maxLength = 250;
     const imgLoopCount = 6;
-
-
-
-
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        // Simuliere einen asynchronen Ladevorgang
-        setTimeout(() => {
-            setIsLoading(false); // Setze isLoading auf false, wenn der Ladevorgang abgeschlossen ist
-        }, 3000);
-    }, []);
-
-
-
+    const tmp ={a:"asd"}
     const mainElement =
         <>
         {isLoading ? (
             <LoadingScreen /> // Zeige den Ladebildschirm an, solange isLoading true ist
         ) : (
-        <div>
+        
+        <div what={tmp}>
             <section className={'imgForm'}>
                 {Array.from({ length: imgLoopCount }, (_, index) => (
                     <ImgForm key={index} ></ImgForm>
