@@ -7,9 +7,9 @@ import reportWebVitals from './reportWebVitals';
 // Code ausgelagert in App.js damit socket.io überall geht
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <App />
-    </React.StrictMode>
+    // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

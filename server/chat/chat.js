@@ -115,16 +115,37 @@ function chatInitialisieren(io) {
         socket.on("newMatch", async ({ matchId }) => {
             // match chatroom zum client hinzufügen
             var otherUser = await database.findUserByID(matchId);
+            var chatRoom = await database.getChat(socket._id, matchId);
+
             socket.emit("newMatch", {
-                userId: otherUser._id,
-                username: otherUser.name
+                user: {
+                    userId: otherUser._id,
+                    username: otherUser.name,
+                },
+                chatRoom: {
+                    id: chatRoom._id,
+                    users: chatRoom.users,
+                    messages: [],
+                }
             });
 
             // match chatroom zum anderen user hinzufügen
+            // socket.to(matchId).emit("newMatch", {
+            //     userId: socket._id,
+            //     username: socket.name
+            // });
             socket.to(matchId).emit("newMatch", {
-                userId: socket._id,
-                username: socket.name
+                user: {
+                    userId: socket._id,
+                    username: socket.name,
+                },
+                chatRoom: {
+                    id: chatRoom._id,
+                    users: chatRoom.users,
+                    messages: [],
+                }
             });
+
         });
 
         socket.on('disconnect', () => { //wird ausgeführt, wenn ein client disconnected
