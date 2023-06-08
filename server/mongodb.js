@@ -93,7 +93,11 @@ const messageSchema = new mongoose.Schema({
         sentByUserID: {
             type: String,
             ref: "Nutzerdaten"
-        }
+        },
+        isImage: {
+            type: Boolean,
+            default: false
+        },
     }]
 })
 

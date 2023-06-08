@@ -25,6 +25,31 @@ export default function Chat({ chatMessages, receiver }) {
     setInputValue('');
   }
 
+  function handleImageChange(event) {
+    var file = event.target.files[0];
+
+    if(!file) {
+      return;
+    }
+
+    console.log('sending image');
+    // 👇 Uploading the file using the fetch API to the server
+    fetch('/uploadImage', {
+      method: 'POST',
+      body: file,
+      // 👇 Set headers manually for single file upload
+      headers: {
+        'content-type': file.type,
+        'content-length': `${file.size}`, // 👈 Headers need to be a string
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.error(err));
+
+
+  }
+
   useEffect(() => {
     // nach unten scrollen
     window.scrollTo(0, document.body.scrollHeight);
@@ -40,7 +65,7 @@ export default function Chat({ chatMessages, receiver }) {
               <div key={index} className={message.sender === receiver.userId ? 'receiver-message' : 'sender-message'}>
                 <ProfilePicture profileImage={message.receiverImage}></ProfilePicture>
                 <div className={"messageContent"}>
-                  <ChatMessage sender={message.sender} text={message.content} timestamp={message.timestamp} />
+                  <ChatMessage sender={message.sender} text={message.content} timestamp={message.timestamp} isImage={message.isImage} />
                 </div>
               </div>
           ))}
@@ -52,6 +77,19 @@ export default function Chat({ chatMessages, receiver }) {
             value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
           />
+          <label htmlFor="image-input" className="image-input-label" style={{
+            cursor: "pointer",
+            fontSize: "1.5rem",
+            padding: "0 0.5rem",
+
+            color: "#fff",
+            backgroundColor: "#333",
+            borderRadius: "10%",
+
+          }}>&#128206;</label>
+          <input id='image-input' type="file" onChange={handleImageChange} accept='image/*' style={{
+            display: "none"
+          }} />
           <button type="submit">Send</button>
         </form>
       </div>

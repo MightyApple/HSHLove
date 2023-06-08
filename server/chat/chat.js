@@ -58,7 +58,8 @@ function chatInitialisieren(io) {
                         receiverImage: otherUser.images[0],
                         sender: message.sentByUserID._id, // TODO: wenns in der DB ist, dann message.sendByUserID.username
                         content: message.messageContent,
-                        timestamp: message.timeStamp
+                        timestamp: message.timeStamp,
+                        isImage: message.isImage,
                     });
                 });
                 chatRooms.push({ //fügt den chatroom dem array hinzu
