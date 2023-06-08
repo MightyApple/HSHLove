@@ -28,10 +28,17 @@ router.post("/getProfile", async (req, res) => {
         }
 
         console.log("usersToSkip")
-        console.log(usersToSkip)
+        console.log(user.preference)
 
         for (const aUser of users) {
-            if (usersToSkip.includes(aUser._id.toString())) {
+            let sameIntent = false;
+            console.log(aUser.gender)
+            for (const intent of aUser.intention) {
+                if (user.intention.includes(intent)) {
+                    sameIntent = true;
+                }
+            }
+            if (usersToSkip.includes(aUser._id.toString()) || !user.preference.includes(aUser.gender) || !sameIntent) {
                 continue; // Benutzer überspringen und mit der nächsten Iteration fortfahren
             }
 
