@@ -63,8 +63,17 @@ router.post("/getProfile", async (req, res) => {
 // Der Benutzer mit den meisten Übereinstimmungen ist userWithMostMatches
         console.log("userWithMostMatches");
         console.log(userWithMostMatches);
+        console.log(user.disliked[0])
 
-        if (!userWithMostMatches) {
+        if (!userWithMostMatches && user.disliked[0] === undefined) {
+            res.json({
+                data: undefined
+            });
+            console.log("WICHTIGER TEST")
+            return;
+
+        } else if (!userWithMostMatches) {
+            console.log("WICHTIGER TEST2")
             userWithMostMatches = user.disliked[0];
 
             await mongoHSHLove.userDataCollection.updateMany(
@@ -72,6 +81,7 @@ router.post("/getProfile", async (req, res) => {
                 { $unset: { disliked: "" } }
             );
         }
+        console.log("WICHTIGER TEST3")
 
         const degree = await mongoHSHLove.courseCollection.findOne({
             _id: userWithMostMatches.degree,
