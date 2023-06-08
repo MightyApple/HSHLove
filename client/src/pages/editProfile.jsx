@@ -113,7 +113,6 @@ export default function Root(props) {
         setSucces(resData.noError)
     }
 
-//TODO gib dem die Backend entfernen Logik
     async function removeImage(event) {
         // Zugriff auf das geklickte Button-Element
         var button = event.target;

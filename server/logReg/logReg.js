@@ -272,9 +272,13 @@ router.post("/updateProfile", multer.fields([{name:"images", maxCount: 6}]), asy
         let tagsArr=stringToArray(incomingData.tags)
         let prefArr=stringToArray(incomingData.preference)
         let intentArr=stringToArray(incomingData.intention)
+
+        const degree = await mongoHSHLove.courseCollection.findOne({
+          name: incomingData.degree,
+        });
         const data = {
           description: incomingData.description,
-          degree: incomingData.degree,
+          degree: degree._id,
           gender: incomingData.gender,
           intention: intentArr,
           tags: tagsArr,

@@ -27,6 +27,7 @@ function MatchPage() {
     const [semester, setSemester] = useState("9. Semester"); //TODO Semseter eintragbar machen
     const [city, setCity] = useState("Bonn"); //TODO City STudiengang zuordnen
 
+    const [currentUser, setCurrentUser] = useState("");
     const [currentUserId, setCurrentUserId] = useState("");
     const [currentUserTags, setcurrentUserTags] = useState("");
 
@@ -56,13 +57,14 @@ function MatchPage() {
      * Gibt den Nutzer zurück, welcher aktuell vorgeschlagen wird
      * @returns {Promise<void>}
      */
-    async function getUserData() {
+    async function getUserData(currentUserId) {
         try {
             const response = await fetch('/getProfile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                body: JSON.stringify({ currentUserId }),
             });
 
             if (response.ok) {
@@ -78,15 +80,20 @@ function MatchPage() {
                 setImages(result.data.images);
                 let placeholderTag = [];
                 console.log(result.tag)
+                let matchedTag = false;
                 for (let tag in result.tag) {
+                    matchedTag = false;
                     console.log(1)
                     for (let tag2 in currentUserTags) {
                         console.log(2)
                         if (result.tag[tag]._id === currentUserTags[tag2]) {
-                            placeholderTag.push({name: result.tag[tag].name, class: "checked"})
-                        } else {
-                            placeholderTag.push({name: result.tag[tag].name, class: ""})
+                            matchedTag = true
                         }
+                    }
+                    if (matchedTag) {
+                        placeholderTag.push({name: result.tag[tag].name, class: "checked"})
+                    } else {
+                        placeholderTag.push({name: result.tag[tag].name, class: ""})
                     }
                 }
                 console.log(placeholderTag)
@@ -107,6 +114,7 @@ function MatchPage() {
         return fetch('/getUser')
             .then(response => response.json())
             .then(data => {
+                setCurrentUserId(data);
                 setCurrentUserId(data._id);
                 setcurrentUserTags(data.tags);
                 console.log(data);
@@ -120,7 +128,7 @@ function MatchPage() {
     //Das ist hier ausgelagert, damit die Tags immer einlesbar sind
     useEffect(() => {
         if (currentUserTags) {
-            getUserData();
+            getUserData(currentUserId);
         }
     }, [currentUserTags]);
 
@@ -147,7 +155,8 @@ function MatchPage() {
                     console.log("No Match");
                 }
                 //Neues Profil laden
-                getUserData();
+                aktivateTimeout(3000)
+                await getUserData(currentUserId);
                 //console.log(result.data);
             } else {
                 console.log('Error:', response.statusText);
@@ -167,6 +176,8 @@ function MatchPage() {
                 },
                 body: JSON.stringify(data)
             });
+            aktivateTimeout(3000)
+            await getUserData(currentUserId)
         } catch (error) {
             console.log('Error:', error);
         }
@@ -191,6 +202,13 @@ function MatchPage() {
         settings.slidesToShow = 2;
     } else {
         settings.slidesToShow = 1;
+    }
+
+    function aktivateTimeout(time) {
+        setIsLoading(true);
+        setTimeout(() => {
+            setIsLoading(false);
+        }, time);
     }
 
 

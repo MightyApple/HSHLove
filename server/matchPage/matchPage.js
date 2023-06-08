@@ -1,46 +1,99 @@
 const express = require('express')
 //const database = require('./database.js'); mongoHSHLove sollte ausreichen
-const path = require("path")
-const bcrypt = require("bcrypt")
 const mongoHSHLove = require("../mongodb")
-const { Storage } = require("@google-cloud/storage");
-const Multer = require("multer");
-const {addLikedUser} = require("../database");
+const {addLikedUser, findUserByID} = require("../database");
 
 const router = express.Router();
 
 router.post("/getProfile", async (req, res) => {
     try {
-        const email = "test@test.mail.de";
+        const data = req.body;
         const user = await mongoHSHLove.userDataCollection.findOne({
-            email: email,
-        })
-        //console.log("!_----------_!")
-        //console.log(user.degree)
+            _id: data.currentUserId,
+        });
+
+        // Zuerst finden Sie alle Benutzer
+        const users = await mongoHSHLove.userDataCollection.find();
+
+        const matchCounts = [];
+        const newUsers = [];
+        const usersToSkip = [user._id.toString()];
+
+        for (const like of user.liked) {
+            usersToSkip.push(like)
+        }
+
+        for (const dislike of user.disliked) {
+            usersToSkip.push(dislike)
+        }
+
+        console.log("usersToSkip")
+        console.log(usersToSkip)
+
+        for (const aUser of users) {
+            if (usersToSkip.includes(aUser._id.toString())) {
+                continue; // Benutzer überspringen und mit der nächsten Iteration fortfahren
+            }
+
+            newUsers.push(aUser)
+
+            let matchCount = 0;
+            for (const tagId of aUser.tags) {
+                // Prüfen Sie, ob der Tag des Benutzers in der gewünschten Tagliste vorhanden ist
+                if (user.tags.includes(tagId)) {
+                    matchCount++;
+                }
+            }
+            matchCounts.push(matchCount);
+        }
+        console.log("matchCounts")
+        console.log(newUsers)
+
+// Den Benutzer mit den meisten Übereinstimmungen finden
+        const maxMatchCount = Math.max(...matchCounts);
+        let userWithMostMatches = newUsers[matchCounts.indexOf(maxMatchCount)];
+
+// Der Benutzer mit den meisten Übereinstimmungen ist userWithMostMatches
+        console.log("userWithMostMatches");
+        console.log(userWithMostMatches);
+
+        if (!userWithMostMatches) {
+            userWithMostMatches = user.disliked[0];
+
+            await mongoHSHLove.userDataCollection.updateMany(
+                {},
+                { $unset: { disliked: "" } }
+            );
+        }
 
         const degree = await mongoHSHLove.courseCollection.findOne({
-            _id: user.degree,
-        })
+            _id: userWithMostMatches.degree,
+        });
 
+        //Hole dir alle Tags des aktuellen Users
         let tags = [];
-        for (let i in user.tags) {
-            tags.push(await mongoHSHLove.tagCollection.findOne({
-                _id: user.tags[i],
-            }) )
+        for (let i in userWithMostMatches.tags) {
+            tags.push(
+                await mongoHSHLove.tagCollection.findOne({
+                    _id: userWithMostMatches.tags[i],
+                })
+            );
         }
-        //console.log(tags)
 
-        req.session.currentUser = user;
+        req.session.currentUser = userWithMostMatches;
         req.session.currentDegree = degree;
         req.session.currentTags = tags;
 
-        res.json({data:req.session.currentUser, degree:req.session.currentDegree, tag:req.session.currentTags})
-
+        res.json({
+            data: req.session.currentUser,
+            degree: req.session.currentDegree,
+            tag: req.session.currentTags,
+        });
     } catch (e) {
-        console.log(e)
-        res.status(500).send("something broke in the registration")
+        console.log(e);
+        res.status(500).send("something broke in the registration");
     }
-})
+});
 
 router.post("/likeProfile", async (req, res) => {
     try {
