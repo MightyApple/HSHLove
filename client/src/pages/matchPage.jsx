@@ -133,6 +133,7 @@ function MatchPage() {
     }, [currentUserTags]);
 
     async function likeProfile(data) {
+        aktivateTimeout(3000)
         try {
             const response = await fetch('/likeProfile', {
                 method: 'POST',
@@ -155,7 +156,6 @@ function MatchPage() {
                     console.log("No Match");
                 }
                 //Neues Profil laden
-                aktivateTimeout(3000)
                 await getUserData(currentUserId);
                 //console.log(result.data);
             } else {
@@ -168,6 +168,7 @@ function MatchPage() {
 
 
     async function dislikeProfile(data) {
+        aktivateTimeout(3000)
         try {
             const response = await fetch('/dislikeProfile', {
                 method: 'POST',
@@ -176,7 +177,6 @@ function MatchPage() {
                 },
                 body: JSON.stringify(data)
             });
-            aktivateTimeout(3000)
             await getUserData(currentUserId)
         } catch (error) {
             console.log('Error:', error);
