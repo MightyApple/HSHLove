@@ -32,16 +32,15 @@ export default function Chat({ chatMessages, receiver }) {
       return;
     }
 
+    // 👇 Create new FormData object and append files
+    const data = new FormData();
+    data.append('image', file, file.name);
+
     console.log('sending image');
     // 👇 Uploading the file using the fetch API to the server
     fetch('/uploadImage', {
       method: 'POST',
-      body: file,
-      // 👇 Set headers manually for single file upload
-      headers: {
-        'content-type': file.type,
-        'content-length': `${file.size}`, // 👈 Headers need to be a string
-      },
+      body: data,
     })
       .then((res) => res.json())
       .then((data) => console.log(data))

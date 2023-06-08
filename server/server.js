@@ -5,16 +5,19 @@ const cors = require('cors');
 const path = require("path");
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const multer = require("multer");
 
 const database = require('./database.js');
 const chat = require('./chat/chat.js');
 const { router:routes, requireAuth } = require('./logReg/logReg.js');
 const { router:matchRoutes } = require('./matchPage/matchPage.js');
+const { uploadChatImage } = require('./imageProcessing/imageProcessing.js');
 
 const app = express();
 const httpServer = createServer(app);
 const src = path.join(__dirname, "template");
 const port = process.env.PORT || 3001 //nimmt den Port aus der Umgebungsvariablen oder 3001
+const upload = multer()
 
 
 app.use(express.static(src));
@@ -83,6 +86,34 @@ app.get('/getUsername', (req, res) => {
 app.get('/getUser', (req, res) => {
   console.log(req.session.user);
   res.send(req.session.user);
+});
+
+app.post('/uploadImage', upload.single('image'), (req, res) => {
+  console.log(req.file); // the uploaded file object
+  // log request type
+ 
+  /*
+  New File muss am besten so aussehen.
+  newFile = {
+      fieldname: req.file.fieldname,
+      originalname: uId + "_" + imgNr.toString() + ".jpeg",
+      encoding: req.file.encoding,
+      mimetype: req.file.mimetype,
+      buffer: req.file.buffer,
+      size: req.file.size
+  }*/
+
+  var fileEnding = req.file.originalname.split(".")[1];
+  var image = {
+    ...req.file,
+    originalname: req.session.user._id + "_" + '1' + "." + fileEnding
+  }
+
+  uploadChatImage(image);
+  res.send({
+    status: 'success',
+    text: 'Bild erfolgreich hochgeladen'
+  });
 });
 
 chat.serverInitialisieren(httpServer);
