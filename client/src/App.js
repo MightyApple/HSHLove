@@ -19,6 +19,9 @@ import ErrorPage from './error-page';
 import MatchPage from './pages/matchPage'
 import Admin from './pages/admin'
 import LoadingScreen from './components/loadingScreen'
+import NutzerSuchen from './pages/nutzerSuchen'
+import Gemeldet from './pages/gemeldet'
+import Desktop from './pages/desktop'
 
 import { socket } from './components/socket';
 import { useState } from 'react';
@@ -183,6 +186,18 @@ function App() {
         {
             path: "admin",
             element: <Admin />,
+        },
+        {
+            path: "nutzer",
+            element: <NutzerSuchen />,
+        },
+        {
+            path: "gemeldet",
+            element: <Gemeldet />,
+        },
+        {
+            path: "desktop",
+            element: <Desktop />,
         },
         {
             path: "loading",

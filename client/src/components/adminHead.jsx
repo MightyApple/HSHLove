@@ -8,7 +8,7 @@ export default function AdminHead(props) {
     return (
         <>
             <section className={'adminHeader'}>
-                <Link to={'/'}>
+                <Link to={'/admin'}>
                     <img src={arrow} alt={'arrow'} width={50} height={50}/>
                 </Link>
                 <div className={'div1'}>

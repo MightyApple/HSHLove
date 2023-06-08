@@ -15,7 +15,7 @@ export default function Root() {
                 </div>
                 <div className={'startRoute'}>
                     <FormButton name={'Nutzersuchen'} route={'/nutzer'}></FormButton>
-                    <FormButton name={'Gemeldete Nutzer'} route={'/registrieren'}></FormButton>
+                    <FormButton name={'Gemeldete Nutzer'} route={'/gemeldet'}></FormButton>
                 </div>
             </section>
         </>
