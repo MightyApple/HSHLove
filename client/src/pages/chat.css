@@ -73,6 +73,11 @@
 
 @media (min-width: 769px) {
     .chatBox {
-        overflow: scroll;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .chatBox::-webkit-scrollbar {
+        display: none;
     }
 }

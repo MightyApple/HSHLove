@@ -11,7 +11,7 @@
 }
 .slider div.content img {
     height: 72vh;
-    width: 100%;
+    margin: auto;
     object-fit: cover;
     object-position: top;
 }
