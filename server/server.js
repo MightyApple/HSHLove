@@ -32,6 +32,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   cookie: {
+     // path:"123",
       sameSite: 'strict',
   },
   store: MongoStore.create({
@@ -84,8 +85,9 @@ app.get('/getUsername', (req, res) => {
 })
 
 app.get('/getUser', (req, res) => {
-  console.log(req.session.user);
-  res.send(req.session.user);
+  if(req.session.authorized){
+    res.send(req.session.user);
+  }else{res.send({loggedIn:false})} 
 });
 
 function makeid(length) {

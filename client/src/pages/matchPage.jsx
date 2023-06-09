@@ -14,8 +14,12 @@ import LoadingScreen from '../components/loadingScreen';
 import Footer from '../components/footer'
 
 import { socket } from '../components/socket';
+import { useNavigate } from 'react-router-dom';
+
+
 
 function MatchPage() {
+    const navigate = useNavigate()
     const [id, setId] = useState([""]);
     const [images, setImages] = useState([""]);
     const [prefs, setPrefs] = useState(['ONS']);
@@ -122,10 +126,12 @@ function MatchPage() {
         return fetch('/getUser')
             .then(response => response.json())
             .then(data => {
+                if(data.loggedIn==false){
+                    navigate("/")
+                }
                 setCurrentUserId(data);
                 setCurrentUserId(data._id);
                 setcurrentUserTags(data.tags);
-                console.log(data);
             });
     }
 
@@ -218,7 +224,14 @@ function MatchPage() {
             setIsLoading(false);
         }, time);
     }
-
+    function logOutForm(){
+        fetch("/logOut",{
+            method: 'GET',
+        }).then((data)=>{
+            document.cookie = "loggedIn" +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            navigate("/")
+        })    
+    }
 
 
     const [isLoading, setIsLoading] = useState(true);
@@ -303,7 +316,7 @@ function MatchPage() {
                             <Trenner></Trenner>
                         </div>
                     </section>
-                    <Footer></Footer>
+                    <Footer onClick={logOutForm}></Footer>
                 </div>
                 )
             )}

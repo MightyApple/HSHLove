@@ -1,5 +1,8 @@
-export default function Root() {
+
+export default function Root(props) {
+    
+    
     return (
         <>
-            <button>Abmelden</button>
+            <button onClick={props.onClick}>Abmelden</button>
         </>)}

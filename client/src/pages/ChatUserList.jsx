@@ -9,9 +9,20 @@ import UserBanner from  '../components/userBanner'
 import {useMediaQuery} from "react-responsive";
 
 import logo from "../assets/logo.svg";
+import { useNavigate } from 'react-router-dom';
 
+async function getUser() {
+    return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
+        return data; //returned von der fetch Funktion den ganzen User
+    });
+}
 
 export default function ChatUserList({ chatRooms, matchedUsers }) {
+    const navigate = useNavigate()
+    let loggedIn= getUser()
+    if(!loggedIn.loggedIn){
+        navigate("/")
+    }
     const [selectedUser, setSelectedUser] = useState(null);
     var selectedChatRoom = chatRooms.find((chatRoom) => chatRoom.users.some((user) => user._id === selectedUser?.userId));
     var selectedUserMessages = selectedChatRoom?.messages;

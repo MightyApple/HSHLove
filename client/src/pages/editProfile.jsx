@@ -203,6 +203,9 @@ export default function Root(props) {
         fetch('/getUserData')
         .then((res)=>res.json())
         .then((data)=>{
+            if(data.email=="Meld dich an um deinen Namen hier zu lesen"){
+                navigate("/")
+            }
             setUserInformation(data)
             setIsLoading(false); // Setze isLoading auf false, wenn der Ladevorgang abgeschlossen ist
         })       

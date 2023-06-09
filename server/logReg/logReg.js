@@ -25,7 +25,13 @@ const multer = Multer({
 });
 
 
-
+router.get("/logOut",(req,res)=>{
+  if (req.session) {
+    req.session.destroy();
+    res.clearCookie('connect.sid', {path: '/'}).status(200).send('Ok.')
+    res.clearCookie('loggedIn', {path: '/'}).status(200).send('Ok.')
+  }
+})
 //template funktion wie es mir gefällt
 const requireAuth = (req,res,next)=>{
   const {user} =req.session.user;
