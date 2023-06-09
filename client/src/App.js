@@ -48,6 +48,7 @@ function App() {
 
     const [chatRooms, setChatRooms] = useState([]);
     const [matchedUsers, setMatchedUsers] = useState([]);
+    const [onlineUsers, setOnlineUsers] = useState([]);
 
     function sessionCheck() {
         var cookieValue = getCookie("loggedIn");
@@ -103,10 +104,10 @@ function App() {
 
         });
 
-        socket.on("initChats", ({users, chatRooms}) => {
+        socket.on("initChats", ({users, chatRooms, onlineUsers}) => {
             setMatchedUsers(users);
-            console.log(chatRooms);
             setChatRooms(chatRooms);
+            setOnlineUsers(new Set(onlineUsers));
         });
 
         socket.on("newMatch", (data) => {
@@ -124,22 +125,27 @@ function App() {
             });
         });
 
-    
-        // socket.on("User connected", (user) => {
-        //     console.log("User connected: " + user);
-        //     setOnlineUsers((onlineUsers) => [...onlineUsers, user]);
-        // });
-    
-        // socket.on("User disconnected", (user) => { //wird ausgeführt, wenn ein client disconnected
-        //     console.log("User disconnected: " + user); 
-        //     setOnlineUsers((onlineUsers) => onlineUsers.filter((u) => u !== user)); // entfernt den user aus der Liste von onlineUsers
-        // });
+        socket.on("userConnected", (userID) => {
+            setOnlineUsers((onlineUsers) => {
+                return new Set([...onlineUsers, userID]);
+            });
+        });
 
+        socket.on("userDisconnected", (userID) => {
+            setOnlineUsers((onlineUsers) => {
+                var newOnlineUsers = new Set(onlineUsers);
+                newOnlineUsers.delete(userID);
+                return newOnlineUsers;
+            });
+        });
+
+    
         return () => {
             socket.off("message");
             socket.off("initChats");
-            // socket.off("User connected");
-            // socket.off("User disconnected");
+            socket.off("newMatch");
+            socket.off("userConnected");
+            socket.off("userDisconnected");
         }
     }, []);
 
@@ -161,7 +167,7 @@ function App() {
         // ChatUserList bekommt die chatMessages und onlineUsers als props übergeben
         {
             path: "chat",
-            element: <ChatUserList chatRooms={chatRooms} matchedUsers={matchedUsers} />,
+            element: <ChatUserList chatRooms={chatRooms} matchedUsers={matchedUsers} onlineUsers={onlineUsers} />,
         },
         {
         // Brauche Info, ob User eingeloggt ist, damit wir connecten können

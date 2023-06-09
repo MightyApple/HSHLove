@@ -69,15 +69,24 @@ function chatInitialisieren(io) {
                 });
             });
 
+            var onlineUserIDs = [];
+            for (const key in onlineUsers) {
+                if (Object.hasOwnProperty.call(onlineUsers, key)) {
+                    const user = onlineUsers[key];
+                    onlineUserIDs.push(user._id);
+                }
+            }
+
             socket.emit("initChats", {
                 users,
-                chatRooms
+                chatRooms,
+                onlineUsers: onlineUserIDs,
             });
         });
     }
 
     io.on("connection", (socket) => { //wird ausgeführt, wenn ein client connected
-        io.emit("User connected", socket._id);
+        io.emit("userConnected", socket._id);
         onlineUsers[socket._id] = socket;
         //console.log(socket.id); //gibt id des sockets aus
 
@@ -106,6 +115,7 @@ function chatInitialisieren(io) {
                     sender: socket._id,
                     from: socket.name, 
                     receiverId: to,
+                    receiverImage: socket.images[0],
                     timestamp: timestamp,
                 });
 
@@ -128,6 +138,7 @@ function chatInitialisieren(io) {
                     sender: socket._id,
                     from: socket.name, 
                     receiverId: to,
+                    receiverImage: socket.images[0],
                     timestamp: timestamp,
                     isImage:true
                 });
@@ -174,9 +185,9 @@ function chatInitialisieren(io) {
         });
 
         socket.on('disconnect', () => { //wird ausgeführt, wenn ein client disconnected
-            //console.log("User disconnected");
+            console.log("User disconnected");
             delete onlineUsers[socket._id];
-            socket.broadcast.emit('User disconnected', socket.userId); //sendet an alle außer an den, der disconnected
+            socket.broadcast.emit('userDisconnected', socket._id); //sendet an alle außer an den, der disconnected
         })
     });
 }

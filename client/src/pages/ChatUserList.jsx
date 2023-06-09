@@ -17,17 +17,32 @@ async function getUser() {
     });
 }
 
-export default function ChatUserList({ chatRooms, matchedUsers }) {
+export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
     const navigate = useNavigate()
     let loggedIn= getUser()
-    if(!loggedIn.loggedIn){
-        navigate("/")
-    }
+    // if(!loggedIn.loggedIn){
+    //     navigate("/")
+    // }
     const [selectedUser, setSelectedUser] = useState(null);
     var selectedChatRoom = chatRooms.find((chatRoom) => chatRoom.users.some((user) => user._id === selectedUser?.userId));
     var selectedUserMessages = selectedChatRoom?.messages;
 
     const isWideScreen = useMediaQuery({minWidth: 769});
+
+    function MatchedUserList({}) {
+        return (
+            <>
+                {matchedUsers.map((user, index) => {
+                    var isOnline = onlineUsers.has(user.userId);
+                    return (
+                        <div key={index} onClick={() => setSelectedUser(user)}>
+                            <UserBanner user={user} isOnline={isOnline} />
+                        </div>
+                    )
+                })}
+            </>
+        )
+    }
 
     if (isWideScreen && selectedUser) {
         return (
@@ -35,11 +50,7 @@ export default function ChatUserList({ chatRooms, matchedUsers }) {
                 <Navbar></Navbar>
                 <div className={"wideChat"}>
                     <div>
-                        {matchedUsers.map((user, index) => (
-                            <div key={index} onClick={() => setSelectedUser(user)}>
-                                <UserBanner user={user}></UserBanner>
-                            </div>
-                        ))}
+                        <MatchedUserList />
                         <div className={"primaryContainer"}>
                             <Trenner></Trenner>
                             <p>Du möchtest dich mit mehr Menschen in Kontakt setzen? <br/><br/>
@@ -59,11 +70,7 @@ export default function ChatUserList({ chatRooms, matchedUsers }) {
                 <Navbar></Navbar>
                 <div className={"wideChat"}>
                     <div>
-                        {matchedUsers.map((user, index) => (
-                            <div key={index} onClick={() => setSelectedUser(user)}>
-                                <UserBanner user={user}></UserBanner>
-                            </div>
-                        ))}
+                        <MatchedUserList />
                         <div className={"primaryContainer"}>
                             <Trenner></Trenner>
                             <p>Du möchtest dich mit mehr Menschen in Kontakt setzen? <br/><br/>
@@ -91,11 +98,7 @@ export default function ChatUserList({ chatRooms, matchedUsers }) {
     return ( // wenn kein user ausgewählt wurde, dann wird die Liste der User gerendert
         <>
             <Navbar></Navbar>
-            {matchedUsers.map((user, index) => (
-                <div key={index} onClick={() => setSelectedUser(user)}>
-                    <UserBanner user={user}></UserBanner>
-                </div>
-            ))}
+            <MatchedUserList />
             <div className={"primaryContainer"}>
                 <Trenner class={"small"}></Trenner>
                 <p>Du möchtest dich mit mehr Menschen in Kontakt setzen? <br/><br/>

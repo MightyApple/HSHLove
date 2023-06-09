@@ -11,3 +11,23 @@
     gap: 14px;
     padding: 5px 10px;
 }
+
+.online {
+    background: #00FF00;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin-top: 5px;
+
+    border: 1px solid #000000;
+}
+
+.offline {
+    background: #FF0000;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    margin-top: 5px;
+
+    border: 1px solid #000000;
+}
