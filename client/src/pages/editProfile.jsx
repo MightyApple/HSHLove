@@ -327,7 +327,7 @@ export default function Root(props) {
     const tmp ={a:"asd"}
     const mainElement =
         <>
-        {isLoading ? (
+        {!props.first&&isLoading ? (
             <LoadingScreen /> // Zeige den Ladebildschirm an, solange isLoading true ist
         ) : (
         
@@ -405,6 +405,7 @@ export default function Root(props) {
     </>;
 
     if (props.first) {
+        
         return (
             <>
                 <section className={'primaryContainer'}>
