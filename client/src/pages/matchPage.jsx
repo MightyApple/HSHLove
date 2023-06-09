@@ -4,7 +4,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useMediaQuery } from 'react-responsive';
 
-import selectedImage from "../assets/logo.svg";
 import scrollUp from '../assets/double-up-svgrepo-com.svg';
 import './matchPage.css';
 

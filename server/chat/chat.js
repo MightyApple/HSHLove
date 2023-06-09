@@ -55,7 +55,7 @@ function chatInitialisieren(io) {
                 chat.messageHistory.forEach((message) => {
                     messages.push({
                         receiverId: otherUser._id,
-                        receiverImage: otherUser.images[0],
+                        receiverImage: message.sentByUserID.images[0],
                         sender: message.sentByUserID._id, // TODO: wenns in der DB ist, dann message.sendByUserID.username
                         content: message.messageContent,
                         timestamp: message.timeStamp,
