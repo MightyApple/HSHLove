@@ -109,9 +109,33 @@ function chatInitialisieren(io) {
                     timestamp: timestamp,
                 });
 
-                database.saveChatMessage(chatID, socket._id, content, timestamp);
+                database.saveChatMessage(chatID, socket._id, content, timestamp,false);
             });
-        });
+        }); 
+        socket.on("imgMessage", ({ content, to }) => { //wird ausgeführt, wenn ein client eine private message/bilder sendet
+            //console.log("private message received: " + content + " from " + socket._id + " to " + to);
+            var timestamp = new Date().toLocaleString();
+            database
+            //filename=chatID+"_"+content+"["+"]"
+            database.getChat(socket._id, to).then((chat) => {
+                var chatID = chat._id;
+                setTimeout(() => {
+                    
+                }, 50);
+                io.to(to).to(socket._id).emit("message", {
+                    chatID: chat._id,
+                    content,
+                    sender: socket._id,
+                    from: socket.name, 
+                    receiverId: to,
+                    timestamp: timestamp,
+                    isImage:true
+                });
+                database.saveChatMessage(chatID, socket._id, content, timestamp, true);
+                
+            });
+        }); 
+
 
         socket.on("newMatch", async ({ matchId }) => {
             // match chatroom zum client hinzufügen
@@ -156,6 +180,8 @@ function chatInitialisieren(io) {
         })
     });
 }
+
+
 
 module.exports = { //exportiert Sachen vgl. in Java wirds "public"
     serverInitialisieren,

@@ -2,6 +2,7 @@ import React from 'react';
 import './chatMessage.css';
 
 export default function ChatMessage({ sender, text, timestamp, isImage }) {
+  let preText="https://storage.googleapis.com/chatbilder/"
   return (
     <div>
         {/*<div>
@@ -9,7 +10,7 @@ export default function ChatMessage({ sender, text, timestamp, isImage }) {
         <img src="" alt="" className="profileImg" width="" height="" />
       </div>*/}
       <div className="message">
-        {isImage ? <img src={text} alt="" className="messageImg" width="200" height="200" /> : text}
+        {isImage ? <img src={preText+text} alt="" className="messageImg" width="200" height="200" /> : text}
       </div>
         {/*<div>
         {timestamp}

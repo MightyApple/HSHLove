@@ -96,15 +96,28 @@ async function getChat(userID, user2ID) {
     return chat;
 }
 
-async function saveChatMessage(chatID, sender, content, timestamp) {
-    return chatCollection.updateOne({ _id: chatID }, { $push: {
-        messageHistory: {
-            sentByUserID: sender,
-            messageContent: content,
-            timeStamp: timestamp
-        }
-    } });
+async function saveChatMessage(chatID, sender, content, timestamp,isImage) {
+    if(!isImage){
+        return chatCollection.updateOne({ _id: chatID }, { $push: {
+            messageHistory: {
+                sentByUserID: sender,
+                messageContent: content,
+                timeStamp: timestamp
+            }
+        } });
+    }else{
+        return chatCollection.updateOne({ _id: chatID }, { $push: {
+            messageHistory: {
+                sentByUserID: sender,
+                messageContent: content,
+                timeStamp: timestamp,
+                isImage: true,
+            }
+        } });
+    }
+    
 }
+
 
 
 // chatCollection.create({ users: [

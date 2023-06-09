@@ -88,6 +88,18 @@ app.get('/getUser', (req, res) => {
   res.send(req.session.user);
 });
 
+function makeid(length) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
+
 app.post('/uploadImage', upload.single('image'), (req, res) => {
   console.log(req.file); // the uploaded file object
   // log request type
@@ -102,17 +114,16 @@ app.post('/uploadImage', upload.single('image'), (req, res) => {
       buffer: req.file.buffer,
       size: req.file.size
   }*/
-
-  var fileEnding = req.file.originalname.split(".")[1];
+  var newName=makeid(20)+".jpeg"
   var image = {
     ...req.file,
-    originalname: req.session.user._id + "_" + '1' + "." + fileEnding
+    originalname: newName
   }
 
   uploadChatImage(image);
   res.send({
     status: 'success',
-    text: 'Bild erfolgreich hochgeladen'
+    text: newName
   });
 });
 

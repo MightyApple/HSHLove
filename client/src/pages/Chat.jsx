@@ -35,15 +35,21 @@ export default function Chat({ chatMessages, receiver }) {
     // 👇 Create new FormData object and append files
     const data = new FormData();
     data.append('image', file, file.name);
-
-    console.log('sending image');
+    
     // 👇 Uploading the file using the fetch API to the server
     fetch('/uploadImage', {
       method: 'POST',
       body: data,
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log(data.text)
+        socket.emit("imgMessage", {
+          content: data.text,
+          to: receiver.userId,
+        },);
+        setInputValue('');
+      })
       .catch((err) => console.error(err));
 
 
@@ -54,7 +60,7 @@ export default function Chat({ chatMessages, receiver }) {
     window.scrollTo(0, document.body.scrollHeight);
 
     scrollableDivRef.current.scrollTop = scrollableDivRef.current.scrollHeight;
-  }, [chatMessages.length]);
+  }, [chatMessages.length,inputValue]);
 
   return (
     <>
