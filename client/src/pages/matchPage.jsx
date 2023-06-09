@@ -11,6 +11,7 @@ import Navbar from '../components/navbar';
 import Trenner from '../components/trenner';
 import Tag from "../components/form/tag";
 import LoadingScreen from '../components/loadingScreen';
+import Footer from '../components/footer'
 
 import { socket } from '../components/socket';
 
@@ -290,6 +291,7 @@ function MatchPage() {
                                 {desc}
                             </p>
                         </section>
+                        <Footer></Footer>
                     </div>
             ) : (
                 <div>
@@ -301,6 +303,7 @@ function MatchPage() {
                             <Trenner></Trenner>
                         </div>
                     </section>
+                    <Footer></Footer>
                 </div>
                 )
             )}

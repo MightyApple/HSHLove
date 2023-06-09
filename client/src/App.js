@@ -5,7 +5,6 @@ import {
     RouterProvider,
 } from "react-router-dom";
 
-import './index.css'; //TODO kann raus geworfen werden, wenn niemand das braucht
 import './reset.css';
 import './global.css';
 
@@ -148,8 +147,7 @@ function App() {
         return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
             console.log(data);
             return data; //returned von der fetch Funktion den ganzen User
-        }
-        );
+        });
     }
 
     const router = createBrowserRouter([
