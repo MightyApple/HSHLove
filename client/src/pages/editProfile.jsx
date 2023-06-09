@@ -19,7 +19,7 @@ export default function Root(props) {
     const[description, setDescription]= React.useState("")
     const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false)
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(props.first?false:true);
     const [userInformation, setUserInformation] = useState({});
 
     // Read values passed on state
