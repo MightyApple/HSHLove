@@ -11,15 +11,16 @@ import {useMediaQuery} from "react-responsive";
 import logo from "../assets/logo.svg";
 import { useNavigate } from 'react-router-dom';
 
-async function getUser() {
-    return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
+async function authorized() {
+    return fetch('/authorized').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
         return data; //returned von der fetch Funktion den ganzen User
     });
 }
 
+
 export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
     const navigate = useNavigate()
-    let loggedIn= getUser()
+    let loggedIn= authorized()
     // if(!loggedIn.loggedIn){
     //     navigate("/")
     // }
