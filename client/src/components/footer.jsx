@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 export default function Root(props) {
     let navigate = useNavigate();
     function logOutForm(){
-        console.log("hier")
         fetch("/logOut",{
             method: 'GET',
         }).then((data)=>{
