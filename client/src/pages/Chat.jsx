@@ -4,12 +4,15 @@ import ChatMessage from '../components/ChatMessage';
 import ProfilePicture from '../components/profilePicture'
 
 import { socket } from '../components/socket';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Chat({ chatMessages, receiver }) {
   const [inputValue, setInputValue] = useState('');
-
+  const navigate = useNavigate();
   const scrollableDivRef = useRef(null);
+
+  
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -54,15 +57,18 @@ export default function Chat({ chatMessages, receiver }) {
 
 
   }
-
+  
   useEffect(() => {
+    
     // nach unten scrollen
     window.scrollTo(0, document.body.scrollHeight);
 
     scrollableDivRef.current.scrollTop = scrollableDivRef.current.scrollHeight;
   }, [chatMessages.length,inputValue]);
+  
 
   return (
+    
     <>
       <div className="chatBox" ref={scrollableDivRef}>
         <div id="messages">

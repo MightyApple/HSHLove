@@ -2,9 +2,20 @@ import FormButton from "../components/form/formButton";
 import logo from "../assets/logo.svg";
 
 import './admin.css';
+import { useNavigate } from "react-router-dom";
 
-
+async function authorized() {
+    return fetch('/authorized').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
+        return data; //returned von der fetch Funktion den ganzen User
+    });
+}
 export default function Root() {
+    const navigate = useNavigate()
+    let loggedIn= authorized()
+    if(!loggedIn.loggedIn){
+        navigate("/")
+    }
+    
     return (
         
         <>

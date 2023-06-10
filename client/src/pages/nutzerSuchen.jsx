@@ -5,10 +5,21 @@ import DropDown from '../components/form/dropDown';
 
 import FormButton from "../components/form/formButton";
 import AdminHead from '../components/adminHead';
+import { useNavigate } from 'react-router-dom';
 
+async function authorized() {
+    return fetch('/authorized').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
+        return data; //returned von der fetch Funktion den ganzen User
+    });
+}
 
 
 export default function Root(props) {
+    const navigate = useNavigate()
+    let loggedIn= authorized()
+    if(!loggedIn.loggedIn){
+        navigate("/")
+    }
     const studiengaenge = ["AIS", "CVD", "BWL", "MBP"];
     const geschlecht = ["männlich", "weiblich", "divers", "BWL"];
 

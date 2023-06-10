@@ -13,16 +13,26 @@ import FormText from "../components/form/formText";
 import LoginHead from "../components/loginHead";
 import { useLocation, useNavigate } from 'react-router-dom';
 import LoadingScreen from "../components/loadingScreen";
-
+async function getUser() {
+    return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
+        return data; //returned von der fetch Funktion den ganzen User
+    });
+}
 
 export default function Root(props) {
+    let loggedIn= getUser()
+    
     const[description, setDescription]= React.useState("")
     const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false)
     const [isLoading, setIsLoading] = useState(props.first?false:true);
     const [userInformation, setUserInformation] = useState({});
-
-    // Read values passed on state
+    console.log(loggedIn)
+    if(!loggedIn.loggedIn){
+        navigate("/")
+    }
+    
+        // Read values passed on state
     if(props.first){       
         var mail= props.data.email;
         var pass= props.data.password;
@@ -203,9 +213,6 @@ export default function Root(props) {
         fetch('/getUserData')
         .then((res)=>res.json())
         .then((data)=>{
-            if(data.email=="Meld dich an um deinen Namen hier zu lesen"){
-                navigate("/")
-            }
             setUserInformation(data)
             setIsLoading(false); // Setze isLoading auf false, wenn der Ladevorgang abgeschlossen ist
         })       
