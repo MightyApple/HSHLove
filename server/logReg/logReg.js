@@ -24,7 +24,6 @@ const multer = Multer({
   },
 });
 
-
 router.get("/logOut",(req,res)=>{
   if (req.session) {
     req.session.destroy();
