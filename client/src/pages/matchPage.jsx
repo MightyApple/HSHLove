@@ -17,7 +17,6 @@ import { socket } from '../components/socket';
 import { useNavigate } from 'react-router-dom';
 
 
-
 function MatchPage() {
     const navigate = useNavigate()
     const [id, setId] = useState([""]);
@@ -36,6 +35,8 @@ function MatchPage() {
 
     const [profil, setProfil] = useState(true);
 
+   
+    
     /**
      * Rechnet aus, wie alt der Nutzer ist
      * @param date
@@ -135,7 +136,7 @@ function MatchPage() {
             });
     }
 
-    useEffect(() => {
+    useEffect(() => {    
         getCurrentUser();
     }, []);
 
@@ -224,16 +225,9 @@ function MatchPage() {
             setIsLoading(false);
         }, time);
     }
-    function logOutForm(){
-        console.log("hier")
-        fetch("/logOut",{
-            method: 'GET',
-        }).then((data)=>{
-            document.cookie = "loggedIn" +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-            navigate("/")
-        })    
-    }
-    document.getElementById("logout").onclick = logOutForm;
+
+   
+    
 
     const [isLoading, setIsLoading] = useState(true);
 
