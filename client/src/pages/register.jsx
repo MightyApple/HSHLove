@@ -6,10 +6,17 @@ import {Link, Navigate, useNavigate } from "react-router-dom";
 import React from "react";
 
 let data
-
+function checkEmail(email){
+    console.log(email.split("@")[1])
+    if(!email.split("@")[1]=="stud.hshl.de"||!email.split("@")[1]=="hshl.de"){
+        return false
+    }
+    return true
+}
 export default function Root() {
     const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false);
+    const[error,setError]=React.useState()
     
     
     const submitForm = async ()=>{
@@ -21,17 +28,21 @@ export default function Root() {
             password: password.value,
             passwordwdh:passwordwdh.value
         }
+        if(checkEmail(email.value)){
+            const result = await fetch("/validateData",{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            const resData= await result.json()
+            if(resData.message){
+                setError(resData.message)
+            }
+            setSucces(resData.noError)
+        }else{setError("Email muss auf '@stud.hshl.de' enden")}
         
-        const result = await fetch("/validateData",{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        const resData= await result.json()
-        
-        setSucces(resData.noError)
     }
     
     //if(succes){
@@ -50,6 +61,7 @@ export default function Root() {
                     <FormText textID={'email'} lable={'Email'} name={'email'} placeholder={'name@example.com'} password={false}></FormText>
                     <FormText textID={'password'} lable={'Passwort'} name={'password'} placeholder={'min. 8 Zeichen'} password={true}></FormText>
                     <FormText textID={'passwordwdh'} lable={'Passwort wiederholen'} name={'password2'} placeholder={'min. 8 Zeichen'} password={true}></FormText>
+                    <div>{error}</div>
                     <div className={'normalFontSize checkboxForm'}>
                         <label>eingelogt bleiben</label>
                         <input type={"checkbox"} name={'stayLogged'} />

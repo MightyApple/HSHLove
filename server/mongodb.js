@@ -74,7 +74,6 @@ const userDataSchema = new mongoose.Schema({
     },
     tags: [{
         type: String,
-        
     }]
 })
 

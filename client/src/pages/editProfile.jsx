@@ -20,17 +20,14 @@ async function getUser() {
 }
 
 export default function Root(props) {
-    let loggedIn= getUser()
+    
     
     const[description, setDescription]= React.useState("")
     const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false)
     const [isLoading, setIsLoading] = useState(props.first?false:true);
     const [userInformation, setUserInformation] = useState({});
-    console.log(loggedIn)
-    if(!loggedIn.loggedIn){
-        navigate("/")
-    }
+    
     
         // Read values passed on state
     if(props.first){       
@@ -213,6 +210,9 @@ export default function Root(props) {
         fetch('/getUserData')
         .then((res)=>res.json())
         .then((data)=>{
+            if(data.email=="login"){
+                navigate("/")
+            }
             setUserInformation(data)
             setIsLoading(false); // Setze isLoading auf false, wenn der Ladevorgang abgeschlossen ist
         })       
@@ -224,7 +224,10 @@ export default function Root(props) {
     } 
     function setUserTagsActive(data){
         data.data.tags.forEach(element => {
-            document.getElementById(element).classList.add("checked")
+            if( document.getElementById(element)!==null){
+               document.getElementById(element).classList.add("checked") 
+            }
+            
         });
 
         let prefList= document.getElementsByClassName("pref tag")

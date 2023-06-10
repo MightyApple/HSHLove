@@ -8,6 +8,7 @@ import {Link, Navigate, useNavigate} from "react-router-dom";
 export default function Root({ setLoggedIn }) {
     const navigate = useNavigate();
     const[succes, setSucces]= React.useState(false)
+    const[error, setError]= React.useState()
     
     if(succes){
         navigate('/match')
@@ -37,6 +38,9 @@ export default function Root({ setLoggedIn }) {
             body: JSON.stringify(data)
         })
         const resData= await result.json()
+        if(resData.message){
+            setError(resData.message)
+        }
         if(resData.noError){
             setLoggedIn(true)
             setSucces(true)
@@ -52,6 +56,7 @@ export default function Root({ setLoggedIn }) {
                     
                     <FormText textID={'email'} lable={'Email'} name={'email'} placeholder={'name@example.com'} password={false}></FormText>
                     <FormText textID={'password'} lable={'Passwort'} name={'password'} placeholder={'min. 8 Zeichen'} password={true}></FormText>
+                    <div>{error}</div>
                     <div className={'normalFontSize checkboxForm'}>
                         <label>eingelogt bleiben</label>
                         <input type={"checkbox"} name={'stayLogged'} />

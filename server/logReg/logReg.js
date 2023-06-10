@@ -47,7 +47,7 @@ router.get('/getUserData', async (req, res) => {
     })
     res.json({data:user})
   }else{
-    res.status(401).json({ email: "Meld dich an um deinen Namen hier zu lesen"})
+    res.status(401).json({ email: "login"})
   }
 })
 
@@ -141,8 +141,7 @@ async function uploadProfileImages(imgs,newUser,email){
     email: email,
   })
   const uId = user._id
-  
-  if (user) {
+  if (user && imgs.images) {
     for(let i=0;i<imgs.images.length;i++){
       if(newUser){
         var img = prepareImage(imgs.images[i],i+1,user._id)
@@ -227,8 +226,10 @@ router.post("/login", async (req, res) => {
         
       } else {
         //und falls nicht dieser
-        res.send({noError:false})
+        res.send({message:"Passwort inkorrekt",noError:false})
       }
+    }else{
+      res.send({message:"Nutzer mit der Email existiert nicht"})
     }
   }
   catch {
@@ -349,11 +350,16 @@ router.post("/validateData", async (req, res) => {
     const user = await mongoHSHLove.userDataCollection.findOne({
       email: email,
     })
-    if (user == null && password == passwordwdh) {
-      res.send({noError:true})
+    if (user == null ) {
+      if(password == passwordwdh){
+        res.send({noError:true})
+      }else{
+        res.send({message:"Passwörter stimmen nicht überein!",noError:true})
+      }
+      
     } else {
       //Fehler wenn nutzerbereits existiert und passwörter nicht stimmen
-      res.send({noError:false});
+      res.send({message:"Nutzer mit der Email existiert bereits",noError:false});
     }
   } catch (e) {
     console.log(e)
