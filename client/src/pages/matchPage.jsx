@@ -225,6 +225,7 @@ function MatchPage() {
         }, time);
     }
     function logOutForm(){
+        console.log("hier")
         fetch("/logOut",{
             method: 'GET',
         }).then((data)=>{
@@ -232,7 +233,7 @@ function MatchPage() {
             navigate("/")
         })    
     }
-
+    document.getElementById("logout").onclick = logOutForm;
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -316,7 +317,7 @@ function MatchPage() {
                             <Trenner></Trenner>
                         </div>
                     </section>
-                    <Footer onClick={logOutForm}></Footer>
+                    <Footer ></Footer>
                 </div>
                 )
             )}

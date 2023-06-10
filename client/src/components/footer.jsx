@@ -4,5 +4,5 @@ export default function Root(props) {
     
     return (
         <>
-            <button onClick={props.onClick}>Abmelden</button>
+            <button id="logout">Abmelden</button>
         </>)}
