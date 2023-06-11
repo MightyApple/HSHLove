@@ -68,29 +68,29 @@ export default function Chat({ chatMessages, receiver }) {
   return (
     <>
       <div className="chatBox" ref={scrollableDivRef}>
-        /* Container für die Nachrichten*/
+        {/* Container für die Nachrichten*/}
         <div id="messages">
-          /* Durchläuft alle Nachrichten und rendert*/
+          {/* Durchläuft alle Nachrichten und rendert */}
           {chatMessages.map((message, index) => (
               <div key={index} className={message.sender === receiver.userId ? 'receiver-message' : 'sender-message'}>
-                /* Profilbild des Absenders wird angezeigt*/
+                {/* Profilbild des Absenders wird angezeigt*/}
                 <ProfilePicture profileImage={message.receiverImage}></ProfilePicture>
                 <div className={"messageContent"}>
-                  /* rendert die Nachricht*/
+                  {/* rendert die Nachricht*/}
                   <ChatMessage sender={message.sender} text={message.content} timestamp={message.timestamp} isImage={message.isImage} />
                 </div>
               </div>
           ))}
         </div>
         <form id="form" onSubmit={handleSubmit}>
-          /* Inputfeld für die Nachrichten*/
+          {/* Inputfeld für die Nachrichten*/}
           <input
             id="input"
             autoComplete="off"
             value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
           />
-          /* Label für das Bild upload*/
+          {/* Label für das Bild upload */}
           <label htmlFor="image-input" className="image-input-label" style={{
             cursor: "pointer",
             fontSize: "1.5rem",
@@ -99,7 +99,7 @@ export default function Chat({ chatMessages, receiver }) {
             color: "#fff",
             backgroundColor: "#333",
             borderRadius: "10%",
-          //* Emoji Symbol*/
+          /* Emoji Symbol*/
           }}>&#128206;</label>
           <input id='image-input' type="file" onChange={handleImageChange} accept='image/*' style={{
             display: "none"
