@@ -6,6 +6,7 @@ import DropDown from '../components/form/dropDown';
 import FormButton from "../components/form/formButton";
 import AdminHead from '../components/adminHead';
 import { useNavigate } from 'react-router-dom';
+import UserBanner from "../components/userBanner";
 
 async function authorized() {
     return fetch('/authorized').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
@@ -20,14 +21,14 @@ export default function Root(props) {
     if(!loggedIn.loggedIn){
         navigate("/")
     }
-    const studiengaenge = ["AIS", "CVD", "BWL", "MBP"];
-    const geschlecht = ["männlich", "weiblich", "divers", "BWL"];
-
-    const [showList, setShowList] = useState(false); // State für die Anzeige der Liste
-
-    const handleSearch = () => {
-        setShowList(true); // Bei Klick auf "Suchen" die Liste anzeigen
-    };
+    const studiengaenge = [{name: "AIS"}, {name: "CVD"}, {name: "BWL"}, {name: "MBP"}];
+    const geschlecht = [{name :"männlich"}, {name: "weiblisch"}, {name: "divers"}];
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [users, setUsers] = useState([
+        { id: 1, username: 'Beispiel-Nutzer 1', blocked: false },
+        { id: 2, username: 'Beispiel-Nutzer 2', blocked: false },
+        { id: 3, username: 'Beispiel-Nutzer 3', blocked: false },
+    ]);
 
     const handleClick = (item) => {
         // Funktion, die beim Klicken auf ein Element in der Liste ausgeführt wird
@@ -39,8 +40,8 @@ export default function Root(props) {
     if (!props.first) {
         return (
             <>
+                <AdminHead heading="Nutzer Suchen"></AdminHead>
                 <section className={'primaryContainer'}>
-                    <AdminHead heading="Nutzer Suchen">  </AdminHead>
                     
                     <FormText textID={'Vorname'} lable={'Name:'} name={'vorname'} placeholder={'Vorname'} password={false}></FormText>
                 </section>
@@ -63,20 +64,21 @@ export default function Root(props) {
                 <section className={'primaryContainer'}>
                     <div className={'primaryContainer'}>
                         <div className={'primaryContainer'}>
-                            <FormButton name={'Suchen'} onClick={handleSearch}></FormButton>
+                            <FormButton name={'Suchen'}></FormButton>
                         </div>
                     </div>
                 </section>
 
-                {showList && (
-                    <section className={'primaryContainer'}>
-                        <ul>
-                            <li onClick={() => handleClick("Beispiel 1")}>Beispiel 1</li>
-                            <li onClick={() => handleClick("Beispiel 2")}>Beispiel 2</li>
-                            <li onClick={() => handleClick("Beispiel 3")}>Beispiel 3</li>
-                        </ul>
-                    </section>
-                )}
+                    <div className="reported-users-page">
+                        {users.map((user, index) => {
+                            //var isOnline = onlineUsers.has(user.userId);
+                            return (
+                                <div key={index} onClick={() => setSelectedUser(user)}>
+                                    <UserBanner user={user} />
+                                </div>
+                            )
+                        })}
+                    </div>
             </>
         );
     } else {

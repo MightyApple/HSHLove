@@ -12,7 +12,7 @@
     padding: 5px 10px;
 }
 
-.online {
+.userBorder .user .online {
     background: #00FF00;
     border-radius: 50%;
     width: 10px;
@@ -22,7 +22,7 @@
     border: 1px solid #000000;
 }
 
-.offline {
+.userBorder .user .offline {
     background: #FF0000;
     border-radius: 50%;
     width: 10px;

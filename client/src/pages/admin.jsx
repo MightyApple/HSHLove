@@ -12,17 +12,18 @@ async function authorized() {
 export default function Root() {
     const navigate = useNavigate()
     let loggedIn= authorized()
-    if(!loggedIn.loggedIn){
+    console.log("Test", loggedIn.loggedIn)
+    if(loggedIn.loggedIn){
         navigate("/")
     }
-    
+    //TODO NAME DES NUTZERS
     return (
         
         <>
             <section className={'startPage secondaryContainer'}>
                 <div className={'startinLogo bigHeadline'}>
                     <img src={logo} alt={'logo'} width={168} height={168}/>
-                    <p>Hallo<span>    name</span></p>
+                    <p>Hallo <span></span></p>
                 </div>
                 <div className={'startRoute'}>
                     <FormButton name={'Nutzersuchen'} route={'/nutzer'}></FormButton>
