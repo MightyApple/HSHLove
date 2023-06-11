@@ -9,11 +9,9 @@ mongoose.connect(mongoUrl)
     })
 
 /**
- * Chris: Ihr wollte eine neue Collection anlegen? Dann legt zuerst ein Schema an. Dies sichert ab, dass falsche
- * einträge gesendet werden, heißt am bsp email:{type:String} => der name der property muss email heißen und nicht email2 o.ä. und es kann nur Strings aktzeptiert werden.
- * 
+ * Chris: Ihr wollt eine neue Collection anlegen? Dann legt zuerst ein Schema an. Dies sichert ab, dass falsche
+ * Einträge gesendet werden, heißt bsow. email:{type:String} => der name der property muss email heißen und nicht email2 o.ä. und es kann nur Strings aktzeptiert werden.
  * ist ein Schema angelegt fehlt noch ein model zum exportieren => schreibt diesen code : const deinNeueCollection=new mongoose.model("nameDerDatenbankCollection",deinSchema)
- * 
  * und finally in module.exports einlegen
  */
 

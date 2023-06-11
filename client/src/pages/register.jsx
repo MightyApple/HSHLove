@@ -51,13 +51,13 @@ export default function Root() {
                     <FormText textID={'password'} lable={'Passwort'} name={'password'} placeholder={'min. 8 Zeichen'} password={true}></FormText>
                     <FormText textID={'passwordwdh'} lable={'Passwort wiederholen'} name={'password2'} placeholder={'min. 8 Zeichen'} password={true}></FormText>
                     <div className={'normalFontSize checkboxForm'}>
-                        <label>eingelogt bleiben</label>
+                        <label>eingeloggt bleiben</label>
                         <input type={"checkbox"} name={'stayLogged'} />
                     </div>
                     <FormButton onClick={submitForm} name={'Registrieren'} buttonID={'submit'}></FormButton>
                     
                     <div className={'formEnd'}>
-                        <p>Du hast bereits ein Account? <Link to={'/login'} className={'normalFontSize'}>Dann melde dich an</Link></p>
+                        <p>Du hast bereits ein Account? <Link to={'/login'} className={'normalFontSize'}>Dann melde Dich an!</Link></p>
                     </div>
                 </section>
             </div>

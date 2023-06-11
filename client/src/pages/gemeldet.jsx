@@ -28,7 +28,7 @@ export default function ReportedUsersPage() {
         
         <AdminHead heading="Gemeldete Nutzer">  </AdminHead>
       <div className="reported-users-page">
-        <h1>Gemeldete Nutzer</h1>
+        <h1>Gemeldete Nutzer:innen</h1>
         <ul>
           {users.map((user) => (
             <li key={user.id} onClick={() => handleBlockUser(user.id)}>

@@ -46,15 +46,15 @@ app.use(
 app.use("/", routes);
 app.use("/", matchRoutes);
 
+/* startet den Sever*/
 httpServer.listen(port, () => {
   console.log("Server succesfully startet at Port : " + port);
-}); //app.listen(3000) geht nicht! erstellt neuen http server
+}); 
 
-//alle routen, die nicht authentifiziert werden müssen
+/* alle öffentlichen Routen*/
 const public_routes = ["/login", "/signup"];
 
 app.use(function (req, res, next) {
-  // check if session exists
   if (req.session.user) {
     res.cookie("loggedIn", true);
   } else {
@@ -63,27 +63,23 @@ app.use(function (req, res, next) {
   next();
 });
 
+/* wird bei jeder Server Anfrage ausgeführt*/
 app.use(function (req, res, next) {
-  //middleware, die vor jedem request ausgeführt wird
   if (public_routes.includes(req.path)) {
-    //wenn die route in der liste der public routes ist, dann wird die nächste middleware ausgeführt
     return next();
   }
-
-  // requireAuth(req, res, next); //wenn die route nicht in der liste der public routes ist, dann wird die authentifizierung ausgeführt
-
   next();
 });
 
+/* holt den username aus der Datenbank*/
 app.get("/getUsername", (req, res) => {
   database.findUsernameByToken(req.token).then((user) => {
-    //nachdem der Eintrag gefunden wurde, senden wir den Usernamen zurück an den Client
-    console.log(user.name);
     userNameObj = { name: user.name };
-    res.send(userNameObj); //sendet den usernamen an den client
+    res.send(userNameObj);
   });
 });
 
+/* checkt, ob user eingeloggt ist oder nicht & holt den user */
 app.get("/getUser", (req, res) => {
   if (req.session.authorized) {
     res.send(req.session.user);

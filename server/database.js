@@ -1,6 +1,7 @@
 const mongoose=require("mongoose");
 const { userDataCollection, chatCollection } = require("./mongodb");
 
+/* holt Nutzer:innen mit Hilfe des Usernames und Passworts*/
 async function findUser(username, password) {
     try {
         const user = await userDataCollection.findOne({ name: username, passwort: password }).lean();
@@ -16,6 +17,7 @@ async function findUser(username, password) {
     }
 }
 
+/* holt Name mit Hilfe des Tokens*/
 async function findUsernameByToken(token) {
     try {
         const user = await userDataCollection.findOne({ token }).lean();
@@ -31,6 +33,7 @@ async function findUsernameByToken(token) {
     }
 }
 
+/* holt Nutzer:innen mit Hilfe des Tokens, wird aber nicht benutzt*/
 async function findUserByToken(token) {
     try {
         const user = await userDataCollection.findOne({ token }).lean();
@@ -46,6 +49,7 @@ async function findUserByToken(token) {
     }
 }
 
+/* holt Nutzer:innen mit Hilfe der ID*/
 async function findUserByID(userID) {
     try {
         const user = await userDataCollection.findOne({ _id: userID }).lean();
@@ -59,11 +63,10 @@ async function findUserByID(userID) {
     }
 }
 
+/* fügt Nutzer:innen in die liked Liste eines anderen Nutzers ein & checkt ob match vorliegt*/
 async function addLikedUser(userID, likedUserID) {
-
-    const match = await isMatched(likedUserID, userID); //checkt ob der user in der liked liste des anderen users ist
+    const match = await isMatched(likedUserID, userID);
     if (match) {
-        // await chatCollection.insertOne({ users: [userID, likedUserID] });
         await chatCollection.create({
             users: [userID, likedUserID]
         });
@@ -71,14 +74,15 @@ async function addLikedUser(userID, likedUserID) {
     return match;
 }
 
+/* checkt ob zwei Nutzer:innen ein Match sind*/
 async function isMatched(likedUserID, userID) {
     const likedUser = await userDataCollection.findOne({ _id: likedUserID }).lean();
     const match = likedUser.liked.includes(userID); //checkt ob der user in der liked liste des anderen users ist
     return match
 }
 
+/* holt alle Chats eines Users*/
 async function getChats(userID) {
-    // find all chats where userID is in users array & populate with users
     const chats = await chatCollection.find({ users: userID })
     .populate("users")
     .populate("messageHistory.sentByUserID")
@@ -86,16 +90,17 @@ async function getChats(userID) {
     return chats;
 }
 
+/* gibt das Chat object von zwei Nutzer:innen zurück*/
 async function getChat(userID, user2ID) {
-    // find all chats where userID & user2ID are in users array
     const chat = await chatCollection.findOne({
-        users: { $all: [userID, user2ID] } // $all: [userID, user2ID] -> users array beinhaltet beide userIDs
+        users: { $all: [userID, user2ID] }
     })
     .populate("users")
     .lean();
     return chat;
 }
 
+/* speichert Nachrichten in der Datenbank*/
 async function saveChatMessage(chatID, sender, content, timestamp,isImage) {
     if(!isImage){
         return chatCollection.updateOne({ _id: chatID }, { $push: {
@@ -117,13 +122,6 @@ async function saveChatMessage(chatID, sender, content, timestamp,isImage) {
     }
     
 }
-
-
-
-// chatCollection.create({ users: [
-//     '6462526b27aab938ff9cc107',
-//     '646671a0898c1986286eb8ec'
-// ] });
 
 module.exports = {
     findUser,

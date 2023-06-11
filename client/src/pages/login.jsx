@@ -53,7 +53,7 @@ export default function Root({ setLoggedIn }) {
                     <FormText textID={'email'} lable={'Email'} name={'email'} placeholder={'name@example.com'} password={false}></FormText>
                     <FormText textID={'password'} lable={'Passwort'} name={'password'} placeholder={'min. 8 Zeichen'} password={true}></FormText>
                     <div className={'normalFontSize checkboxForm'}>
-                        <label>eingelogt bleiben</label>
+                        <label>eingeloggt bleiben</label>
                         <input type={"checkbox"} name={'stayLogged'} />
                     </div>
                     <FormButton onClick={submitForm} name={'Login'} buttonID={'submitBtn'}></FormButton>
@@ -61,7 +61,7 @@ export default function Root({ setLoggedIn }) {
                     
                     <div className={'formEnd'}>
                         <button className={'normalFontSize'}>Passwort vergessen</button>
-                        <p>Noch kein Account? <Link to={'/registrieren'} className={'normalFontSize'}>Registrier dich</Link></p>
+                        <p>Noch kein Account? <Link to={'/registrieren'} className={'normalFontSize'}>Registriere dich</Link></p>
                     </div>
 
                 </section>

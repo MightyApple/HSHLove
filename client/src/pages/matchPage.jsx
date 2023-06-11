@@ -311,7 +311,7 @@ function MatchPage() {
                     <Navbar></Navbar>
 
                     <section className={"primaryContainer"}>
-                        <h1 className={"bigHeadline"}>Senke deine Ansprüche!<br />Hier gibt es Niemanden für dich</h1>
+                        <h1 className={"bigHeadline"}>Oh oh, wir haben leider keinen Vorschlag für Dich.<br />Höchste Zeit für neue Hobbys und Interessen!</h1>
                         <div>
                             <Trenner></Trenner>
                         </div>

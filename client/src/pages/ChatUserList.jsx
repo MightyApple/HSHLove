@@ -11,22 +11,24 @@ import {useMediaQuery} from "react-responsive";
 import logo from "../assets/logo.svg";
 import { useNavigate } from 'react-router-dom';
 
+/* holt das user object*/
 async function getUser() {
-    return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
-        return data; //returned von der fetch Funktion den ganzen User
+    return fetch('/getUser').then(response => response.json()).then(data => {
+        return data;
     });
 }
 
+/* zeigt die user mit match im Chat an*/
 export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
     const navigate = useNavigate()
-    let loggedIn= getUser()
-    // if(!loggedIn.loggedIn){
-    //     navigate("/")
-    // }
+    let loggedIn = getUser()
+  
     const [selectedUser, setSelectedUser] = useState(null);
+    /* findet den ausgewählten Chatroom*/
     var selectedChatRoom = chatRooms.find((chatRoom) => chatRoom.users.some((user) => user._id === selectedUser?.userId));
     var selectedUserMessages = selectedChatRoom?.messages;
 
+    /* prüft die Bildschirmbreite*/
     const isWideScreen = useMediaQuery({minWidth: 769});
 
     function MatchedUserList({}) {
@@ -43,7 +45,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
             </>
         )
     }
-
+    /* wenn der Screen breiter als 768px ist und ein user ausgewählt wird*/
     if (isWideScreen && selectedUser) {
         return (
             <>
@@ -53,8 +55,8 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                         <MatchedUserList />
                         <div className={"primaryContainer"}>
                             <Trenner></Trenner>
-                            <p>Du möchtest dich mit mehr Menschen in Kontakt setzen? <br/><br/>
-                                Dann schau dir weitere Profile an oder bearbeite dein Profil.</p>
+                            <p>Du möchtest Dich mit mehr Menschen in Kontakt setzen? <br/><br/>
+                                Dann schau Dir weitere Profile an oder bearbeite dein Profil.</p>
                         </div>
                     </div>
                     <div className={"wideChatSide"}>
@@ -64,6 +66,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                 </div>
             </>
         )
+        /* wenn der Screen breiter als 768px ist und kein user ausgewählt wird*/
     } else if (isWideScreen) {
         return (
             <>
@@ -73,8 +76,8 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                         <MatchedUserList />
                         <div className={"primaryContainer"}>
                             <Trenner></Trenner>
-                            <p>Du möchtest dich mit mehr Menschen in Kontakt setzen? <br/><br/>
-                                Dann schau dir weitere Profile an oder bearbeite dein Profil.</p>
+                            <p>Du möchtest Dich mit mehr Menschen in Kontakt setzen? <br/><br/>
+                                Dann schau Dir weitere Profile an oder bearbeite dein Profil.</p>
                         </div>
                     </div>
                     <div className={'wideChatSide startinLogo bigHeadline'}>
@@ -84,7 +87,8 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                 </div>
             </>
         )
-    } else if (selectedUser) { // wenn ein user ausgewählt wurde, dann wird der Chat gerendert
+        /* wenn ein user ausgewählt wird*/
+    } else if (selectedUser) { 
         return (
             <>
                 <Navbar></Navbar>
@@ -94,15 +98,15 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
             </>
         )
     }
-
-    return ( // wenn kein user ausgewählt wurde, dann wird die Liste der User gerendert
+/* wenn kein user ausgewählt wird*/
+    return ( 
         <>
             <Navbar></Navbar>
             <MatchedUserList />
             <div className={"primaryContainer"}>
                 <Trenner class={"small"}></Trenner>
-                <p>Du möchtest dich mit mehr Menschen in Kontakt setzen? <br/><br/>
-                    Dann schau dir weitere Profile an oder bearbeite dein Profil.</p>
+                <p>Du möchtest Dich mit mehr Menschen in Kontakt setzen? <br/><br/>
+                    Dann schau Dir weitere Profile an oder bearbeite Dein Profil.</p>
             </div>
         </>
     )
