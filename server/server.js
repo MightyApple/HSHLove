@@ -88,6 +88,14 @@ app.get("/getUser", (req, res) => {
   }
 });
 
+app.get("/authorized", (req, res) => {
+  if (req.session.authorized) {
+    res.send({loggedIn: true});
+  } else {
+    res.send({ loggedIn: false });
+  }
+});
+
 function makeid(length) {
   let result = "";
   const characters =

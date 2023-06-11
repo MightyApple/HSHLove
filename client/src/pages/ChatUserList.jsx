@@ -12,8 +12,8 @@ import logo from "../assets/logo.svg";
 import { useNavigate } from 'react-router-dom';
 
 /* holt das user object*/
-async function getUser() {
-    return fetch('/getUser').then(response => response.json()).then(data => {
+async function authorized() {
+    return fetch('/authorized').then(response => response.json()).then(data => {
         return data;
     });
 }
@@ -21,8 +21,10 @@ async function getUser() {
 /* zeigt die user mit match im Chat an*/
 export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
     const navigate = useNavigate()
-    let loggedIn = getUser()
-  
+    let loggedIn = authorized()
+    // if(!loggedIn.loggedIn){
+    //     navigate("/")
+    // }
     const [selectedUser, setSelectedUser] = useState(null);
     /* findet den ausgewählten Chatroom*/
     var selectedChatRoom = chatRooms.find((chatRoom) => chatRoom.users.some((user) => user._id === selectedUser?.userId));

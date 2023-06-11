@@ -1,5 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+async function authorized() {
+    return fetch('/authorized').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
+        return data; //returned von der fetch Funktion den ganzen User
+    });
+  }
 export default function Root() {
+    const navigate = useNavigate()
+    let loggedIn= authorized()
+    if(!loggedIn.loggedIn){
+        navigate("/")
+    }
     return (
         <>
             <ul>

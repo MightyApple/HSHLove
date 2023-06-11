@@ -4,11 +4,12 @@ import ChatMessage from '../components/ChatMessage';
 import ProfilePicture from '../components/profilePicture'
 
 import { socket } from '../components/socket';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function Chat({ chatMessages, receiver }) {
   const [inputValue, setInputValue] = useState('');
-
+  const navigate = useNavigate();
   const scrollableDivRef = useRef(null);
 
   /* Funktion zum Senden der Nachrichten*/
@@ -55,7 +56,7 @@ export default function Chat({ chatMessages, receiver }) {
 
 
   }
-
+  
   useEffect(() => {
     /* Scrollt automatisch nach unten beim Neuladen*/
     window.scrollTo(0, document.body.scrollHeight);
@@ -63,8 +64,8 @@ export default function Chat({ chatMessages, receiver }) {
     /* Scrollt automatisch nach unten, wenn eine neue Nachricht gesendet wird*/
     scrollableDivRef.current.scrollTop = scrollableDivRef.current.scrollHeight;
   }, [chatMessages.length,inputValue]);
-
-  return ( 
+  
+  return (
     <>
       <div className="chatBox" ref={scrollableDivRef}>
         /* Container für die Nachrichten*/

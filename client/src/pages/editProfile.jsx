@@ -13,16 +13,23 @@ import FormText from "../components/form/formText";
 import LoginHead from "../components/loginHead";
 import { useLocation, useNavigate } from 'react-router-dom';
 import LoadingScreen from "../components/loadingScreen";
-
+async function getUser() {
+    return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
+        return data; //returned von der fetch Funktion den ganzen User
+    });
+}
 
 export default function Root(props) {
+    
+    
     const[description, setDescription]= React.useState("")
     const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false)
     const [isLoading, setIsLoading] = useState(props.first?false:true);
     const [userInformation, setUserInformation] = useState({});
-
-    // Read values passed on state
+    
+    
+        // Read values passed on state
     if(props.first){       
         var mail= props.data.email;
         var pass= props.data.password;
@@ -203,7 +210,7 @@ export default function Root(props) {
         fetch('/getUserData')
         .then((res)=>res.json())
         .then((data)=>{
-            if(data.email=="Meld dich an um deinen Namen hier zu lesen"){
+            if(data.email=="login"){
                 navigate("/")
             }
             setUserInformation(data)
@@ -217,7 +224,10 @@ export default function Root(props) {
     } 
     function setUserTagsActive(data){
         data.data.tags.forEach(element => {
-            document.getElementById(element).classList.add("checked")
+            if( document.getElementById(element)!==null){
+               document.getElementById(element).classList.add("checked") 
+            }
+            
         });
 
         let prefList= document.getElementsByClassName("pref tag")
