@@ -27,12 +27,14 @@ router.post("/getProfile", async (req, res) => {
             usersToSkip.push(dislike)
         }
 
-        console.log("usersToSkip")
-        console.log(user.preference)
-
         for (const aUser of users) {
+            console.log(aUser.roll)
+            if (aUser.roll === "Admin" || aUser.roll === "Disabled") {
+                usersToSkip.push(aUser)
+                continue;
+            }
+
             let sameIntent = false;
-            console.log(aUser.gender)
             for (const intent of aUser.intention) {
                 if (user.intention.includes(intent)) {
                     sameIntent = true;
@@ -53,27 +55,21 @@ router.post("/getProfile", async (req, res) => {
             }
             matchCounts.push(matchCount);
         }
-        console.log("matchCounts")
-        console.log(newUsers)
+
 
 // Den Benutzer mit den meisten Übereinstimmungen finden
         const maxMatchCount = Math.max(...matchCounts);
         let userWithMostMatches = newUsers[matchCounts.indexOf(maxMatchCount)];
 
 // Der Benutzer mit den meisten Übereinstimmungen ist userWithMostMatches
-        console.log("userWithMostMatches");
-        console.log(userWithMostMatches);
-        console.log(user.disliked[0])
 
         if (!userWithMostMatches && user.disliked[0] === undefined) {
             res.json({
                 data: undefined
             });
-            console.log("WICHTIGER TEST")
             return;
 
         } else if (!userWithMostMatches) {
-            console.log("WICHTIGER TEST2")
             userWithMostMatches = user.disliked[0];
 
             await mongoHSHLove.userDataCollection.updateMany(
@@ -81,7 +77,6 @@ router.post("/getProfile", async (req, res) => {
                 { $unset: { disliked: "" } }
             );
         }
-        console.log("WICHTIGER TEST3")
 
         const degree = await mongoHSHLove.courseCollection.findOne({
             _id: userWithMostMatches.degree,
@@ -181,6 +176,43 @@ router.post("/dislikeProfile", async (req, res) => {
     } catch (e) {
         console.log(e);
         res.status(500).send("Something broke in the registration");
+    }
+});
+
+
+router.post("/blockProfile", async (req, res) => {
+    try {
+        const data = req.body;
+        console.log(data.status)
+        const currentUserId = req.session.user._id;
+        const profileIdToRemove = data.user.userId;
+
+        // Finde den Chat-Eintrag, der die beiden Benutzer enthält
+        const chatEntry = await mongoHSHLove.chatCollection.findOne({
+            "users": { $all: [currentUserId, profileIdToRemove] }
+        });
+
+        if (data.status) {
+            const profile = await mongoHSHLove.userDataCollection.findOne({ _id: profileIdToRemove });
+            if (profile) {
+                console.log(profile._id.toString())
+                // Aktualisiere das Feld "roll" des Profils
+                await mongoHSHLove.userDataCollection.updateOne(
+                    { _id: profile._id.toString() },
+                    { $set: { roll: "Disabled" } }
+                );
+            }
+        }
+
+        if (chatEntry) {
+            // Lösche den gefundenen Chat-Eintrag
+            await mongoHSHLove.chatCollection.deleteOne({ _id: chatEntry._id });
+        }
+
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: "An error occurred" });
     }
 });
 

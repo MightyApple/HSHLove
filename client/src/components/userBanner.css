@@ -11,6 +11,43 @@
     gap: 14px;
     padding: 5px 10px;
 }
+.userBorder .user .options {
+    position: absolute;
+    right: 10px;
+    transform: translateY(6px);
+}
+.userBorder .user .options img {
+    width: 27px;
+    height: auto;
+    rotate: 90deg;
+}
+
+
+.userBorder .user .dropdown {
+    position: relative;
+    display: inline-block;
+}
+.userBorder .user .dropdown-content {
+    display: none;
+    right: 20px;
+    transform: translateY(21px);
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.userBorder .user .dropdown-content button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+.userBorder .user .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
 
 .userBorder .user .online {
     background: #00FF00;

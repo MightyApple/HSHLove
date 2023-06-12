@@ -25,6 +25,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
     // if(!loggedIn.loggedIn){
     //     navigate("/")
     // }
+
     const [selectedUser, setSelectedUser] = useState(null);
     /* findet den ausgewählten Chatroom*/
     var selectedChatRoom = chatRooms.find((chatRoom) => chatRoom.users.some((user) => user._id === selectedUser?.userId));
@@ -62,7 +63,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                         </div>
                     </div>
                     <div className={"wideChatSide"}>
-                        <UserBanner user={selectedUser}></UserBanner>
+                        <UserBanner user={selectedUser} options={true}></UserBanner>
                         <Chat chatMessages={selectedUserMessages} receiver={selectedUser}></Chat>
                     </div>
                 </div>
@@ -94,7 +95,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
         return (
             <>
                 <Navbar></Navbar>
-                <UserBanner user={selectedUser}></UserBanner>
+                <UserBanner user={selectedUser} options={true}></UserBanner>
                 <button onClick={() => setSelectedUser(null)}>Back</button>	
                 <Chat chatMessages={selectedUserMessages} receiver={selectedUser}></Chat>
             </>

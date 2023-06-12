@@ -72,7 +72,10 @@ const userDataSchema = new mongoose.Schema({
     },
     tags: [{
         type: String,
-    }]
+    }],
+    roll: {
+        type: String
+    }
 })
 
 const messageSchema = new mongoose.Schema({
