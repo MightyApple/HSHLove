@@ -20,7 +20,7 @@ import Admin from './pages/admin'
 import LoadingScreen from './components/loadingScreen'
 import NutzerSuchen from './pages/nutzerSuchen'
 import Gemeldet from './pages/gemeldet'
-import Impressum from "./pages/impressum";
+import Kontakt from "./pages/kontakt";
 import Nutzerbedingungen from "./pages/nutzerbedingungen";
 import Datenschutz from "./pages/datenschutz";
 
@@ -206,7 +206,7 @@ function App() {
         },
         {
             path: "impressum",
-            element: <Impressum />,
+            element: <Kontakt />,
         },
         {
             path: "nutzerbedingungen",

@@ -311,10 +311,10 @@ function MatchPage() {
                             <Trenner></Trenner>
                         </div>
                     </section>
-                    <Footer ></Footer>
                 </div>
                 )
             )}
+            <Footer abmelden={true}></Footer>
         </>
     )
 }

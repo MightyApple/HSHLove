@@ -2,6 +2,8 @@ import FormButton from "../components/form/formButton";
 import logo from "../assets/logo.svg";
 import './startingPage.css'
 import { useLocation } from "react-router-dom";
+import Footer from "../components/footer";
+import React from "react";
 
 export default function Root() {
     
@@ -17,5 +19,6 @@ export default function Root() {
                     <FormButton name={'Registrieren'} route={'/registrieren'}></FormButton>
                 </div>
             </section>
+            <Footer></Footer>
         </>
     )};

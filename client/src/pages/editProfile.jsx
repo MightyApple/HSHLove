@@ -13,6 +13,7 @@ import FormText from "../components/form/formText";
 import LoginHead from "../components/loginHead";
 import { useLocation, useNavigate } from 'react-router-dom';
 import LoadingScreen from "../components/loadingScreen";
+import Footer from "../components/footer";
 async function getUser() {
     return fetch('/getUser').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
         return data; //returned von der fetch Funktion den ganzen User
@@ -428,6 +429,7 @@ export default function Root(props) {
                     <FormText textID={'geburtsdatum'} lable={'Wann hast du Geburtstag?'} name={'geburtstag'} placeholder={'Geburtsdatum'} password={false} date={true}></FormText>
                 </section>
                 {mainElement}
+                <Footer abmelden={true}></Footer>
             </>
         );
     } else {
@@ -435,6 +437,7 @@ export default function Root(props) {
             <>
                 <Navbar></Navbar>
                 {mainElement}
+                <Footer abmelden={true}></Footer>
             </>
         );
     }

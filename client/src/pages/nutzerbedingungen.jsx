@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from "../components/footer";
 
 const Nutzerbedingungen = () => {
   return (
@@ -54,6 +55,7 @@ const Nutzerbedingungen = () => {
 		  <p>
 			Du kannst deine Registrierung und die Nutzung der Webseite jederzeit beenden. <br></br>Wir behalten uns das Recht vor, deine Registrierung zu löschen und den Zugang zur Webseite jederzeit und ohne Angabe von Gründen zu sperren.
 		  </p>
+			<Footer></Footer>
 		</div>
 	  );
 	};

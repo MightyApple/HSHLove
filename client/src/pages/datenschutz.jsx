@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from "../components/footer";
 //import '../../../../../Downloads/Archiv(1)/ds.css';
 
 const Datenschutz = () => {
@@ -49,6 +50,7 @@ const Datenschutz = () => {
         <br />
         Wir greifen nicht auf externe Dienstleister oder Dritte zu, um personenbezogene Daten der Nutzer zu verarbeiten.
       </p>
+        <Footer></Footer>
     </div>
   );
 };

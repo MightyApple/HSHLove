@@ -4,6 +4,7 @@ import FormButton from "../components/form/formButton";
 import EditProfile from "./editProfile"
 import {Link, Navigate, useNavigate } from "react-router-dom";
 import React from "react";
+import Footer from "../components/footer";
 
 let data
 function checkEmail(email){
@@ -75,5 +76,6 @@ export default function Root() {
             </div>
             
         :<EditProfile first={true} data={data} ></EditProfile>}
+            <Footer></Footer>
         </>
     )};

@@ -5,6 +5,7 @@ import FormText from '../components/form/formText'
 import FormButton from '../components/form/formButton'
 import LoginHead from '../components/loginHead'
 import {Link, Navigate, useNavigate} from "react-router-dom";
+import Footer from "../components/footer";
 export default function Root({ setLoggedIn }) {
     const navigate = useNavigate();
     const[succes, setSucces]= React.useState(false)
@@ -72,5 +73,6 @@ export default function Root({ setLoggedIn }) {
                 </section>
                 
             </div>
+            <Footer></Footer>
         </>
     )};

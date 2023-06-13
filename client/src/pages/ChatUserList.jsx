@@ -10,6 +10,7 @@ import {useMediaQuery} from "react-responsive";
 
 import logo from "../assets/logo.svg";
 import { useNavigate } from 'react-router-dom';
+import Footer from "../components/footer";
 
 /* holt das user object*/
 async function authorized() {
@@ -67,6 +68,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                         <Chat chatMessages={selectedUserMessages} receiver={selectedUser}></Chat>
                     </div>
                 </div>
+                <Footer abmelden={true}></Footer>
             </>
         )
         /* wenn der Screen breiter als 768px ist und kein user ausgewählt wird*/
@@ -88,6 +90,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                         <p>HSH<span>Love</span></p>
                     </div>
                 </div>
+                <Footer abmelden={true}></Footer>
             </>
         )
         /* wenn ein user ausgewählt wird*/
@@ -98,6 +101,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                 <UserBanner user={selectedUser} options={true}></UserBanner>
                 <button onClick={() => setSelectedUser(null)}>Back</button>	
                 <Chat chatMessages={selectedUserMessages} receiver={selectedUser}></Chat>
+                <Footer abmelden={true}></Footer>
             </>
         )
     }
@@ -111,6 +115,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                 <p>Du möchtest Dich mit mehr Menschen in Kontakt setzen? <br/><br/>
                     Dann schau Dir weitere Profile an oder bearbeite Dein Profil.</p>
             </div>
+            <Footer abmelden={true}></Footer>
         </>
     )
 }

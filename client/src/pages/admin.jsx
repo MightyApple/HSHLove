@@ -1,5 +1,6 @@
 import FormButton from "../components/form/formButton";
 import logo from "../assets/logo.svg";
+import Footer from "../components/footer"
 
 import './admin.css';
 import { useNavigate } from "react-router-dom";
@@ -16,9 +17,7 @@ export default function Root() {
     if(loggedIn.loggedIn){
         navigate("/")
     }
-    //TODO NAME DES NUTZERS
     return (
-        
         <>
             <section className={'startPage secondaryContainer'}>
                 <div className={'startinLogo bigHeadline'}>
@@ -30,5 +29,6 @@ export default function Root() {
                     <FormButton name={'Gemeldete Nutzer'} route={'/gemeldet'}></FormButton>
                 </div>
             </section>
+            <Footer abmelden={true}></Footer>
         </>
     )};

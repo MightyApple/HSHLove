@@ -3,6 +3,7 @@ import AdminHead from '../components/adminHead';
 import { useNavigate } from 'react-router-dom';
 import UserBanner from '../components/userBanner'
 import AdminProfilePage from "../components/adminProfilePage";
+import Footer from "../components/footer";
 
 /*async function authorized() {
   return fetch('/authorized').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
@@ -69,6 +70,7 @@ export default function ReportedUsersPage() {
               )
             })}
           </div>
+          <Footer abmelden={true}></Footer>
         </>
     );
   }

@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from "../components/footer";
 //import './kontakt.css';
 
 const Kontakt = () => {
@@ -24,6 +25,7 @@ const Kontakt = () => {
         <br /><br />
         Hochschule Hamm-Lippstadt
       </p>
+      <Footer></Footer>
     </div>
   );
 };

@@ -1,3 +1,7 @@
+footer {
+    background-color: rgb(0, 0, 0, 0.2);
+}
+
 footer .primaryContainer {
     display: flex;
     justify-content: space-evenly;

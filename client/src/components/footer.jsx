@@ -91,7 +91,9 @@ export default function Root(props) {
                     <FormButton name={'Datenschutz'} id={'logout'} route={'/datenschutz'}></FormButton>
                 </div>
                 <div className={'primaryContainer'}>
-                    <FormButton name={'Abmelden'} id={'logout'} onClick={logOutForm}></FormButton>
+                    {props.abmelden && (
+                        <FormButton name={'Abmelden'} id={'logout'} onClick={logOutForm}></FormButton>
+                    )}
                     <FormButton name={'Farbschema'} id={'logout'} onClick={changeColorTheme}></FormButton>
                 </div>
             </footer>
