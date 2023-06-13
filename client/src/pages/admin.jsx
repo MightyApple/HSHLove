@@ -21,7 +21,7 @@ export default function Root() {
         return fetch('/getUser')
             .then(response => response.json())
             .then(data => {
-                if(data.role!=="Admin"){
+                if(data.roll!=="Admin"){
                     navigate("/")
                 }else{setLoading(false)}
             });
