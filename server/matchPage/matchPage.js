@@ -9,7 +9,28 @@ const router = express.Router();
 router.post("/findUserByAdmin", async (req, res) => {
     try {
         const data = req.body;
-        console.log(data)
+        console.log(data.gender)
+        const query = {
+            $and: [
+                { roll: { $ne: "Admin" } },
+                { roll: { $ne: "Disabled" } }
+            ]
+        }
+        if (data.name !== "") {
+            query.$and.push({ name: { $eq: data.name } });
+        }
+        if (data.degree !== "all") {
+            query.$and.push({ degree: { $eq: data.degree } });
+        }
+        if (data.gender !== "Alle") {
+            query.$and.push({ gender: { $eq: data.gender } });
+        }
+
+        const users = await mongoHSHLove.userDataCollection.find(query)
+
+        res.json({
+            users: users
+        });
 
     } catch (e) {
         console.log(e);

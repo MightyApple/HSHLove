@@ -7,6 +7,7 @@ import FormButton from "../components/form/formButton";
 import AdminHead from '../components/adminHead';
 import { useNavigate } from 'react-router-dom';
 import UserBanner from "../components/userBanner";
+import AdminProfilePage from "../components/adminProfilePage";
 
 async function authorized() {
     return fetch('/authorized').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
@@ -30,6 +31,13 @@ export default function Root(props) {
 
 
     async function findUser() {
+        let firstname = document.getElementById("Vorname").value;
+        let gender = document.getElementById("geschlechtId").value;
+
+        const degree = document.getElementById("studiumId");
+        const selectedDegreeIndex = degree.selectedIndex;
+        const selectedDegreeOption = degree.options[selectedDegreeIndex];
+        const degreeId = selectedDegreeOption.id;
 
         try {
             const response = await fetch('/findUserByAdmin', {
@@ -37,8 +45,19 @@ export default function Root(props) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({}),//TODO Name, Studiengang und Geschlecht reinwerfen
+                body: JSON.stringify({name :firstname, degree: degreeId, gender: gender}),
             });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log("res")
+                console.log(result)
+
+                setUsers(result.users)
+
+            } else {
+                console.log('Error:', response.statusText);
+            }
 
         } catch (error) {
             console.log('Error:', error);
@@ -72,13 +91,21 @@ export default function Root(props) {
     }, []);
 
 
-    if (!props.first) {
+    if (selectedUser) {
+        console.log("selectedUser")
+        return (
+            <>
+                <AdminProfilePage user={selectedUser}></AdminProfilePage>
+            </>
+        );
+    } else {
         return (
             <>
                 <AdminHead heading="Nutzer Suchen"></AdminHead>
                 <section className={'primaryContainer'}>
-                    
-                    <FormText textID={'Vorname'} lable={'Name:'} name={'vorname'} placeholder={'Vorname'} password={false}></FormText>
+
+                    <FormText textID={'Vorname'} lable={'Name:'} name={'vorname'} placeholder={'Vorname'}
+                              password={false}></FormText>
                 </section>
                 <section className={'primaryContainer tagSection'}>
                     <DropDown
@@ -87,7 +114,7 @@ export default function Root(props) {
                         selectId={'studiumId'}
                         data={studiengaenge}
                     ></DropDown>
-                    
+
                     <DropDown
                         label={'Ich bin:'}
                         selectName={'geschlecht'}
@@ -104,22 +131,18 @@ export default function Root(props) {
                     </div>
                 </section>
 
-                    <div className="reported-users-page">
-                        {users.map((user, index) => {
-                            //var isOnline = onlineUsers.has(user.userId);
-                            return (
-                                <div key={index} onClick={() => setSelectedUser(user)}>
-                                    <UserBanner user={user} />
-                                </div>
-                            )
-                        })}
-                    </div>
-            </>
-        );
-    } else {
-        return (
-            <>
-                <Navbar></Navbar>
+                <div className="reported-users-page">
+                    {users.map((user, index) => {
+                        //var isOnline = onlineUsers.has(user.userId);
+                        console.log(user)
+                        const currentUser = {username: user.name, profileImage: user.images[0]}
+                        return (
+                            <div key={index} onClick={() => setSelectedUser(user)}>
+                                <UserBanner user={currentUser}/>
+                            </div>
+                        )
+                    })}
+                </div>
             </>
         );
     }

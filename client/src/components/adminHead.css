@@ -2,6 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-content: center;
+    min-height: 70px;
 }
 .adminHeaderContainer .adminHeader h1 {
     margin: auto;
@@ -9,12 +10,16 @@
     line-height: 24px;
     font-weight: 800;
 }
-.adminHeaderContainer .adminHeader .chatIcon {
-    min-width: 50px;
-}
 
 .adminHeaderContainer hr {
     margin-top: 0;
+}
+.adminHeaderContainer .adminHeader .blockButton, .adminHeaderContainer .adminHeader .arrowLink {
+    margin: auto 0;
+}
+.adminHeaderContainer .adminHeader .blockButton {
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 @media (min-width: 426px) {

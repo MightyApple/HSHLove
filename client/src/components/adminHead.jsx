@@ -23,13 +23,13 @@ export default function AdminHead(props) {
         <>
             <section className={'adminHeaderContainer'}>
                 <div className={'adminHeader'}>
-                    <Link to={'/admin'}>
+                    <Link to={'/admin'} className={'arrowLink'}>
                         <img src={arrow} alt={'arrow'} width={50} height={50}/>
                     </Link>
                     {props.heading ? (
                         <h1>{props.heading}</h1>
                     ) : (
-                        <button onClick={() => disableUser(props.id)} className="formButton" id={props.buttonID}>
+                        <button onClick={() => disableUser(props.id)} className="formButton blockButton" id={props.buttonID}>
                             Nutzer Blockieren
                         </button>
                     )}
