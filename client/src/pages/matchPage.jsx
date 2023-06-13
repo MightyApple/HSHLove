@@ -127,7 +127,7 @@ function MatchPage() {
         return fetch('/getUser')
             .then(response => response.json())
             .then(data => {
-                if(data.loggedIn==false){
+                if(data.loggedIn===false){
                     navigate("/")
                 }
                 setCurrentUserId(data);

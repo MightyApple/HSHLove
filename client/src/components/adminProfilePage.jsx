@@ -5,35 +5,30 @@ import 'slick-carousel/slick/slick-theme.css';
 import { useMediaQuery } from 'react-responsive';
 
 import scrollUp from '../assets/double-up-svgrepo-com.svg';
-import './matchPage.css';
+import '../pages/matchPage.css';
 
-import AdminHead from '../components/adminHead';
-import Trenner from '../components/trenner';
-import Tag from "../components/form/tag";
-import LoadingScreen from '../components/loadingScreen';
-import Footer from '../components/footer'
-import {useNavigate} from "react-router-dom";
-
-
-function adminProfilePage(user) {
-
-    const navigate = useNavigate()
-    const [id, setId] = useState([""]);
-    const [images, setImages] = useState([""]);
-    const [prefs, setPrefs] = useState(['ONS']);
-    const [tags, setTags] = useState([{name: "test"}]);
-    const [desc, setDesc] = useState("Hi ich bin Getränkelieferant.");
-    const [name, setName] = useState("BBoi");
-    const [age, setAge] = useState(18);
-    const [studiengang, setStudiengang] = useState("Hää Sport");
-    const [city, setCity] = useState("Bonn");
-
-    const [currentUser, setCurrentUser] = useState("");
-    const [currentUserId, setCurrentUserId] = useState("");
-    const [currentUserTags, setcurrentUserTags] = useState("");
+import AdminHead from './adminHead';
+import Trenner from './trenner';
+import Tag from "./form/tag";
+import LoadingScreen from './loadingScreen';
+import Footer from './footer'
 
 
-    const [profil, setProfil] = useState(true);
+function AdminProfilePage(user) {
+
+    console.log("user")
+    console.log(user.user)
+
+    const [id, setId] = useState(user.user._id);
+    const [images, setImages] = useState(user.user.images);
+    const [prefs, setPrefs] = useState(user.user.intention);
+    const [tags, setTags] = useState(user.user.tags);
+    const [desc, setDesc] = useState(user.user.description);
+    const [name, setName] = useState(user.user.name);
+    const [age, setAge] = useState(birthday(user.user.birthday));
+    const [studiengang, setStudiengang] = useState(user.user.degree);
+    const [city, setCity] = useState("");
+
     const isWideScreen = useMediaQuery({minWidth: 1000});
     const isMediumScreen = useMediaQuery({ minWidth: 426, maxWidth: 999 });
 
@@ -52,10 +47,62 @@ function adminProfilePage(user) {
     } else {
         settings.slidesToShow = 1;
     }
+
+    function birthday(date) {
+        const birthday = new Date(date);
+        const today = new Date();
+        let age = today.getFullYear() - birthday.getFullYear();
+
+        // Überprüfen, ob der Geburtstag bereits stattgefunden hat
+        if (
+            today.getMonth() < birthday.getMonth() ||
+            (today.getMonth() === birthday.getMonth() &&
+                today.getDate() < birthday.getDate())
+        ) {
+            // Reduziere das Alter um 1, wenn der Geburtstag noch nicht stattgefunden hat
+            age--;
+        }
+        return age;
+    }
+    async function getUserData() {
+        try {
+            const response = await fetch('/getReportedProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user }),
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log("result")
+                console.log(result)
+                console.log(result.degree)
+                console.log(result.tag)
+
+                setStudiengang(result.degree.name)
+                setCity(result.degree.campus)
+                setTags(result.tag)
+
+            } else {
+                console.log('Error:', response.statusText);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
+    //Das ist hier ausgelagert, damit die Tags immer einlesbar sind
+    useEffect(() => {
+        getUserData();
+
+    }, []);
+
     return (
         <>
             <div>
-                <AdminHead></AdminHead>
+                <AdminHead id={id}></AdminHead>
                 <section className={'primaryContainer slider'}>
                     <Slider {...settings}>
                         {Array.from({length: images.length}, (_, index) => (
@@ -107,4 +154,4 @@ function adminProfilePage(user) {
         </>
     )
 }
-export default adminProfilePage;
+export default AdminProfilePage;

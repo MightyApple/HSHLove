@@ -5,6 +5,43 @@ const {addLikedUser, findUserByID} = require("../database");
 
 const router = express.Router();
 
+
+router.post("/disableUser", async (req, res) => {
+    try {
+        const data = req.body;
+
+        await mongoHSHLove.userDataCollection.updateOne(
+            { _id: data.id },
+            { $set: { roll: "Disabled" } }
+        );
+
+    } catch (e) {
+        console.log(e);
+        res.status(500).send("something broke in the registration");
+    }
+})
+
+router.post("/getReportedProfile", async (req, res) => {
+    try {
+        const data = req.body;
+
+        const degree = await mongoHSHLove.courseCollection.findOne({
+            _id: data.user.user.degree,
+        });
+        const tags = await mongoHSHLove.tagCollection.find({
+            _id: { $in: data.user.user.tags }
+        });
+
+        res.json({
+            degree: degree,
+            tag: tags,
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send("something broke in the registration");
+    }
+})
+
 router.post("/getProfile", async (req, res) => {
     try {
         const data = req.body;
@@ -179,11 +216,9 @@ router.post("/dislikeProfile", async (req, res) => {
     }
 });
 
-
 router.post("/blockProfile", async (req, res) => {
     try {
         const data = req.body;
-        console.log(data.status)
         const currentUserId = req.session.user._id;
         const profileIdToRemove = data.user.userId;
 
@@ -195,11 +230,10 @@ router.post("/blockProfile", async (req, res) => {
         if (data.status) {
             const profile = await mongoHSHLove.userDataCollection.findOne({ _id: profileIdToRemove });
             if (profile) {
-                console.log(profile._id.toString())
                 // Aktualisiere das Feld "roll" des Profils
                 await mongoHSHLove.userDataCollection.updateOne(
                     { _id: profile._id.toString() },
-                    { $set: { roll: "Disabled" } }
+                    { $set: { roll: "Reported" } }
                 );
             }
         }
@@ -246,6 +280,18 @@ router.get("/getDegree", async (req, res) => {
         res.status(500).send("something broke in the /getDegree")
     }
 })
+
+
+router.get("/getReportedUsers", async (req, res) => {
+    try {
+        const users = await mongoHSHLove.userDataCollection.find({ roll: "Reported" });
+        res.json(users);
+        console.log(users)
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: "An error occurred" });
+    }
+});
 
 
 module.exports = {

@@ -2,9 +2,25 @@ import arrow from "../assets/arrow.svg";
 import './adminHead.css';
 import { Link } from "react-router-dom";
 import Trenner from '../components/trenner';
-import chat from "../assets/chat-svgrepo-com.svg"
 
 export default function AdminHead(props) {
+
+    const disableUser = async (id) => {
+        console.log(id)
+        try {
+            await fetch('/disableUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id }),
+            });
+        } catch (error) {
+            console.error(error);
+            // Handle den Fehler entsprechend
+        }
+    };
+
     return (
         <>
             <section className={'adminHeaderContainer'}>
@@ -15,19 +31,11 @@ export default function AdminHead(props) {
                     {props.heading ? (
                         <h1>{props.heading}</h1>
                     ) : (
-                        <button onClick={props.onClick} className="formButton" id={props.buttonID}>
+                        <button onClick={() => disableUser(props.id)} className="formButton" id={props.buttonID}>
                             Nutzer Blockieren
                         </button>
 
                     )}
-                    <div className={'chatIcon'}>
-                        {props.showChat && (
-                            <Link to="/chat" className="iconLink">
-                                <img src={props.chatIcon} alt="chat" width={40} height={40} />
-                                <p>{props.chatText}</p>
-                            </Link>
-                        )}
-                    </div>
                 </div>
 
                 <Trenner></Trenner>
