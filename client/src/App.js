@@ -20,7 +20,9 @@ import Admin from './pages/admin'
 import LoadingScreen from './components/loadingScreen'
 import NutzerSuchen from './pages/nutzerSuchen'
 import Gemeldet from './pages/gemeldet'
-import Desktop from './pages/desktop'
+import Impressum from "./pages/impressum";
+import Nutzerbedingungen from "./pages/nutzerbedingungen";
+import Datenschutz from "./pages/datenschutz";
 
 import { socket } from './components/socket';
 import { useState } from 'react';
@@ -203,8 +205,16 @@ function App() {
             element: <Gemeldet />,
         },
         {
-            path: "desktop",
-            element: <Desktop />,
+            path: "impressum",
+            element: <Impressum />,
+        },
+        {
+            path: "nutzerbedingungen",
+            element: <Nutzerbedingungen />,
+        },
+        {
+            path: "datenschutz",
+            element: <Datenschutz />,
         },
         {
             path: "loading",

@@ -1,0 +1,11 @@
+footer .primaryContainer {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+footer .primaryContainer .formButton {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 20px 0;
+}
