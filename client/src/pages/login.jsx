@@ -9,8 +9,11 @@ import Footer from "../components/footer";
 export default function Root({ setLoggedIn }) {
     const navigate = useNavigate();
     const[succes, setSucces]= React.useState(false)
+    const[admin,setAdmin]=React.useState(false)
     const[error, setError]= React.useState()
-    
+    if(admin){
+        navigate("/admin")
+    }
     if(succes){
         navigate('/match')
     }
@@ -41,6 +44,10 @@ export default function Root({ setLoggedIn }) {
         const resData= await result.json()
         if(resData.message){
             setError(resData.message)
+        }
+        console.log(resData.role=="Admin")
+        if(resData.role=="Admin"){
+            setAdmin(true);
         }
         if(resData.noError){
             setLoggedIn(true)

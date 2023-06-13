@@ -74,7 +74,8 @@ const userDataSchema = new mongoose.Schema({
         type: String,
     }],
     roll: {
-        type: String
+        type: String,
+        default: "Enabled"
     }
 })
 

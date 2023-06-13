@@ -209,8 +209,7 @@ router.post("/login", async (req, res) => {
     
     if (user) {
       const validPass = await bcrypt.compare(password, user.password)
-      
-      if (validPass) {
+      if (validPass&&user.roll!=="Disabled") {
         //falls die daten stimmen wird der codeblock ausgeführt
         // session wird angelegt
         try{
@@ -218,8 +217,12 @@ router.post("/login", async (req, res) => {
           req.session.user = user;
           req.session.authorized = true;
           
+          if(user.roll=="Admin"){
+            res.send( {role:user.roll})
+          }else{
+            res.send({noError:true, role:user.roll})
+          }
           
-          res.send({noError:true})
         }catch(e){
           throw e
         }
