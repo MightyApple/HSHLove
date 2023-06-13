@@ -23,7 +23,7 @@ export default function Root() {
             <section className={'startPage secondaryContainer'}>
                 <div className={'startinLogo bigHeadline'}>
                     <img src={logo} alt={'logo'} width={168} height={168}/>
-                    <p>Hallo <span></span></p>
+                    <p>Hallo <span>Admin</span></p>
                 </div>
                 <div className={'startRoute'}>
                     <FormButton name={'Nutzersuchen'} route={'/nutzer'}></FormButton>

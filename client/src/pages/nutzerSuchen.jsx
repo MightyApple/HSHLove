@@ -1,5 +1,5 @@
 import Navbar from '../components/navbar';
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import FormText from "../components/form/formText";
 import DropDown from '../components/form/dropDown';
 
@@ -16,25 +16,60 @@ async function authorized() {
 
 
 export default function Root(props) {
-    const navigate = useNavigate()
+    /*const navigate = useNavigate()
     let loggedIn= authorized()
     if(!loggedIn.loggedIn){
         navigate("/")
     }
-    const studiengaenge = [{name: "AIS"}, {name: "CVD"}, {name: "BWL"}, {name: "MBP"}];
-    const geschlecht = [{name :"männlich"}, {name: "weiblisch"}, {name: "divers"}];
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [users, setUsers] = useState([
-        { id: 1, username: 'Beispiel-Nutzer 1', blocked: false },
-        { id: 2, username: 'Beispiel-Nutzer 2', blocked: false },
-        { id: 3, username: 'Beispiel-Nutzer 3', blocked: false },
-    ]);
+     */
 
-    const handleClick = (item) => {
-        // Funktion, die beim Klicken auf ein Element in der Liste ausgeführt wird
-        console.log("Klick auf Element:", item);
-        // Weitere Aktionen ausführen, z. B. Navigation zu einem bestimmten Chat-Kontakt
-    };
+    const [studiengaenge, setStudiengaenge] = useState([{name: "Alle", _id: "all"}]);
+    const geschlecht = [{name :"Alle"}, {name: "männlich"}, {name: "weiblich"}, {name: "divers"}];
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [users, setUsers] = useState([]);
+
+
+    async function findUser() {
+
+        try {
+            const response = await fetch('/findUserByAdmin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({}),//TODO Name, Studiengang und Geschlecht reinwerfen
+            });
+
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
+    async function getData() {
+        try {
+            const response = await fetch('/getDegree', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                const studiengaeng = [{name: "Alle", _id: "all"}, ...result.data];
+                setStudiengaenge(studiengaeng);
+            } else {
+                console.log('Error:', response.statusText);
+            }
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
+    useEffect(() => {
+        console.log("Testschen")
+        getData();
+    }, []);
 
 
     if (!props.first) {
@@ -64,7 +99,7 @@ export default function Root(props) {
                 <section className={'primaryContainer'}>
                     <div className={'primaryContainer'}>
                         <div className={'primaryContainer'}>
-                            <FormButton name={'Suchen'}></FormButton>
+                            <FormButton name={'Suchen'} onClick={findUser}></FormButton>
                         </div>
                     </div>
                 </section>

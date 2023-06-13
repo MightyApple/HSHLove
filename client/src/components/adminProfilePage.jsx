@@ -76,10 +76,6 @@ function AdminProfilePage(user) {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log("result")
-                console.log(result)
-                console.log(result.degree)
-                console.log(result.tag)
 
                 setStudiengang(result.degree.name)
                 setCity(result.degree.campus)

@@ -6,7 +6,6 @@ import Trenner from '../components/trenner';
 export default function AdminHead(props) {
 
     const disableUser = async (id) => {
-        console.log(id)
         try {
             await fetch('/disableUser', {
                 method: 'POST',
@@ -17,7 +16,6 @@ export default function AdminHead(props) {
             });
         } catch (error) {
             console.error(error);
-            // Handle den Fehler entsprechend
         }
     };
 
@@ -34,7 +32,6 @@ export default function AdminHead(props) {
                         <button onClick={() => disableUser(props.id)} className="formButton" id={props.buttonID}>
                             Nutzer Blockieren
                         </button>
-
                     )}
                 </div>
 

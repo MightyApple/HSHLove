@@ -6,6 +6,16 @@ const {addLikedUser, findUserByID} = require("../database");
 const router = express.Router();
 
 
+router.post("/findUserByAdmin", async (req, res) => {
+    try {
+        const data = req.body;
+        console.log(data)
+
+    } catch (e) {
+        console.log(e);
+        res.status(500).send("something broke in the registration");
+    }
+})
 router.post("/disableUser", async (req, res) => {
     try {
         const data = req.body;
