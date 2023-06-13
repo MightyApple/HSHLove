@@ -9,7 +9,6 @@ const router = express.Router();
 router.post("/findUserByAdmin", async (req, res) => {
     try {
         const data = req.body;
-        console.log(data.gender)
         const query = {
             $and: [
                 { roll: { $ne: "Admin" } },

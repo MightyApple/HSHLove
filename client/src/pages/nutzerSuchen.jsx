@@ -50,8 +50,6 @@ export default function Root(props) {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log("res")
-                console.log(result)
 
                 setUsers(result.users)
 
