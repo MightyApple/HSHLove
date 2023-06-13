@@ -314,7 +314,6 @@ function MatchPage() {
                 </div>
                 )
             )}
-            <Footer abmelden={true}></Footer>
         </>
     )
 }
