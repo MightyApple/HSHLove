@@ -289,7 +289,7 @@ function MatchPage() {
                                 {desc}
                             </p>
                         </section>
-                        <Footer></Footer>
+                        <Footer abmelden={true}></Footer>
                     </div>
             ) : (
                 <div>
@@ -301,6 +301,7 @@ function MatchPage() {
                             <Trenner></Trenner>
                         </div>
                     </section>
+                    <Footer abmelden={true}></Footer>
                 </div>
                 )
             )}

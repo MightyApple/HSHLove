@@ -1,3 +1,4 @@
 .message {
     white-space: break-spaces;
+    overflow-wrap: anywhere;
 }

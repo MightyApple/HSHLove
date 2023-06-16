@@ -68,7 +68,6 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                         <Chat chatMessages={selectedUserMessages} receiver={selectedUser}></Chat>
                     </div>
                 </div>
-                <Footer abmelden={true}></Footer>
             </>
         )
         /* wenn der Screen breiter als 768px ist und kein user ausgewählt wird*/
@@ -101,7 +100,6 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
                 <UserBanner user={selectedUser} options={true}></UserBanner>
                 <button onClick={() => setSelectedUser(null)}>Back</button>	
                 <Chat chatMessages={selectedUserMessages} receiver={selectedUser}></Chat>
-                <Footer abmelden={true}></Footer>
             </>
         )
     }
