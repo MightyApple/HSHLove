@@ -116,6 +116,9 @@ body {
          */
         --normalSize: 20px;
     }
+    body {
+        padding: 0 0 249px 0;
+    }
     .dnoneLG {
         display: none;
     }
