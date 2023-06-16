@@ -8,14 +8,14 @@ import Footer from "../components/footer";
 
 let data
 function checkEmail(email){
-    console.log(email.split("@")[1])
-    if(!email.split("@")[1]=="stud.hshl.de"||!email.split("@")[1]=="hshl.de"){
+    //console.log(email.split("@")[1])
+    if(!email.split("@")[1]==="stud.hshl.de"||!email.split("@")[1]==="hshl.de"){
         return false
     }
     return true
 }
 export default function Root() {
-    const navigate= useNavigate();
+    //const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false);
     const[error,setError]=React.useState()
     
@@ -49,10 +49,7 @@ export default function Root() {
     //if(succes){
         //navigate('/edit', { state: { email: document.getElementById("email").value, password: document.getElementById("password").value } })
     //}
-    
-    
 
-    
     return (
         <>{!succes?
             <div className={'secondaryContainer'}>

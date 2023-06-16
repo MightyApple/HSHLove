@@ -17,7 +17,7 @@ async function authorized() {
 }
 
 
-export default function Root(props) {
+export default function Root() {
     /*const navigate = useNavigate()
     let loggedIn= authorized()
     if(!loggedIn.loggedIn){

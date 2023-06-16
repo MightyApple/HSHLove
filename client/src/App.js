@@ -13,7 +13,7 @@ import Login from './pages/login';
 import Register from './pages/register';
 import EditProfile from './pages/editProfile'
 import ChatUserList from './pages/ChatUserList';
-import DebugRouter from './pages/debugRouter';
+//import DebugRouter from './pages/debugRouter';
 import ErrorPage from './error-page';
 import MatchPage from './pages/matchPage'
 import Admin from './pages/admin'
@@ -180,10 +180,11 @@ function App() {
             path: "registrieren",
             element: <Register />,
         },
-        {
+        /*{
             path: "debug",
             element: <DebugRouter />,
         },
+         */
         {
             path: "edit",
             element: <EditProfile  />,
