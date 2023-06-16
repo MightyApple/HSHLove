@@ -6,7 +6,7 @@
 .userBorder .user {
     display: flex;
     width: 100%;
-    background: linear-gradient(270deg, #FFCB02 0%, #EE171E 100%);
+    background: linear-gradient(270deg, var(--primaryColor) 0%, var(--secondaryColor) 100%);
     color: var(--white);
     gap: 14px;
     padding: 5px 10px;
