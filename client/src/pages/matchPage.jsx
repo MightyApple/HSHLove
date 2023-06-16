@@ -126,7 +126,7 @@ function MatchPage() {
         return fetch('/getUser')
             .then(response => response.json())
             .then(data => {
-                if(data.loggedIn===false||data.role=="Disabled"){
+                if(data.loggedIn===false||data.role==="Disabled"){
                     navigate("/")
                 }
                 setCurrentUserId(data);
