@@ -41,6 +41,7 @@ export default function Root(props) {
         const degreeId = selectedDegreeOption.id;
 
         try {
+            //Führt in matchPage.js findUserByAdmin aus. Hier wird jeder User zurückgegeben, wo der filter übereinstimmt
             const response = await fetch('/findUserByAdmin', {
                 method: 'POST',
                 headers: {

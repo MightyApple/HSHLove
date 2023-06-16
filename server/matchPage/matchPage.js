@@ -1,11 +1,10 @@
 const express = require('express')
-//const database = require('./database.js'); mongoHSHLove sollte ausreichen
 const mongoHSHLove = require("../mongodb")
 const {addLikedUser, findUserByID} = require("../database");
 
 const router = express.Router();
 
-
+//findUserByAdmin bekommt einen namen, ein studiengang und ein geschlecht mit. Hier wird jeder User zurückgegeben, welcher mit den Eingaben übereinstimmt.
 router.post("/findUserByAdmin", async (req, res) => {
     try {
         const data = req.body;
@@ -15,6 +14,7 @@ router.post("/findUserByAdmin", async (req, res) => {
                 { roll: { $ne: "Disabled" } }
             ]
         }
+        //Wenn ein Filter angegeben wurde, wird dieser angewannt
         if (data.name !== "") {
             query.$and.push({ name: { $eq: data.name } });
         }
@@ -33,9 +33,11 @@ router.post("/findUserByAdmin", async (req, res) => {
 
     } catch (e) {
         console.log(e);
-        res.status(500).send("something broke in the registration");
+        res.status(500).send("Error");
     }
 })
+
+//disableUser stellt, die Rolle eines Users auf Disabled
 router.post("/disableUser", async (req, res) => {
     try {
         const data = req.body;
@@ -47,10 +49,11 @@ router.post("/disableUser", async (req, res) => {
 
     } catch (e) {
         console.log(e);
-        res.status(500).send("something broke in the registration");
+        res.status(500).send("Error");
     }
 })
 
+//getReportedProfile gibt ein volles Profil zurück, welches die Admins ansehen können
 router.post("/getReportedProfile", async (req, res) => {
     try {
         const data = req.body;
@@ -68,7 +71,7 @@ router.post("/getReportedProfile", async (req, res) => {
         });
     } catch (e) {
         console.log(e);
-        res.status(500).send("something broke in the registration");
+        res.status(500).send("Error");
     }
 })
 
@@ -174,6 +177,7 @@ router.post("/getProfile", async (req, res) => {
     }
 });
 
+//likeProfile wird zusammen mit einem Profil aufgerufen. Der aktuell angemeldete Nutzer bekommt dieses in den likes zugeordnet.
 router.post("/likeProfile", async (req, res) => {
     try {
         const data = req.body;
@@ -212,6 +216,7 @@ router.post("/likeProfile", async (req, res) => {
 });
 
 
+//dislikeProfile wird zusammen mit einem Profil aufgerufen. Der aktuell angemeldete Nutzer bekommt dieses in den dislikes zugeordnet.
 router.post("/dislikeProfile", async (req, res) => {
     try {
         const data = req.body;
