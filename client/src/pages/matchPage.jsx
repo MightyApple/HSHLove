@@ -75,8 +75,7 @@ function MatchPage() {
 
             if (response.ok) {
                 const result = await response.json();
-                console.log("result")
-                console.log(result)
+                setIsLoading(false)
                 if (Object.keys(result).length === 0) {
                     setProfil(false);
                 } else {
@@ -148,7 +147,7 @@ function MatchPage() {
     }, [currentUserTags]);
 
     async function likeProfile(data) {
-        aktivateTimeout(3000)
+        setIsLoading(true)
         try {
             const response = await fetch('/likeProfile', {
                 method: 'POST',
@@ -183,7 +182,8 @@ function MatchPage() {
 
 
     async function dislikeProfile(data) {
-        aktivateTimeout(3000)
+        setIsLoading(true)
+
         try {
             const response = await fetch('/dislikeProfile', {
                 method: 'POST',
@@ -219,24 +219,14 @@ function MatchPage() {
         settings.slidesToShow = 1;
     }
 
-    function aktivateTimeout(time) {
-        setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-        }, time);
-    }
+    
 
    
     
 
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        // Simuliere einen asynchronen Ladevorgang
-        setTimeout(() => {
-            setIsLoading(false); // Setze isLoading auf false, wenn der Ladevorgang abgeschlossen ist
-        }, 3000);
-    }, []);
+    
 
 
     return (
