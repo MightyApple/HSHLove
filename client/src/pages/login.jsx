@@ -45,8 +45,7 @@ export default function Root({ setLoggedIn }) {
         if(resData.message){
             setError(resData.message)
         }
-        console.log(resData.role=="Admin")
-        if(resData.role=="Admin"){
+        if(resData.role==="Admin"){
             setAdmin(true);
         }
         if(resData.noError){

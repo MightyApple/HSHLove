@@ -146,6 +146,11 @@ function MatchPage() {
         }
     }, [currentUserTags]);
 
+    /**
+     * Fügt den aktuell angezeigten Nutzer in dem angemeldeten Nutzer Profil unter liked hinzu.
+     * @param data
+     * @returns {Promise<void>}
+     */
     async function likeProfile(data) {
         setIsLoading(true)
         try {
@@ -180,7 +185,11 @@ function MatchPage() {
         }
     }
 
-
+    /**
+     * Fügt den aktuell angezeigten Nutzer in dem angemeldeten Nutzer Profil unter disliked hinzu.
+     * @param data
+     * @returns {Promise<void>}
+     */
     async function dislikeProfile(data) {
         setIsLoading(true)
 
@@ -291,7 +300,8 @@ function MatchPage() {
                         </section>
                         <Footer abmelden={true}></Footer>
                     </div>
-            ) : (
+            ) : //Wenn es keine Nutzer gibt
+                (
                 <div>
                     <Navbar></Navbar>
 

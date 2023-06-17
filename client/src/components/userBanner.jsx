@@ -52,7 +52,7 @@ export default function UserBanner(props) {
             <div className={`userBorder`}>
                 <div className={`user`}>
                     <ProfilePicture profileImage={props.user.profileImage}></ProfilePicture>
-                    {props.isOnline ? (
+                    {props.showOnline ? (
                         <div className={`${props.isOnline ? "online" : "offline"}`}></div>
                     ) : ("")}
                     <button>{props.user.username}</button>
