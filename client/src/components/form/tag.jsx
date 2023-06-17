@@ -1,6 +1,12 @@
 import './tag.css'
 import React, { useState } from 'react';
 
+/**
+ Anleitung der Kompnente
+
+ Die Komponente erstellt ein Tag, welches mit dem "name" tag seinen Wert bekommt.
+ Mit "class" kann mman den Tags Klassen geben und mit "disabled" kann man bestimmen, ob man die Farbe des Tags per Button click wechseln kann.
+ */
 function CheckboxButton(props) {
     const [isChecked, setIsChecked] = useState(false);
 
