@@ -45,7 +45,6 @@ function getCookie(cname) {
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(sessionCheck());
-
   const [chatRooms, setChatRooms] = useState([]);
   const [matchedUsers, setMatchedUsers] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -57,11 +56,9 @@ function App() {
   }
 
   useEffect(() => {
-    // wird einmal ausgeführt
     if (loggedIn) {
-      // wenn der user eingeloggt ist
       getUser().then((user) => {
-        // holt sich den ganzen user (also alle db Einträge)
+
         if (!user) {
           console.log("no user");
           return;
@@ -130,13 +127,13 @@ function App() {
       });
     });
 
-    socket.on("User connected", (userID) => {
+    socket.on("userConnected", (userID) => {
       setOnlineUsers((onlineUsers) => {
         return new Set([...onlineUsers, userID]);
       });
     });
 
-    socket.on("User disconnected", (userID) => {
+    socket.on("userDisconnected", (userID) => {
       setOnlineUsers((onlineUsers) => {
         var newOnlineUsers = new Set(onlineUsers);
         newOnlineUsers.delete(userID);
@@ -148,8 +145,8 @@ function App() {
       socket.off("message");
       socket.off("initChats");
       socket.off("newMatch");
-      socket.off("User connected");
-      socket.off("User disconnected");
+      socket.off("userConnected");
+      socket.off("userDisconnected");
     };
   }, []);
 

@@ -41,7 +41,6 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
       <>
         {matchedUsers.map((user, index) => {
           var isOnline = onlineUsers.has(user.userId);
-          console.log(isOnline);
           return (
             <div key={index} onClick={() => setSelectedUser(user)}>
               <UserBanner user={user} isOnline={isOnline} showOnline={true}/>

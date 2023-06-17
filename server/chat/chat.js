@@ -67,20 +67,28 @@ function chatInitialisieren(io) {
         });
       });
 
+      var onlineUserIDs = [];
+      for (const key in onlineUsers) {
+          if (Object.hasOwnProperty.call(onlineUsers, key)) {
+              const user = onlineUsers[key];
+              onlineUserIDs.push(user._id);
+          }
+      }
+      
       socket.emit("initChats", {
         users,
         chatRooms,
+        onlineUsers: onlineUserIDs,
       });
     });
   }
 
   io.on("connection", (socket) => {
-    //wird ausgeführt, wenn ein client connected
+
     io.emit("User connected", socket._id);
     onlineUsers[socket._id] = socket;
-    //console.log(socket.id); //gibt id des sockets aus
 
-    // get chatRoomId from db where socket.receiverId == user1ID
+
     getChats(socket);
 
     saveSession(socket.sessionID, {
@@ -93,13 +101,10 @@ function chatInitialisieren(io) {
     socket.join(socket._id); //fügt den socket zu einem room hinzu
 
     socket.on("message", ({ content, to }) => {
-      //wird ausgeführt, wenn ein client eine private message/bilder sendet
-      //console.log("private message received: " + content + " from " + socket._id + " to " + to);
       var timestamp = new Date().toLocaleString();
-
+      
       database.getChat(socket._id, to).then((chat) => {
         var chatID = chat._id;
-
         io.to(to).to(socket._id).emit("message", {
           chatID: chat._id,
           content,
@@ -170,8 +175,6 @@ function chatInitialisieren(io) {
     });
 
     socket.on("disconnect", () => {
-      //wird ausgeführt, wenn ein client disconnected
-      //console.log("User disconnected");
       delete onlineUsers[socket._id];
       socket.broadcast.emit("User disconnected", socket.userId); //sendet an alle außer an den, der disconnected
     });
