@@ -1,33 +1,32 @@
-<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>360</x><y>210</y><w>210</w><h>230</h></coordinates><panel_attributes>nutzerdatens
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>360</x><y>210</y><w>210</w><h>240</h></coordinates><panel_attributes>nutzerdatens
 --
 _id 
-email 
-password
-Name
-Geschlecht
-Geburtsdatum 
+email: String
+password: String
+Name: String
+Geschlecht: String
+Geburtsdatum: Date
 images: Array
-Beschreibung
-Studiengang
-Vorliebe
-Absicht
-Liked
-Tags
-
+Beschreibung: String
+StudiengangID: String
+Vorlieben: Array
+Absicht: Array
+Liked: Array
+Tags: Array
+Rolle: String
 
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>210</y><w>160</w><h>110</h></coordinates><panel_attributes>chatrooms
 --
 _id
-messageHistrory
-status
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>510</y><w>160</w><h>120</h></coordinates><panel_attributes>nachrichten
+messageHistrory: Array
+users: Array
+status: boolean
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>510</y><w>160</w><h>100</h></coordinates><panel_attributes>nachrichten
 --
 _id
-Content
-Datum
-Uhrzeit
-Sender
-roomID
+messageContent: String
+timeStamp: String
+sentByUserID: String
 </panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>840</x><y>310</y><w>50</w><h>220</h></coordinates><panel_attributes>lt=&lt;&lt;-
 m1= 0..n
 m2=1</panel_attributes><additional_attributes>10;200;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>230</y><w>240</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;-
@@ -35,12 +34,12 @@ m1= 2
 m2= 0..n</panel_attributes><additional_attributes>10;10;220;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>60</x><y>210</y><w>210</w><h>80</h></coordinates><panel_attributes>studiengangs
 --
 _id
-name
-campus</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>550</y><w>210</w><h>70</h></coordinates><panel_attributes>tags
+name: String
+campus: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>360</x><y>550</y><w>210</w><h>70</h></coordinates><panel_attributes>tags
 --
 _id
-name</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>430</y><w>60</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;-
+name: String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>440</y><w>60</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;-
 m1=1
-m2= 0..20</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>260</x><y>230</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;-
+m2= 0..20</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>260</x><y>230</y><w>120</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;-
 m1=1
 m2=1</panel_attributes><additional_attributes>100;10;10;10</additional_attributes></element></diagram>

@@ -75,6 +75,7 @@ router.post("/getReportedProfile", async (req, res) => {
     }
 })
 
+//Gibt einen Nutzer für den Love Algorithmus zurück. Hier wird geprüft, welcher Nutzer am besten zu dem angemeldeten Nutzer passt.
 router.post("/getProfile", async (req, res) => {
     try {
         const data = req.body;
@@ -98,7 +99,6 @@ router.post("/getProfile", async (req, res) => {
         }
 
         for (const aUser of users) {
-            console.log(aUser.roll)
             if (aUser.roll === "Admin" || aUser.roll === "Disabled") {
                 usersToSkip.push(aUser)
                 continue;
@@ -127,11 +127,11 @@ router.post("/getProfile", async (req, res) => {
         }
 
 
-// Den Benutzer mit den meisten Übereinstimmungen finden
+        // Den Benutzer mit den meisten Übereinstimmungen finden
         const maxMatchCount = Math.max(...matchCounts);
         let userWithMostMatches = newUsers[matchCounts.indexOf(maxMatchCount)];
 
-// Der Benutzer mit den meisten Übereinstimmungen ist userWithMostMatches
+        // Der Benutzer mit den meisten Übereinstimmungen ist userWithMostMatches
 
         if (!userWithMostMatches && user.disliked[0] === undefined) {
             res.json({
@@ -181,15 +181,12 @@ router.post("/getProfile", async (req, res) => {
 router.post("/likeProfile", async (req, res) => {
     try {
         const data = req.body;
-        //console.log("data: " + data._id);
-        //console.log("data2: " + data.currentUserId);
 
         const filter = { _id: data.currentUserId };
         const user = await mongoHSHLove.userDataCollection.findOne(filter);
 
         // Überprüfen, ob der Wert bereits im Array vorhanden ist
         if (user && user.liked.includes(data._id)) {
-            //console.log("Der Wert ist bereits im Array vorhanden.");
             res.send({ noError: true });
             return;
         }
@@ -199,15 +196,12 @@ router.post("/likeProfile", async (req, res) => {
         };
 
         const result = await mongoHSHLove.userDataCollection.updateOne(filter, update);
-        //console.log(result);
-
         const match = await addLikedUser(data.currentUserId, data._id);
 
         res.send({
             noError: true,
             match
         });
-        //console.log("Schau in die DB");
 
     } catch (e) {
         console.log(e);
@@ -220,15 +214,11 @@ router.post("/likeProfile", async (req, res) => {
 router.post("/dislikeProfile", async (req, res) => {
     try {
         const data = req.body;
-        //console.log("data: " + data._id);
-        //console.log("data2: " + data.currentUserId);
-
         const filter = { _id: data.currentUserId };
         const user = await mongoHSHLove.userDataCollection.findOne(filter);
 
         // Überprüfen, ob der Wert bereits im Array vorhanden ist
         if (user && user.disliked.includes(data._id)) {
-            //console.log("Der Wert ist bereits im Array vorhanden.");
             res.send({ noError: true });
             return;
         }
@@ -238,12 +228,10 @@ router.post("/dislikeProfile", async (req, res) => {
         };
 
         const result = await mongoHSHLove.userDataCollection.updateOne(filter, update);
-        //console.log(result);
 
         res.send({
             noError: true,
         });
-        //console.log("Schau in die DB");
 
     } catch (e) {
         console.log(e);
@@ -251,6 +239,7 @@ router.post("/dislikeProfile", async (req, res) => {
     }
 });
 
+//blockProfile löscht den chat zwischen zwei Usern und wenn data.status true ist, wird die Rolle von einem User zu Reported gewechselt
 router.post("/blockProfile", async (req, res) => {
     try {
         const data = req.body;
@@ -285,7 +274,7 @@ router.post("/blockProfile", async (req, res) => {
     }
 });
 
-
+//getTags gibt alle Tags eines Users zurück
 router.get("/getTags", async (req, res) => {
     try {
         const user = await mongoHSHLove.tagCollection.find({});
@@ -300,11 +289,10 @@ router.get("/getTags", async (req, res) => {
     }
 })
 
+//getDegree gibt den Studiengang eines Users zurück
 router.get("/getDegree", async (req, res) => {
     try {
         const user = await mongoHSHLove.courseCollection.find({});
-        //console.log("Studiengänge")
-        //console.log(user)
 
         req.session.currentUser = user;
 
@@ -316,12 +304,11 @@ router.get("/getDegree", async (req, res) => {
     }
 })
 
-
+//getReportedUsers gibt alle User mit der Rolle Reported zurück
 router.get("/getReportedUsers", async (req, res) => {
     try {
         const users = await mongoHSHLove.userDataCollection.find({ roll: "Reported" });
         res.json(users);
-        console.log(users)
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, error: "An error occurred" });

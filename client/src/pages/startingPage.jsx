@@ -1,7 +1,6 @@
 import FormButton from "../components/form/formButton";
 import logo from "../assets/logo.svg";
 import './startingPage.css'
-import { useLocation } from "react-router-dom";
 import Footer from "../components/footer";
 import React from "react";
 
