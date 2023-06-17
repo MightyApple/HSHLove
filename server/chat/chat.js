@@ -2,15 +2,17 @@ const { Server } = require("socket.io");
 const { saveSession, findSession } = require("./sessionStorage.js");
 const database = require("../database.js");
 
+/** erstellt einen socketio server aus einem http server */
 function serverInitialisieren(httpServer) {
   const io = new Server(httpServer, {
     cors: {
       origin: "http://localhost:3000",
     },
-  }); //erstellt socketio server aus httpServer
+  });
   chatInitialisieren(io);
 }
 
+/** fügt den socket zu den Chatrooms hinzu, die den user haben */
 function joinChatRooms(socket) {
   db.getAllUserChatRooms(socket.userId).then((chatRooms) => {
     chatRooms.forEach((chatRoom) => {
@@ -20,15 +22,15 @@ function joinChatRooms(socket) {
 }
 
 const onlineUsers = {};
-function chatInitialisieren(io) {
-    /** wird vor dem connection event ausgeführt */
-  io.use((socket, next) => {
 
+/** initialisiert den Chat */
+function chatInitialisieren(io) {
+  /** Middleware wird vor dem connection event ausgeführt */
+  io.use((socket, next) => {
     for (const key in socket.handshake.auth) {
-      //fügt die daten aus dem auth object dem socket hinzu
+      /** fügt die Daten aus dem auth object dem socket hinzu*/
       if (Object.hasOwnProperty.call(socket.handshake.auth, key)) {
-        //wenn das object die Attribut hat
-        const value = socket.handshake.auth[key]; //dann wird das Attribut dem socket hinzugefügt
+        const value = socket.handshake.auth[key];
         socket[key] = value;
       }
     }
@@ -41,7 +43,9 @@ function chatInitialisieren(io) {
       var users = [];
       var chatRooms = [];
       chats.forEach((chat) => {
-        var otherUser = chat.users.find((user) => user._id != socket._id); //findet den anderen user in dem chatroom welcher nicht der client ist
+        /** findet den anderen user im chatroom*/
+        var otherUser = chat.users.find((user) => user._id != socket._id);
+        /* fügt den anderen user der user Liste hinzu*/
         users.push({
           userId: otherUser._id,
           username: otherUser.name,
@@ -53,14 +57,14 @@ function chatInitialisieren(io) {
           messages.push({
             receiverId: otherUser._id,
             receiverImage: message.sentByUserID.images[0],
-            sender: message.sentByUserID._id, // TODO: wenns in der DB ist, dann message.sendByUserID.username
+            sender: message.sentByUserID._id,
             content: message.messageContent,
             timestamp: message.timeStamp,
             isImage: message.isImage,
           });
         });
+        /** fügt den Chatroom der chatRooms Liste hinzu*/
         chatRooms.push({
-          //fügt den chatroom dem array hinzu
           id: chat._id,
           users: chat.users,
           messages: messages,
@@ -68,13 +72,14 @@ function chatInitialisieren(io) {
       });
 
       var onlineUserIDs = [];
+      /** geht durch alle online users und fügt die IDs der onlineUserIDs Liste hinzu*/
       for (const key in onlineUsers) {
-          if (Object.hasOwnProperty.call(onlineUsers, key)) {
-              const user = onlineUsers[key];
-              onlineUserIDs.push(user._id);
-          }
+        if (Object.hasOwnProperty.call(onlineUsers, key)) {
+          const user = onlineUsers[key];
+          onlineUserIDs.push(user._id);
+        }
       }
-      
+      /** sendet alle Daten zum Chat an den Client*/
       socket.emit("initChats", {
         users,
         chatRooms,
@@ -83,11 +88,10 @@ function chatInitialisieren(io) {
     });
   }
 
+  /** wird ausgeführt wenn ein Client connected*/
   io.on("connection", (socket) => {
-
     io.emit("User connected", socket._id);
     onlineUsers[socket._id] = socket;
-
 
     getChats(socket);
 
@@ -97,14 +101,16 @@ function chatInitialisieren(io) {
       connected: true,
     });
 
-    //console.log("Joining room: " + socket._id);
     socket.join(socket._id); //fügt den socket zu einem room hinzu
 
+    /** wird ausgeführt, wenn ein Client eine Nachricht sendet*/
     socket.on("message", ({ content, to }) => {
       var timestamp = new Date().toLocaleString();
-      
+
+      /** holt den Chat zwischen Sender und Emfpänger*/
       database.getChat(socket._id, to).then((chat) => {
         var chatID = chat._id;
+        /** sendet die Nachricht mit Daten an die beiden Clients*/
         io.to(to).to(socket._id).emit("message", {
           chatID: chat._id,
           content,
@@ -113,16 +119,13 @@ function chatInitialisieren(io) {
           receiverId: to,
           timestamp: timestamp,
         });
-
+        /** speichert die Nachricht in der Datenbank*/
         database.saveChatMessage(chatID, socket._id, content, timestamp, false);
       });
     });
+    /** wird ausgeführt wenn ein Client ein Bild versendet */
     socket.on("imgMessage", ({ content, to }) => {
-      //wird ausgeführt, wenn ein client eine private message/bilder sendet
-      //console.log("private message received: " + content + " from " + socket._id + " to " + to);
       var timestamp = new Date().toLocaleString();
-      database;
-      //filename=chatID+"_"+content+"["+"]"
       database.getChat(socket._id, to).then((chat) => {
         var chatID = chat._id;
         setTimeout(() => {}, 50);
@@ -139,11 +142,13 @@ function chatInitialisieren(io) {
       });
     });
 
+    /** wird ausgeführt wenn ein Match entsteht => ein neuer Chatroom wird erstellt*/
     socket.on("newMatch", async ({ matchId }) => {
       // match chatroom zum client hinzufügen
       var otherUser = await database.findUserByID(matchId);
       var chatRoom = await database.getChat(socket._id, matchId);
 
+      /** das Match Event wird an beide Clients gesendet*/
       socket.emit("newMatch", {
         user: {
           userId: otherUser._id,
@@ -155,12 +160,7 @@ function chatInitialisieren(io) {
           messages: [],
         },
       });
-
-      // match chatroom zum anderen user hinzufügen
-      // socket.to(matchId).emit("newMatch", {
-      //     userId: socket._id,
-      //     username: socket.name
-      // });
+      /** stellt die Verbindung der Clients zum chatRoom her */
       socket.to(matchId).emit("newMatch", {
         user: {
           userId: socket._id,
@@ -174,6 +174,7 @@ function chatInitialisieren(io) {
       });
     });
 
+    /** wenn sich ein Client ausloggt, wird er aus der onlineUser Liste entfernt*/
     socket.on("disconnect", () => {
       delete onlineUsers[socket._id];
       socket.broadcast.emit("User disconnected", socket.userId); //sendet an alle außer an den, der disconnected
@@ -182,6 +183,5 @@ function chatInitialisieren(io) {
 }
 
 module.exports = {
-  //exportiert Sachen vgl. in Java wirds "public"
   serverInitialisieren,
 };

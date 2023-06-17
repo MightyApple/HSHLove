@@ -58,7 +58,6 @@ function App() {
   useEffect(() => {
     if (loggedIn) {
       getUser().then((user) => {
-
         if (!user) {
           console.log("no user");
           return;

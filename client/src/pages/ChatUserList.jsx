@@ -43,7 +43,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
           var isOnline = onlineUsers.has(user.userId);
           return (
             <div key={index} onClick={() => setSelectedUser(user)}>
-              <UserBanner user={user} isOnline={isOnline} showOnline={true}/>
+              <UserBanner user={user} isOnline={isOnline} showOnline={true} />
             </div>
           );
         })}
@@ -52,7 +52,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
   }
   /* wenn der Screen breiter als 768px ist und ein user ausgewählt wird*/
   if (isWideScreen && selectedUser) {
-      var isOnline = onlineUsers.has(selectedUser.userId);
+    var isOnline = onlineUsers.has(selectedUser.userId);
     return (
       <>
         <Navbar></Navbar>
@@ -69,7 +69,12 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
             </div>
           </div>
           <div className={"wideChatSide"}>
-            <UserBanner user={selectedUser} options={true} isOnline={isOnline} showOnline={true}></UserBanner>
+            <UserBanner
+              user={selectedUser}
+              options={true}
+              isOnline={isOnline}
+              showOnline={true}
+            ></UserBanner>
             <Chat
               chatMessages={selectedUserMessages}
               receiver={selectedUser}
@@ -107,11 +112,16 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
     );
     /* wenn ein user ausgewählt wird*/
   } else if (selectedUser) {
-      var isOnline = onlineUsers.has(selectedUser.userId);
-      return (
+    var isOnline = onlineUsers.has(selectedUser.userId);
+    return (
       <>
         <Navbar></Navbar>
-        <UserBanner user={selectedUser} options={true} isOnline={isOnline} showOnline={true}></UserBanner>
+        <UserBanner
+          user={selectedUser}
+          options={true}
+          isOnline={isOnline}
+          showOnline={true}
+        ></UserBanner>
         <button onClick={() => setSelectedUser(null)}>Back</button>
         <Chat
           chatMessages={selectedUserMessages}
