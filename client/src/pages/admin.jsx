@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 
 async function authorized() {
-    
     return fetch('/authorized').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
         return data; //returned von der fetch Funktion den ganzen User
     });

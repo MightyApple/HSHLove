@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import UserBanner from '../components/userBanner'
 import AdminProfilePage from "../components/adminProfilePage";
 import Footer from "../components/footer";
+import Loading from "../components/loadingScreen"
 
 /*async function authorized() {
   return fetch('/authorized').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
@@ -20,7 +21,16 @@ export default function ReportedUsersPage() {
      */
 
   const usersRef = useRef([]);
-
+  const[loading,setLoading] = React.useState(true);
+  async function getCurrentUser() {
+      return fetch('/getUser')
+          .then(response => response.json())
+          .then(data => {
+              if(data.roll!=="Admin"){
+                  navigate("/")
+              }else{setLoading(false)}
+          });
+  }
   const setUsers = (data) => {
     usersRef.current = data;
   };
@@ -40,6 +50,7 @@ export default function ReportedUsersPage() {
 
   useEffect(() => {
     console.log("Testschen")
+    getCurrentUser();
     fetchReportedUsers();
   }, []);
 
@@ -49,7 +60,13 @@ export default function ReportedUsersPage() {
 
   const [selectedUser, setSelectedUser] = useState(null);
 
-  if (selectedUser) {
+  if(loading){
+    return (
+        <>
+          <Loading/>
+        </>
+    );
+  }else if (selectedUser) {
     return (
         <>
           <AdminProfilePage user={selectedUser}></AdminProfilePage>

@@ -5,10 +5,11 @@ import DropDown from '../components/form/dropDown';
 
 import FormButton from "../components/form/formButton";
 import AdminHead from '../components/adminHead';
-import { useNavigate } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 import UserBanner from "../components/userBanner";
 import AdminProfilePage from "../components/adminProfilePage";
 import Footer from "../components/footer";
+import Loading from"../components/loadingScreen"
 
 async function authorized() {
     return fetch('/authorized').then(response => response.json()).then(data => { //data ist das was der Server aus der DB zurückgibt
@@ -18,6 +19,7 @@ async function authorized() {
 
 
 export default function Root(props) {
+    const navigate=useNavigate()
     /*const navigate = useNavigate()
     let loggedIn= authorized()
     if(!loggedIn.loggedIn){
@@ -29,8 +31,17 @@ export default function Root(props) {
     const geschlecht = [{name :"Alle"}, {name: "männlich"}, {name: "weiblich"}, {name: "divers"}];
     const [selectedUser, setSelectedUser] = useState(null);
     const [users, setUsers] = useState([]);
-
-
+    const[loading,setLoading] = React.useState(true);
+    async function getCurrentUser() {
+        return fetch('/getUser')
+            .then(response => response.json())
+            .then(data => {
+                if(data.roll!=="Admin"){
+                    navigate("/")
+                }else{setLoading(false)}
+            });
+    }
+    
     async function findUser() {
         let firstname = document.getElementById("Vorname").value;
         let gender = document.getElementById("geschlechtId").value;
@@ -87,11 +98,18 @@ export default function Root(props) {
 
     useEffect(() => {
         console.log("Testschen")
+        getCurrentUser();
         getData();
     }, []);
 
+if(loading){
+    return (
+        <>
+            <Loading/>
+        </>
+    );
 
-    if (selectedUser) {
+}else if (selectedUser) {
         console.log("selectedUser")
         return (
             <>
