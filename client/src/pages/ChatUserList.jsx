@@ -56,7 +56,7 @@ export default function ChatUserList({ chatRooms, matchedUsers, onlineUsers }) {
     return (
       <>
         <Navbar></Navbar>
-        <div className={"wideChat"}>
+        <div className={"wideChat userAktive"}>
           <div>
             <MatchedUserList />
             <div className={"primaryContainer"}>

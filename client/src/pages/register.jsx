@@ -60,10 +60,6 @@ export default function Root() {
                     <FormText textID={'password'} lable={'Passwort'} name={'password'} placeholder={'min. 8 Zeichen'} password={true}></FormText>
                     <FormText textID={'passwordwdh'} lable={'Passwort wiederholen'} name={'password2'} placeholder={'min. 8 Zeichen'} password={true}></FormText>
                     <div>{error}</div>
-                    <div className={'normalFontSize checkboxForm'}>
-                        <label>eingeloggt bleiben</label>
-                        <input type={"checkbox"} name={'stayLogged'} />
-                    </div>
                     <FormButton onClick={submitForm} name={'Registrieren'} buttonID={'submit'}></FormButton>
                     
                     <div className={'formEnd'}>

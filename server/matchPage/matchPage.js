@@ -4,14 +4,14 @@ const { addLikedUser, findUserByID } = require("../database");
 
 const router = express.Router();
 
-//findUserByAdmin bekommt einen Namen, einen Studiengang und ein Geschlecht mit. Hier wird jeder User zurückgegeben, welcher mit den Eingaben übereinstimmt.
+//"findUserByAdmin" bekommt einen Namen, einen Studiengang und ein Geschlecht mit. Hier wird jeder User zurückgegeben, welcher mit den Eingaben übereinstimmt.
 router.post("/findUserByAdmin", async (req, res) => {
   try {
     const data = req.body;
     const query = {
       $and: [{ roll: { $ne: "Admin" } }, { roll: { $ne: "Disabled" } }],
     };
-    //Wenn ein Filter angegeben wurde, wird dieser angewandt
+    //Wenn ein Filter angegeben wurde, wird dieser hier in query hinzugefügt
     if (data.name !== "") {
       query.$and.push({ name: { $eq: data.name } });
     }
@@ -33,7 +33,7 @@ router.post("/findUserByAdmin", async (req, res) => {
   }
 });
 
-//disableUser stellt die Rolle eines Users auf Disabled
+//"disableUser" stellt die Rolle eines Users auf Disabled
 router.post("/disableUser", async (req, res) => {
   try {
     const data = req.body;
@@ -48,7 +48,7 @@ router.post("/disableUser", async (req, res) => {
   }
 });
 
-//getReportedProfile gibt ein volles Profil zurück, welches die Admins ansehen können
+//"getReportedProfile" gibt ein volles Profil zurück, welches die Admins ansehen können
 router.post("/getReportedProfile", async (req, res) => {
   try {
     const data = req.body;
@@ -70,7 +70,7 @@ router.post("/getReportedProfile", async (req, res) => {
   }
 });
 
-//Gibt einen Nutzer für den Love Algorithmus zurück. Hier wird geprüft, welcher Nutzer am Besten zu dem angemeldeten Nutzer passt.
+//"getProfile" gibt einen Nutzer für den Love Algorithmus zurück. Hier wird geprüft, welcher Nutzer am besten zu dem angemeldeten Nutzer passt.
 router.post("/getProfile", async (req, res) => {
   try {
     const data = req.body;
@@ -78,7 +78,7 @@ router.post("/getProfile", async (req, res) => {
       _id: data.currentUserId,
     });
 
-    // Zuerst finden Sie alle Benutzer
+    //Hier werden alle Nutzer aus der DB geholt
     const users = await mongoHSHLove.userDataCollection.find();
 
     const matchCounts = [];
@@ -110,14 +110,14 @@ router.post("/getProfile", async (req, res) => {
         !user.preference.includes(aUser.gender) ||
         !sameIntent
       ) {
-        continue; // Benutzer überspringen und mit der nächsten Iteration fortfahren
+        continue; //Alle Benutzer, welche nicht vorgeschlagen werden sollen werden hier übersprungen
       }
 
       newUsers.push(aUser);
 
       let matchCount = 0;
       for (const tagId of aUser.tags) {
-        // Prüft, ob der Tag des Benutzers in der gewünschten Tagliste vorhanden ist
+        //Prüft, ob der Tag des Benutzers in der Tagliste vorhanden ist
         if (user.tags.includes(tagId)) {
           matchCount++;
         }
@@ -125,11 +125,11 @@ router.post("/getProfile", async (req, res) => {
       matchCounts.push(matchCount);
     }
 
-    // Den Benutzer mit den meisten Übereinstimmungen finden
+    //Den Benutzer mit den meisten Übereinstimmungen finden
     const maxMatchCount = Math.max(...matchCounts);
     let userWithMostMatches = newUsers[matchCounts.indexOf(maxMatchCount)];
 
-    // Der Benutzer mit den meisten Übereinstimmungen ist userWithMostMatches
+    //Der Benutzer mit den meisten Übereinstimmungen ist userWithMostMatches
 
     if (!userWithMostMatches && user.disliked[0] === undefined) {
       res.json({
@@ -149,7 +149,7 @@ router.post("/getProfile", async (req, res) => {
       _id: userWithMostMatches.degree,
     });
 
-    //Hole dir alle Tags des aktuellen Users
+    //Holt sich alle Tags des aktuellen Users
     let tags = [];
     for (let i in userWithMostMatches.tags) {
       tags.push(
@@ -174,7 +174,7 @@ router.post("/getProfile", async (req, res) => {
   }
 });
 
-//likeProfile wird zusammen mit einem Profil aufgerufen. Der aktuell angemeldete Nutzer bekommt dieses in den likes zugeordnet.
+//"likeProfile" wird zusammen mit einem Profil aufgerufen. Der aktuell angemeldete Nutzer bekommt dieses in seinen likes zugeordnet.
 router.post("/likeProfile", async (req, res) => {
   try {
     const data = req.body;
@@ -182,7 +182,7 @@ router.post("/likeProfile", async (req, res) => {
     const filter = { _id: data.currentUserId };
     const user = await mongoHSHLove.userDataCollection.findOne(filter);
 
-    // Überprüfen, ob der Wert bereits im Array vorhanden ist
+    //Überprüfen, ob die NutzerID bereits im Array vorhanden ist
     if (user && user.liked.includes(data._id)) {
       res.send({ noError: true });
       return;
@@ -208,14 +208,14 @@ router.post("/likeProfile", async (req, res) => {
   }
 });
 
-//dislikeProfile wird zusammen mit einem Profil aufgerufen. Der aktuell angemeldete Nutzer bekommt dieses in den dislikes zugeordnet.
+//"dislikeProfile" wird zusammen mit einem Profil aufgerufen. Der aktuell angemeldete Nutzer bekommt dieses in seinen dislikes zugeordnet.
 router.post("/dislikeProfile", async (req, res) => {
   try {
     const data = req.body;
     const filter = { _id: data.currentUserId };
     const user = await mongoHSHLove.userDataCollection.findOne(filter);
 
-    // Überprüfen, ob der Wert bereits im Array vorhanden ist
+    //Überprüfen, ob die NutzerID bereits im Array vorhanden ist
     if (user && user.disliked.includes(data._id)) {
       res.send({ noError: true });
       return;
@@ -239,7 +239,7 @@ router.post("/dislikeProfile", async (req, res) => {
   }
 });
 
-//blockProfile löscht den Chat zwischen zwei Usern und wenn data.status true ist, wird die Rolle von einem User zu Reported gewechselt
+//"blockProfile" löscht den Chat zwischen zwei Usern und wenn data.status true ist, wird die Rolle von einem User zu Reported gewechselt
 router.post("/blockProfile", async (req, res) => {
   try {
     const data = req.body;
@@ -256,7 +256,7 @@ router.post("/blockProfile", async (req, res) => {
         _id: profileIdToRemove,
       });
       if (profile) {
-        // Aktualisiere das Feld "roll" des Profils
+        //Aktualisiert das Feld "roll" des Profils
         await mongoHSHLove.userDataCollection.updateOne(
           { _id: profile._id.toString() },
           { $set: { roll: "Reported" } }
@@ -265,7 +265,7 @@ router.post("/blockProfile", async (req, res) => {
     }
 
     if (chatEntry) {
-      // Lösche den gefundenen Chat-Eintrag
+      //Lösche den gefundenen Chat
       await mongoHSHLove.chatCollection.deleteOne({ _id: chatEntry._id });
     }
 
@@ -276,7 +276,7 @@ router.post("/blockProfile", async (req, res) => {
   }
 });
 
-//getTags gibt alle Tags eines Users zurück
+//"getTags" gibt alle Tags eines Users zurück
 router.get("/getTags", async (req, res) => {
   try {
     const user = await mongoHSHLove.tagCollection.find({});
@@ -290,7 +290,7 @@ router.get("/getTags", async (req, res) => {
   }
 });
 
-//getDegree gibt den Studiengang eines Users zurück
+//"getDegree" gibt den Studiengang eines Users zurück
 router.get("/getDegree", async (req, res) => {
   try {
     const user = await mongoHSHLove.courseCollection.find({});
@@ -304,7 +304,7 @@ router.get("/getDegree", async (req, res) => {
   }
 });
 
-//getReportedUsers gibt alle User mit der Rolle Reported zurück
+//"getReportedUsers" gibt alle User mit der Rolle Reported zurück
 router.get("/getReportedUsers", async (req, res) => {
   try {
     const users = await mongoHSHLove.userDataCollection.find({
