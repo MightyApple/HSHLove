@@ -137,10 +137,20 @@ router.post(
 );
 
 async function uploadProfileImages(imgs, newUser, email) {
+  let imgNr
   const user = await mongoHSHLove.userDataCollection.findOne({
     email: email,
   });
   const uId = user._id;
+  if(!newUser){
+    const user = await mongoHSHLove.userDataCollection.findOne({
+      _id: uId,
+    });
+    let x = await profilbilder.getFiles({ prefix: user._id });
+    let size = x[0].length;
+    imgNr = size; 
+  }
+  
   if (user && imgs.images) {
     for (let i = 0; i < imgs.images.length; i++) {
       if (newUser) {
@@ -148,12 +158,7 @@ async function uploadProfileImages(imgs, newUser, email) {
         uploadImage(img);
         updateDatabaseImgInformation(img.originalname, email);
       } else {
-        const user = await mongoHSHLove.userDataCollection.findOne({
-          _id: uId,
-        });
-        let x = await profilbilder.getFiles({ prefix: user._id });
-        let size = x[0].length;
-        let imgNr = size + 1;
+        imgNr+=1;
         var img = prepareImage(imgs.images[i], imgNr, user._id);
         uploadImage(img);
         updateDatabaseImgInformation(img.originalname, email);
@@ -269,7 +274,6 @@ router.post(
       } catch (error) {
         res.status(500).send(error);
       }
-
       try {
         let tagsArr = stringToArray(incomingData.tags);
         let prefArr = stringToArray(incomingData.preference);
@@ -285,20 +289,15 @@ router.post(
           intention: intentArr,
           tags: tagsArr,
           preference: prefArr,
-        };
-
+        }
+        
+        
         if (!isObjectEmpty(req.files)) {
-          var userUpdate =
-            await mongoHSHLove.userDataCollection.findOneAndUpdate(
-              { _id: req.session.user._id },
-              { $set: data, $push: { images: newFile.originalname } }
-            );
+
+          var userUpdate= await mongoHSHLove.userDataCollection.findOneAndUpdate({ "_id": req.session.user._id }, { $set: data, $push: { images: newFile.originalname } })
         } else {
-          var userUpdate =
-            await mongoHSHLove.userDataCollection.findOneAndUpdate(
-              { _id: req.session.user._id },
-              { $set: data }
-            );
+
+          var userUpdate = await mongoHSHLove.userDataCollection.findOneAndUpdate({ "_id": req.session.user._id }, { $set: data })
         }
         req.session.user = userUpdate;
         res.status(200).send("Success");
