@@ -130,14 +130,14 @@ function App() {
     });
 
     /** wenn user connecten, dann werden sie in das Set onlineUser hinzugefügt */
-    socket.on("userConnected", (userID) => {
+    socket.on("User connected", (userID) => {
       setOnlineUsers((onlineUsers) => {
         return new Set([...onlineUsers, userID]);
       });
     });
 
 /** wenn user disconnecten, dann werden sie aus dem onlineUser Set entfernt */
-    socket.on("userDisconnected", (userID) => {
+    socket.on("User disconnected", (userID) => {
       setOnlineUsers((onlineUsers) => {
         var newOnlineUsers = new Set(onlineUsers);
         newOnlineUsers.delete(userID);
@@ -149,8 +149,8 @@ function App() {
       socket.off("message");
       socket.off("initChats");
       socket.off("newMatch");
-      socket.off("userConnected");
-      socket.off("userDisconnected");
+      socket.off("User connected");
+      socket.off("User disconnected");
     };
   }, []);
 

@@ -12,15 +12,6 @@ function serverInitialisieren(httpServer) {
   chatInitialisieren(io);
 }
 
-/** fügt den socket zu den Chatrooms hinzu, die den user haben */
-function joinChatRooms(socket) {
-  db.getAllUserChatRooms(socket.userId).then((chatRooms) => {
-    chatRooms.forEach((chatRoom) => {
-      socket.join(chatRoom._id);
-    });
-  });
-}
-
 const onlineUsers = {};
 
 /** initialisiert den Chat */
@@ -118,6 +109,7 @@ function chatInitialisieren(io) {
           from: socket.name,
           receiverId: to,
           timestamp: timestamp,
+          receiverImage: socket.images[0],
         });
         /** speichert die Nachricht in der Datenbank*/
         database.saveChatMessage(chatID, socket._id, content, timestamp, false);
@@ -137,6 +129,7 @@ function chatInitialisieren(io) {
           receiverId: to,
           timestamp: timestamp,
           isImage: true,
+          receiverImage: socket.images[0],
         });
         database.saveChatMessage(chatID, socket._id, content, timestamp, true);
       });
