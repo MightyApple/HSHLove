@@ -137,10 +137,20 @@ router.post(
 );
 
 async function uploadProfileImages(imgs, newUser, email) {
+  let imgNr
   const user = await mongoHSHLove.userDataCollection.findOne({
     email: email,
   });
   const uId = user._id;
+  if(!newUser){
+    const user = await mongoHSHLove.userDataCollection.findOne({
+      _id: uId,
+    });
+    let x = await profilbilder.getFiles({ prefix: user._id });
+    let size = x[0].length;
+    imgNr = size; 
+  }
+  
   if (user && imgs.images) {
     for (let i = 0; i < imgs.images.length; i++) {
       if (newUser) {
@@ -148,12 +158,7 @@ async function uploadProfileImages(imgs, newUser, email) {
         uploadImage(img);
         updateDatabaseImgInformation(img.originalname, email);
       } else {
-        const user = await mongoHSHLove.userDataCollection.findOne({
-          _id: uId,
-        });
-        let x = await profilbilder.getFiles({ prefix: user._id });
-        let size = x[0].length;
-        let imgNr = size + 1;
+        imgNr+=1;
         var img = prepareImage(imgs.images[i], imgNr, user._id);
         uploadImage(img);
         updateDatabaseImgInformation(img.originalname, email);
