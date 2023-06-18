@@ -4,7 +4,7 @@ import './formButton.css'
 /**
         Anleitung der Kompnente
 
-    Die Komponente Stellt einen Button dar und der Inhalt des "name" props ist der Text in dem Button.
+    Die Komponente stellt einen Button dar und der Inhalt des "name" props ist der Text in dem Button.
     Es gibt zwei wege diese Komponente zu benutzen.
  1. Als Route zu einer neuen Seite.
     Hierfür muss man sowohl die "name" als auch die "route" props übergeben

@@ -49,7 +49,7 @@ app.use("/", matchRoutes);
 /* startet den Sever*/
 httpServer.listen(port, () => {
   console.log("Server succesfully startet at Port : " + port);
-}); 
+});
 
 /* alle öffentlichen Routen*/
 const public_routes = ["/login", "/signup"];
@@ -90,7 +90,7 @@ app.get("/getUser", (req, res) => {
 
 app.get("/authorized", (req, res) => {
   if (req.session.authorized) {
-    res.send({loggedIn: true});
+    res.send({ loggedIn: true });
   } else {
     res.send({ loggedIn: false });
   }

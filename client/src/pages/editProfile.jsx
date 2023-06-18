@@ -1,4 +1,3 @@
-
 import React, {useEffect, useState} from 'react';
 import ReactDOM from 'react-dom';
 import Navbar from '../components/navbar'
@@ -26,7 +25,7 @@ export default function Root(props) {
     const[description, setDescription]= React.useState("")
     const navigate= useNavigate();
     const[succes, setSucces]= React.useState(false)
-    const [isLoading, setIsLoading] = useState(props.first?false:true);
+    const [isLoading, setIsLoading] = useState(!props.first);
     const [userInformation, setUserInformation] = useState({});
     
     
@@ -211,7 +210,7 @@ export default function Root(props) {
         fetch('/getUserData')
         .then((res)=>res.json())
         .then((data)=>{
-            if(data.email=="login"){
+            if(data.email==="login"){
                 navigate("/")
             }
             setUserInformation(data)

@@ -45,8 +45,7 @@ export default function Root({ setLoggedIn }) {
         if(resData.message){
             setError(resData.message)
         }
-        console.log(resData.role=="Admin")
-        if(resData.role=="Admin"){
+        if(resData.role==="Admin"){
             setAdmin(true);
         }
         if(resData.noError){
@@ -65,10 +64,6 @@ export default function Root({ setLoggedIn }) {
                     <FormText textID={'email'} lable={'Email'} name={'email'} placeholder={'name@example.com'} password={false}></FormText>
                     <FormText textID={'password'} lable={'Passwort'} name={'password'} placeholder={'min. 8 Zeichen'} password={true}></FormText>
                     <div>{error}</div>
-                    <div className={'normalFontSize checkboxForm'}>
-                        <label>eingeloggt bleiben</label>
-                        <input type={"checkbox"} name={'stayLogged'} />
-                    </div>
                     <FormButton onClick={submitForm} name={'Login'} buttonID={'submitBtn'}></FormButton>
                     
                     
