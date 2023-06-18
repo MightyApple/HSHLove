@@ -87,7 +87,7 @@ export default function Root(props) {
                 <Trenner></Trenner>
                 <div className={'primaryContainer'}>
                     <FormButton name={'Impressum'} id={'logout'} route={'/impressum'}></FormButton>
-                    <FormButton name={'Nutzerbedingungen'} id={'logout'} route={'/nutzerbedingungen'}></FormButton>
+                    <FormButton name={'Nutzungsbedingungen'} id={'logout'} route={'/nutzerbedingungen'}></FormButton>
                     <FormButton name={'Datenschutz'} id={'logout'} route={'/datenschutz'}></FormButton>
                 </div>
                 <div className={'primaryContainer'}>
