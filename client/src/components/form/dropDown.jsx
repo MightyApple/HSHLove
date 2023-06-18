@@ -1,4 +1,12 @@
 import './dropDown.css'
+
+/**
+ Anleitung der Kompnente
+
+ Die Komponente stellt ein Dropdownfeld dar und der Inhalt des "label" props ist der Text über dem Feld.
+ Mit dem "data" prop kann man einen Array übergeben, welcher den Inhalt jedes Dropdownfelds bestimmt.
+ */
+
 export default function Root(props) {
     return (
         <>

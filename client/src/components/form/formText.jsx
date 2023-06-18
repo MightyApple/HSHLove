@@ -3,6 +3,12 @@ import {useState} from "react";
 
 import './formText.css'
 
+/**
+ Anleitung der Kompnente
+
+ Die Komponente stellt ein Text input Feld dar. Wenn das "password" prop gesetzt wurde, wird das Inputfeld als ein Password eingabe Feld dargestellt
+ und mit dem propp "date" kann man ein Datum eingabe Feld erstelen.
+ */
 export default function Root(props) {
     let showEyeIcon = props.password;
 
