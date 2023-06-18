@@ -26,7 +26,7 @@ import { useState } from "react";
 
 import toast, { Toaster } from "react-hot-toast";
 
-/** Liest den Wert des Cookies raus, wenn kein Cookie kommt ein leerer String zurück*/
+/** Liest den Wert des Cookies raus, wenn kein Cookie vorhanden, kommt ein leerer String zurück*/
 function getCookie(cname) {
   let name = cname + "=";
   let decodedCookie = decodeURIComponent(document.cookie);
@@ -55,6 +55,7 @@ function App() {
     return cookieValue;
   }
 
+  /** wenn sich der User einloggt wird er mit dem socket verbunden */
   useEffect(() => {
     if (loggedIn) {
       getUser().then((user) => {
@@ -95,7 +96,7 @@ function App() {
       if (window.location.pathname === "/chat") {
         return;
       }
-      /** Benachrichtigungsfenster UI */
+      /** Benachrichtigungsfenster für messages */
       toast(message.from + ": " + message.content, {
         style: {
           borderRadius: "10px",
@@ -105,13 +106,15 @@ function App() {
       });
     });
 
+/** initialisiert und aktualisiert die Chats*/
     socket.on("initChats", ({ users, chatRooms, onlineUsers }) => {
       setMatchedUsers(users);
       setChatRooms(chatRooms);
       setOnlineUsers(new Set(onlineUsers));
     });
 
-    socket.on("newMatch", (data) => {
+    /** wenn ein Match ausgelöst wird, wird ein neuer Chatroom erstellt und eine Benachrichtigung an die user geschickt*/
+    socket.on("newMatch", (data) => { 
       var user = data.user;
       var chatRoom = data.chatRoom;
       setMatchedUsers((matchedUsers) => [...matchedUsers, user]);
@@ -126,12 +129,14 @@ function App() {
       });
     });
 
+    /** wenn user connecten, dann werden sie in das Set onlineUser hinzugefügt */
     socket.on("userConnected", (userID) => {
       setOnlineUsers((onlineUsers) => {
         return new Set([...onlineUsers, userID]);
       });
     });
 
+/** wenn user disconnecten, dann werden sie aus dem onlineUser Set entfernt */
     socket.on("userDisconnected", (userID) => {
       setOnlineUsers((onlineUsers) => {
         var newOnlineUsers = new Set(onlineUsers);
@@ -149,13 +154,13 @@ function App() {
     };
   }, []);
 
+  /** holt das ganze user object aus der db */
   async function getUser() {
     return fetch("/getUser")
       .then((response) => response.json())
       .then((data) => {
-        //data ist das was der Server aus der DB zurückgibt
         console.log(data);
-        return data; //returned von der fetch Funktion den ganzen User
+        return data;
       });
   }
 
