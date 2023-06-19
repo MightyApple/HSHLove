@@ -1,15 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+
+import { LoginProvider } from "./components/LoginProvider";
 
 // Code ausgelagert in App.js damit socket.io überall geht
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    // <React.StrictMode>
+  // <React.StrictMode>
+  <LoginProvider>
     <App />
-    // </React.StrictMode>
+  </LoginProvider>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

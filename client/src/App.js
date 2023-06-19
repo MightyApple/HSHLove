@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useState } from "react";
 
 import "./reset.css";
 import "./global.css";
@@ -22,42 +23,21 @@ import Nutzerbedingungen from "./pages/nutzerbedingungen";
 import Datenschutz from "./pages/datenschutz";
 
 import { socket } from "./components/socket";
-import { useState } from "react";
-
 import toast, { Toaster } from "react-hot-toast";
 
-/** Liest den Wert des Cookies raus, wenn kein Cookie vorhanden, kommt ein leerer String zurück*/
-function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
+import LoginContext from "./components/LoginProvider";
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(sessionCheck());
   const [chatRooms, setChatRooms] = useState([]);
   const [matchedUsers, setMatchedUsers] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
-
-  /** Überprüft die Sitzung */
-  function sessionCheck() {
-    var cookieValue = getCookie("loggedIn");
-    return cookieValue;
-  }
+  const { loggedIn, setLoggedIn } = React.useContext(LoginContext);
 
   /** wenn sich der User einloggt wird er mit dem socket verbunden */
   useEffect(() => {
+    console.log("useEffect loggedIn: " + loggedIn);
     if (loggedIn) {
+      console.log("Getting user...");
       getUser().then((user) => {
         if (!user) {
           console.log("no user");
@@ -69,9 +49,11 @@ function App() {
       });
 
       return () => {
+        console.log("disconnecting socket");
         socket.disconnect();
       };
     } else {
+      console.log("disconnecting socket");
       socket.disconnect();
     }
   }, [loggedIn]);
@@ -106,7 +88,7 @@ function App() {
       });
     });
 
-/** initialisiert und aktualisiert die Chats*/
+    /** initialisiert und aktualisiert die Chats*/
     socket.on("initChats", ({ users, chatRooms, onlineUsers }) => {
       setMatchedUsers(users);
       setChatRooms(chatRooms);
@@ -114,7 +96,7 @@ function App() {
     });
 
     /** wenn ein Match ausgelöst wird, wird ein neuer Chatroom erstellt und eine Benachrichtigung an die user geschickt*/
-    socket.on("newMatch", (data) => { 
+    socket.on("newMatch", (data) => {
       var user = data.user;
       var chatRoom = data.chatRoom;
       setMatchedUsers((matchedUsers) => [...matchedUsers, user]);
@@ -136,7 +118,7 @@ function App() {
       });
     });
 
-/** wenn user disconnecten, dann werden sie aus dem onlineUser Set entfernt */
+    /** wenn user disconnecten, dann werden sie aus dem onlineUser Set entfernt */
     socket.on("User disconnected", (userID) => {
       setOnlineUsers((onlineUsers) => {
         var newOnlineUsers = new Set(onlineUsers);
